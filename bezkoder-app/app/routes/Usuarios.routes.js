@@ -9,6 +9,8 @@ module.exports = app => {
     usuariosRouter.get("/:id", usuariosController.findOne);
     usuariosRouter.put("/:id", usuariosController.update);
     usuariosRouter.delete("/:id", usuariosController.delete);
+    usuariosRouter.put("/role/:id", usuariosController.updateRole);  // Nueva ruta para actualizar roles
+
 
     app.use("/api/usuarios", usuariosRouter);
 };

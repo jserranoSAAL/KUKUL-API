@@ -3,12 +3,9 @@ module.exports = app => {
 
     const paquetesRouter = require("express").Router();
 
-    // Rutas para Paquetes
-    paquetesRouter.post("/", paquetesController.create);
+    // Rutas para Paquetes    
     paquetesRouter.get("/", paquetesController.findAll);
-    paquetesRouter.get("/:id", paquetesController.findOne);
-    paquetesRouter.put("/:id", paquetesController.update);
-    paquetesRouter.delete("/:id", paquetesController.delete);
+    
 
     app.use("/api/paquetes", paquetesRouter);
 };

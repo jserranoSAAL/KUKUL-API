@@ -3,12 +3,8 @@ module.exports = app => {
 
     const reservasRouter = require("express").Router();
 
-    // Rutas para Reservas
-    reservasRouter.post("/", reservasController.create);
-    reservasRouter.get("/", reservasController.findAll);
-    reservasRouter.get("/:id", reservasController.findOne);
-    reservasRouter.put("/:id", reservasController.update);
-    reservasRouter.delete("/:id", reservasController.delete);
+    // Rutas para Reservas    
+    reservasRouter.get("/", reservasController.findAll);    
 
     app.use("/api/reservas", reservasRouter);
 };

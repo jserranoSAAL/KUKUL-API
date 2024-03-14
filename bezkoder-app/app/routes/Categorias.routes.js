@@ -3,12 +3,9 @@ module.exports = app => {
 
     const categoriasRouter = require("express").Router();
 
-    // Rutas para Categorias
-    categoriasRouter.post("/", categoriasController.create);
+    // Rutas para Categorias    
     categoriasRouter.get("/", categoriasController.findAll);
-    categoriasRouter.get("/:id", categoriasController.findOne);
-    categoriasRouter.put("/:id", categoriasController.update);
-    categoriasRouter.delete("/:id", categoriasController.delete);
+    
 
     app.use("/api/categorias", categoriasRouter);
 };

@@ -3,12 +3,8 @@ module.exports = app => {
 
     const proveedoresRouter = require("express").Router();
 
-    // Rutas para Proveedores
-    proveedoresRouter.post("/", proveedoresController.create);
-    proveedoresRouter.get("/", proveedoresController.findAll);
-    proveedoresRouter.get("/:id", proveedoresController.findOne);
-    proveedoresRouter.put("/:id", proveedoresController.update);
-    proveedoresRouter.delete("/:id", proveedoresController.delete);
+    // Rutas para Proveedores    
+    proveedoresRouter.get("/", proveedoresController.findAll);    
 
     app.use("/api/proveedores", proveedoresRouter);
 };

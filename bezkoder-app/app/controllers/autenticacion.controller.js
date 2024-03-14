@@ -1,5 +1,5 @@
 const db = require("../models");
-const Users = db.user;
+const Users = db.Usuarios;
 const Op = db.Sequelize.Op;
 
 const bcrypt = require("bcrypt");
@@ -33,7 +33,9 @@ const currentDate = new Date().toISOString();
 const formattedDate = moment(currentDate).format('YYYY-MM-DD HH:mm:ss');
 
 exports.register = async (req, res) => {
-  const { username, name_user, last_name_user, email, password_hash, created_at} = req.body;  
+  const { username, name_user, last_name_user, email, password_hash, rol, created_at} = req.body;  
+
+  
   try {    
     const user = await Users.create({
       username: username,      
@@ -41,6 +43,7 @@ exports.register = async (req, res) => {
       last_name_user: last_name_user,
       email: email,      
       password_hash: bcrypt.hashSync(password_hash, 8),
+      rol: rol,
       created_at: formattedDate
     });
           
@@ -52,6 +55,6 @@ exports.register = async (req, res) => {
 
     res.status(201).send({ auth: true, token });
   } catch (err) {     
-    res.status(500).send({ message: "Error al registrar usuario" });
+    res.status(500).send({ message: "Error al registrar usuario "+err });
   }
 };
