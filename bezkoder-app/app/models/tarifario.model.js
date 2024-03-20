@@ -1,17 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
-    const Paquete = sequelize.define('Paquete', {
+    const Tarifario = sequelize.define('Tarifario', {
         ID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        Nombre: {
+        Tarifario: {
             type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Nombre no sea nulo
+            allowNull: false  // Asegura que el campo Tarifario no sea nulo
         },
-        Duracion: {
+        Agencia: {
+            type: DataTypes.STRING,
+            allowNull: false  // Asegura que el campo Agencia no sea nulo
+        },
+        NumeroDeProductos: {
             type: DataTypes.INTEGER,
-            allowNull: false  // Asegura que el campo Duracion no sea nulo y guarda la duración en minutos o días, según se prefiera
+            allowNull: false  // Asegura que el campo Numero de Productos no sea nulo
         },
         Inicio: {
             type: DataTypes.DATE,
@@ -21,17 +25,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false  // Asegura que el campo Fin no sea nulo
         },
-        Categoria: {
-            type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Categoria no sea nulo
-        },
-        Agencia: {
-            type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Agencia no sea nulo
-        },
         Codigo: {
             type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Codigo no sea nulo
+            allowNull: false  // Asegura que el campo Código no sea nulo
         },
         SoloLectura: {
             type: DataTypes.BOOLEAN,
@@ -39,11 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         UltimaActualizacion: {
             type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW  // Establece la fecha y hora actuales como valor por defecto
+            defaultValue: DataTypes.NOW  // Establece la fecha y hora actuales como valor por defecto para la última actualización
         }
     }, {
-        tableName: 'Paquete',
+        tableName: 'Tarifario',
         timestamps: false  // Manten esto si no quieres que Sequelize maneje automáticamente los campos createdAt y updatedAt
     });
-    return Paquete;
+    return Tarifario;
 };

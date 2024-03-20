@@ -42,6 +42,17 @@ require("./app/routes/Productos.routes")(app);
 require("./app/routes/Proveedores.routes")(app);
 require("./app/routes/Reservas.routes")(app);
 require("./app/routes/Usuarios.routes")(app);
+require("./app/routes/CentroFinanciero.routes")(app);
+require("./app/routes/CreditosDebitos.routes")(app);
+require("./app/routes/Facturas.routes")(app);
+require("./app/routes/Gastos.routes")(app);
+require("./app/routes/Grupo.routes")(app);
+require("./app/routes/Ingresos.routes")(app);
+require("./app/routes/Logistica.routes")(app);
+require("./app/routes/Persona.routes")(app);
+require("./app/routes/ProspectosVenta.routes")(app);
+require("./app/routes/ProyectoVenta.routes")(app);
+require("./app/routes/Tarifario.routes")(app);
 
 // ... Otras importaciones y configuraciones ...
 
