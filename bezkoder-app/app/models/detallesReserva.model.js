@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             references: {
-                model: 'Paquetes',
+                model: 'Paquete',
                 key: 'ID'
             }
         },

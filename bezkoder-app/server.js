@@ -53,6 +53,7 @@ require("./app/routes/Persona.routes")(app);
 require("./app/routes/ProspectosVenta.routes")(app);
 require("./app/routes/ProyectoVenta.routes")(app);
 require("./app/routes/Tarifario.routes")(app);
+require("./app/routes/s3.routes")(app);
 
 // ... Otras importaciones y configuraciones ...
 

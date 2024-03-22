@@ -1,49 +1,73 @@
 module.exports = (sequelize, DataTypes) => {
     const Paquete = sequelize.define('Paquete', {
-        ID: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
         Nombre: {
             type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Nombre no sea nulo
-        },
-        Duracion: {
-            type: DataTypes.INTEGER,
-            allowNull: false  // Asegura que el campo Duracion no sea nulo y guarda la duración en minutos o días, según se prefiera
-        },
-        Inicio: {
-            type: DataTypes.DATE,
-            allowNull: false  // Asegura que el campo Inicio no sea nulo
-        },
-        Fin: {
-            type: DataTypes.DATE,
-            allowNull: false  // Asegura que el campo Fin no sea nulo
+            allowNull: false
         },
         Categoria: {
             type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Categoria no sea nulo
+            allowNull: false
         },
-        Agencia: {
+        Estado: {
             type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Agencia no sea nulo
+            allowNull: false
         },
         Codigo: {
             type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Codigo no sea nulo
+            allowNull: false
         },
-        SoloLectura: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false  // Define un valor por defecto para el campo Solo Lectura
+        Inicio: {
+            type: DataTypes.DATEONLY,
+            allowNull: false
         },
-        UltimaActualizacion: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW  // Establece la fecha y hora actuales como valor por defecto
+        Fin: {
+            type: DataTypes.DATEONLY,
+            allowNull: false
+        },
+        Creador: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        TipoDeViaje: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        Etiquetas: {
+            type: DataTypes.STRING, // Considera cambiar a JSON si tu base de datos soporta
+            get() {
+                const rawValue = this.getDataValue('Etiquetas');
+                return rawValue ? JSON.parse(rawValue) : [];
+            },
+            set(value) {
+                this.setDataValue('Etiquetas', JSON.stringify(value));
+            }
+        },
+        Nivel: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        Traducciones: {
+            type: DataTypes.STRING, // Cambia a JSON según tu DB
+            allowNull: true
+        },
+        Imagenes: {
+            type: DataTypes.TEXT,
+            get() {
+                const rawValue = this.getDataValue('Imagenes');
+                return rawValue ? JSON.parse(rawValue) : [];
+            },
+            set(value) {
+                this.setDataValue('Imagenes', JSON.stringify(value));
+            },
+            allowNull: true
+        },
+        NotasInternas: {
+            type: DataTypes.TEXT,
+            allowNull: true
         }
     }, {
         tableName: 'Paquete',
-        timestamps: false  // Manten esto si no quieres que Sequelize maneje automáticamente los campos createdAt y updatedAt
+        timestamps: false
     });
     return Paquete;
 };
