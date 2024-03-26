@@ -17,11 +17,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         Inicio: {
-            type: DataTypes.DATEONLY,
+            type: DataTypes.STRING,
             allowNull: false
         },
         Fin: {
-            type: DataTypes.DATEONLY,
+            type: DataTypes.STRING,
             allowNull: false
         },
         Creador: {

@@ -8,19 +8,37 @@ module.exports = (sequelize, DataTypes) => {
         Nombre: {
             type: DataTypes.STRING(100)
         },
-        Descripcion: {
-            type: DataTypes.TEXT
+        Categoria: {
+            type: DataTypes.STRING
         },
-        Precio: {
-            type: DataTypes.DECIMAL(10, 2)
+        NivelProducto: {
+            type: DataTypes.STRING
         },
+        Lugar: {
+            type: DataTypes.STRING
+        },
+        Region: {
+            type: DataTypes.STRING
+        },        
         ProveedorID: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'Proveedores',
                 key: 'ID'
             }
-        }
+        },
+        DEF: {
+            type: DataTypes.STRING
+        },
+        GEN: {
+            type: DataTypes.STRING
+        },
+        Codigo: {
+            type: DataTypes.STRING
+        },
+        Status: {
+            type: DataTypes.STRING
+        },
     }, {
         tableName: 'Productos',
         timestamps: false

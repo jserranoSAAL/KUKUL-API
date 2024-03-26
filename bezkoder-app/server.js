@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -10,11 +11,23 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Aumenta el límite de tamaño para los cuerpos de las solicitudes JSON
+// y configuraciones para bodyParser antes de las líneas express.json() y express.urlencoded()
+app.use(bodyParser.json({ limit: '50mb' })); // Ajusta según sea necesario
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+// luego, estos son los bodyParser integrados de Express que probablemente no necesitas después de definir arriba
+// pero si los mantienes, no serán afectados por la configuración de límite porque ya se ha configurado con body-parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // parse requests of content-type - application/json
 app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+
 
 const db = require("./app/models");
 
@@ -56,8 +69,6 @@ require("./app/routes/Tarifario.routes")(app);
 require("./app/routes/s3.routes")(app);
 
 // ... Otras importaciones y configuraciones ...
-
-
 
 // set port, listen for requests
 const PORT = process.env.NODE_DOCKER_PORT || 8080;

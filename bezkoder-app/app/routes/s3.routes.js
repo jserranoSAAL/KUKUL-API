@@ -2,7 +2,7 @@ module.exports = app => {
     const s3Controller = require("../controllers/s3.controller");    
     const s3Router = require("express").Router();
         // Rutas para Paquetes    
-    const { requireAuth } = require("../middlewares/auth");    
+    const { requireAuth } = require("../middlewares/auth");
 
     
 
