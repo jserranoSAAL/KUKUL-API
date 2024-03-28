@@ -15,12 +15,12 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_KEY }}
     - name: Deploy to Lightsail      
-      run: |
-        echo "SSH key length is ${{ secrets.SSH_KEY }}
+      run: |        
         ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
-          cd /path/to/your/app
+          cd /home/ubuntu/KUKUL-API
           git pull
           # Aquí tus comandos para reiniciar la aplicación, por ejemplo:
-          npm install
-          npm run build
+          docker-compose up -d db
+          docker-compose build
+          docker-compose up -d app
           pm2 restart all
