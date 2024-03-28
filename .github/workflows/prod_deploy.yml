@@ -1,0 +1,26 @@
+name: Deploy prod KUKUL_API
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_KEY }}
+    - name: Deploy to Lightsail
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
+          cd /path/to/your/app
+          git pull
+          # Aquí tus comandos para reiniciar la aplicación, por ejemplo:
+          npm install
+          npm run build
+          pm2 restart all
+EOF
