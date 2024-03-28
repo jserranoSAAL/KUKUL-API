@@ -23,6 +23,5 @@ jobs:
           # Aquí tus comandos para reiniciar la aplicación, por ejemplo:
           docker-compose up -d db
           docker-compose build
-          docker-compose up -d app
-          pm2 restart all
+          docker-compose up -d app                    
         
