@@ -2,6 +2,7 @@ module.exports = app => {
     const logisticaController = require("../controllers/Logistica.controller.js");
 
     const logisticaRouter = require("express").Router();
+    const { requireAuth } = require("../middlewares/auth");
 
     // Ruta para crear un nuevo Gasto
     logisticaRouter.post("/", requireAuth, logisticaController.create);
