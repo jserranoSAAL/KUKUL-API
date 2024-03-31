@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false // Asegurando que el campo Nombre no sea nulo.
         },
         Inicio: {
-            type: DataTypes.DATE,
+            type: DataTypes.STRING,
             allowNull: false // Asegurando que el campo Inicio no sea nulo.
         },
         Fin: {
-            type: DataTypes.DATE,
+            type: DataTypes.STRING,
             allowNull: false // Asegurando que el campo Fin no sea nulo.
         },
         Codigo: {
