@@ -50,3 +50,73 @@ exports.create = (req, res) => {
         });
 };
 // Agrega aquí otros métodos según sea necesario
+// Actualizar un Proveedor
+exports.update = (req, res) => {
+    const id = req.params.id;
+
+    Proveedor.update(req.body, {
+        where: { ID: id }
+    })
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: "Proveedor actualizado correctamente."
+            });
+        } else {
+            res.send({
+                message: `No se puede actualizar el Proveedor con ID=${id}. Quizás no fue encontrado o req.body está vacío.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Error actualizando el Proveedor con ID=" + id
+        });
+    });
+};
+
+// Eliminar un Proveedor
+exports.delete = (req, res) => {
+    const id = req.params.id;
+
+    Proveedor.destroy({
+        where: { ID: id }
+    })
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: "Proveedor eliminado correctamente."
+            });
+        } else {
+            res.send({
+                message: `No se pudo eliminar el Proveedor con ID=${id}.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "No se pudo eliminar el Proveedor con ID=" + id
+        });
+    });
+};
+
+// Obtener un Proveedor por su ID
+exports.findOne = (req, res) => {
+    const id = req.params.id;
+
+    Proveedor.findByPk(id)
+    .then(data => {
+        if (data) {
+            res.send(data);
+        } else {
+            res.status(404).send({
+                message: `No se pudo encontrar el Proveedor con ID=${id}.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Error recuperando el Proveedor con ID=" + id
+        });
+    });
+};
