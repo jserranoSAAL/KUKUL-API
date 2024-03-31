@@ -1,5 +1,7 @@
 const db = require('../models');
 const Usuario = db.Usuarios;
+const bcrypt = require('bcrypt');
+
 
 // Métodos de controlador para Usuarios
 // Ejemplo: Obtener todos los usuarios
