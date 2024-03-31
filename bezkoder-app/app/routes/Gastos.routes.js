@@ -2,6 +2,8 @@ module.exports = app => {
     const gastosController = require("../controllers/Gastos.controller.js");
 
     const gastosRouter = require("express").Router();
+    const { requireAuth } = require("../middlewares/auth");
+
 
     // Ruta para crear un nuevo Gasto
     gastosRouter.post("/", requireAuth, gastosController.create);
