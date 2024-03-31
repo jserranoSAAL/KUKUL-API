@@ -14,13 +14,14 @@ jobs:
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.SSH_KEY }}
-    - name: Deploy to Lightsail
-      run: |
+    - name: Deploy to Lightsail      
+      run: |        
         ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
-          cd /path/to/your/app
+          sudo su
+          cd /home/ubuntu/KUKUL-API          
           git pull
           # Aquí tus comandos para reiniciar la aplicación, por ejemplo:
-          npm install
-          npm run build
-          pm2 restart all
-EOF
+          docker-compose up -d db
+          docker-compose build
+          docker-compose up -d app                    
+        
