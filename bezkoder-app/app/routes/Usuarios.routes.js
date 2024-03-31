@@ -2,6 +2,7 @@ module.exports = app => {
     const usuariosController = require("../controllers/Usuarios.controller");
 
     const usuariosRouter = require("express").Router();
+    const { requireAuth } = require("../middlewares/auth");
 
     // Rutas para Usuarios
     usuariosRouter.post("/", requireAuth, usuariosController.create);
