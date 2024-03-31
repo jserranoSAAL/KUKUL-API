@@ -22,7 +22,7 @@ exports.create = (req, res) => {
         GrupoConfirmado: req.body.GrupoConfirmado,
         Codigo: req.body.Codigo,
         Manager: req.body.Manager,
-        UltimaModificacion: req.body.UltimaModificacion
+        UltimaModificacion: new Date() // Establece la fecha actual
     };
 
     // Guardar ProyectoVenta en la base de datos
