@@ -33,34 +33,36 @@ exports.updateRole = (req, res) => {
 
 
 // Crear y guardar un nuevo Usuario
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
     // Validar solicitud
-    if (!req.body.Nombre || !req.body.CorreoElectronico || !req.body.Contraseña) {
-        res.status(400).send({
+    if (!req.body.username || !req.body.email || !req.body.password_hash) {
+        return res.status(400).send({
             message: "El contenido no puede estar vacío!"
         });
-        return;
     }
 
-    // Crear un Usuario
-    const usuario = {
-        Nombre: req.body.Nombre,
-        CorreoElectronico: req.body.CorreoElectronico,
-        Contraseña: req.body.Contraseña,  // Considera encriptar esta contraseña
-        Rol: req.body.Rol
-    };
+    try {
+        // Encriptar contraseña
+        const hashedPassword = await bcrypt.hash(req.body.password_hash, 10);
 
-    // Guardar Usuario en la base de datos
-    Usuario.create(usuario)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Ocurrió algún error al crear el Usuario."
-            });
+        // Crear un Usuario
+        const usuario = {
+            username: req.body.username,
+            name_user: req.body.name_user,
+            last_name_user: req.body.last_name_user,
+            email: req.body.email,
+            password_hash: hashedPassword, // Usar contraseña hasheada
+            rol: req.body.rol
+        };
+
+        // Guardar Usuario en la base de datos
+        const data = await Usuario.create(usuario);
+        res.send(data);
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió algún error al crear el Usuario."
         });
+    }
 };
 
 // Recuperar todos los Usuarios de la base de datos
