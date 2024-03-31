@@ -4,19 +4,19 @@ module.exports = app => {
     const gastosRouter = require("express").Router();
 
     // Ruta para crear un nuevo Gasto
-    gastosRouter.post("/", gastosController.create);
+    gastosRouter.post("/", requireAuth, gastosController.create);
 
     // Ruta para recuperar todos los Gastos
-    gastosRouter.get("/", gastosController.findAll);
+    gastosRouter.get("/", requireAuth, gastosController.findAll);
 
     // Ruta para recuperar un único Gasto con id
-    gastosRouter.get("/:id", gastosController.findOne);
+    gastosRouter.get("/:id", requireAuth, gastosController.findOne);
 
     // Ruta para actualizar un Gasto con id
-    gastosRouter.put("/:id", gastosController.update);
+    gastosRouter.put("/:id", requireAuth, gastosController.update);
 
     // Ruta para eliminar un Gasto con id
-    gastosRouter.delete("/:id", gastosController.delete);
+    gastosRouter.delete("/:id", requireAuth, gastosController.delete);
 
     // Montar el enrutador bajo la ruta /api/gastos
     app.use("/api/gastos", gastosRouter);
