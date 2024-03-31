@@ -1,25 +1,24 @@
 module.exports = app => {
     const personasController = require("../controllers/Persona.controller.js");
+    const { requireAuth } = require("../middlewares/auth");
 
     const personaRouter = require("express").Router();
 
-    // Ruta para crear un nuevo Gasto
-    personaRouter.post("/", personasController.create);
+    // Crear un nuevo registro de Persona
+    personaRouter.post("/", requireAuth, personasController.create);
 
-    // Ruta para recuperar todos los Gastos
-    /*
-    personaRouter.get("/", personasController.findAll);
+    // Recuperar todos los registros de Personas
+    personaRouter.get("/", requireAuth, personasController.findAll);
 
-    // Ruta para recuperar un único Gasto con id
-    personaRouter.get("/:id", personasController.findOne);
+    // Recuperar un único registro de Persona con id
+    personaRouter.get("/:id", requireAuth, personasController.findOne);
 
-    // Ruta para actualizar un Gasto con id
-    personaRouter.put("/:id", personasController.update);
+    // Actualizar un registro de Persona con id
+    personaRouter.put("/:id", requireAuth, personasController.update);
 
-    // Ruta para eliminar un Gasto con id
-    personaRouter.delete("/:id", personasController.delete);
-    */
+    // Eliminar un registro de Persona con id
+    personaRouter.delete("/:id", requireAuth, personasController.delete);
 
-    // Montar el enrutador bajo la ruta /api/gastos
+    // Montar el enrutador bajo la ruta /api/personas
     app.use("/api/personas", personaRouter);
 };

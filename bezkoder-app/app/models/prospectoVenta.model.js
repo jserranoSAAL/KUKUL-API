@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false // Asegura que el campo Viaje no sea nulo. Cambia a INTEGER si se refiere a un ID de otro modelo
         },
         Inicio: {
-            type: DataTypes.DATE,
+            type: DataTypes.STRING,
             allowNull: false // Asegura que el campo Inicio no sea nulo
         },
         Estado: {
