@@ -1,26 +1,23 @@
 module.exports = app => {
     const prospectosVentaController = require("../controllers/ProspectosVenta.controller.js");
-
     const prospectosVentaRouter = require("express").Router();
     const { requireAuth } = require("../middlewares/auth");
 
-    // Ruta para crear un nuevo Gasto
+    // Crear un nuevo Prospecto de Venta
     prospectosVentaRouter.post("/", requireAuth, prospectosVentaController.create);
 
-    // Ruta para recuperar todos los Gastos
-    /*
+    // Recuperar todos los Prospectos de Venta
     prospectosVentaRouter.get("/", requireAuth, prospectosVentaController.findAll);
 
-    // Ruta para recuperar un único Gasto con id
+    // Recuperar un único Prospecto de Venta con id
     prospectosVentaRouter.get("/:id", requireAuth, prospectosVentaController.findOne);
 
-    // Ruta para actualizar un Gasto con id
+    // Actualizar un Prospecto de Venta con id
     prospectosVentaRouter.put("/:id", requireAuth, prospectosVentaController.update);
 
-    // Ruta para eliminar un Gasto con id
+    // Eliminar un Prospecto de Venta con id
     prospectosVentaRouter.delete("/:id", requireAuth, prospectosVentaController.delete);
-    */
 
-    // Montar el enrutador bajo la ruta /api/gastos
+    // Montar el enrutador bajo la ruta /api/prospectosVenta
     app.use("/api/prospectosVenta", prospectosVentaRouter);
 };
