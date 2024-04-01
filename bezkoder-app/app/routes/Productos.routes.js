@@ -4,10 +4,12 @@ module.exports = app => {
 
     const productosRouter = require("express").Router();
 
-    // Rutas para Productos    
+    // Rutas para Productos con autenticación requerida
     productosRouter.get("/", requireAuth, productosController.findAll);
-    productosRouter.post("/", requireAuth, productosController.create); // Añade esta línea
-    
+    productosRouter.get("/:id", requireAuth, productosController.findOne);
+    productosRouter.post("/", requireAuth, productosController.create);
+    productosRouter.put("/:id", requireAuth, productosController.update);
+    productosRouter.delete("/:id", requireAuth, productosController.delete);
 
     app.use("/api/productos", productosRouter);
 };
