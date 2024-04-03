@@ -18,6 +18,10 @@ module.exports = app => {
     // Eliminar un Prospecto de Venta con id
     prospectosVentaRouter.delete("/:id", requireAuth, prospectosVentaController.delete);
 
+    // Buscar Prospectos de Venta por proyecto con LIKE
+    prospectosVentaRouter.get("/buscar/proyecto/:proyecto", requireAuth, prospectosVentaController.findByProyecto);
+
+
     // Montar el enrutador bajo la ruta /api/prospectosVenta
     app.use("/api/prospectosVenta", prospectosVentaRouter);
 };

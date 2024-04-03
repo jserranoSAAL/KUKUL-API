@@ -119,3 +119,24 @@ exports.delete = (req, res) => {
     });
 };
 
+
+exports.findByProyecto = (req, res) => {
+    const proyecto = req.params.proyecto;
+
+    ProspectoVenta.findAll({
+        where: {
+            Proyecto: {
+                [db.Sequelize.Op.like]: `%${proyecto}%`
+            }
+        }
+    })
+    .then(data => {
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || `Ocurrió algún error al buscar los prospectos de venta con proyecto similar a ${proyecto}.`
+        });
+    });
+};
+
