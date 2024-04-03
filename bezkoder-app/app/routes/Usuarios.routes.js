@@ -11,6 +11,9 @@ module.exports = app => {
     usuariosRouter.put("/:id", requireAuth, usuariosController.update);
     usuariosRouter.delete("/:id", requireAuth, usuariosController.delete);
     usuariosRouter.put("/role/:id", requireAuth, usuariosController.updateRole);  // Nueva ruta para actualizar roles
+    // Buscar Usuarios por nombre con LIKE
+    usuariosRouter.get("/buscar/nombre/:name_user", requireAuth, usuariosController.findByName);
+
 
 
     app.use("/api/usuarios", usuariosRouter);

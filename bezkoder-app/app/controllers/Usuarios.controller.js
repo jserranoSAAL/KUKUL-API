@@ -152,3 +152,28 @@ exports.delete = (req, res) => {
         });
 };
 // Agrega aquí otros métodos según sea necesario
+exports.findByName = (req, res) => {
+    const name_user = req.params.name_user;
+
+    Usuario.findAll({
+        where: {
+            name_user: {
+                [db.Sequelize.Op.like]: `%${name_user}%`
+            }
+        }
+    })
+    .then(data => {
+        if (data.length) {
+            res.send(data);
+        } else {
+            res.status(404).send({
+                message: `No se encontraron usuarios con nombre similar a ${name_user}.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "Ocurrió algún error al buscar los usuarios."
+        });
+    });
+};
