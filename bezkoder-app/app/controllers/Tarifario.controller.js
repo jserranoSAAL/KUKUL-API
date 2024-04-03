@@ -118,3 +118,24 @@ exports.delete = (req, res) => {
             });
         });
 };
+
+
+exports.findByTarifario = (req, res) => {
+    const tarifarioNombre = req.params.tarifario;
+
+    Tarifario.findAll({
+        where: {
+            Tarifario: {
+                [db.Sequelize.Op.like]: `%${tarifarioNombre}%`
+            }
+        }
+    })
+    .then(data => {
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || `Ocurrió algún error al buscar los tarifarios con nombre similar a ${tarifarioNombre}.`
+        });
+    });
+};

@@ -19,6 +19,10 @@ module.exports = app => {
     // Ruta para eliminar un Gasto con id
     tarifarioRouter.delete("/:id", requireAuth, tarifarioController.delete);
 
+    // Buscar Tarifarios por nombre con LIKE
+    tarifarioRouter.get("/buscar/:tarifario", requireAuth, tarifarioController.findByTarifario);
+
+
     // Montar el enrutador bajo la ruta /api/gastos
     app.use("/api/tarifario", requireAuth, tarifarioRouter);
 };
