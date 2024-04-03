@@ -19,6 +19,10 @@ module.exports = app => {
     // Eliminar un registro de Persona con id
     personaRouter.delete("/:id", requireAuth, personasController.delete);
 
+    // Ruta para buscar personas por nombre con LIKE
+    personaRouter.get("/buscar/nombre/:nombre", requireAuth, personasController.findByName);
+
+
     // Montar el enrutador bajo la ruta /api/personas
     app.use("/api/personas", personaRouter);
 };

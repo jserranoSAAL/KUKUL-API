@@ -114,3 +114,24 @@ exports.findAll = (req, res) => {
             });
         });
 };
+
+
+exports.findByName = (req, res) => {
+    const nombre = req.params.nombre;
+
+    Persona.findAll({
+        where: {
+            Nombre: {
+                [db.Sequelize.Op.like]: `%${nombre}%`
+            }
+        }
+    })
+    .then(data => {
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || `Ocurrió algún error al buscar las personas con nombre similar a ${nombre}.`
+        });
+    });
+};
