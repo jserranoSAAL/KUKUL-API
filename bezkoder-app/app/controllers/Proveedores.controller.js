@@ -120,3 +120,30 @@ exports.findOne = (req, res) => {
         });
     });
 };
+
+
+exports.findByProveedor = (req, res) => {
+    const proveedor = req.params.proveedor;
+
+    Proveedor.findAll({
+        where: {
+            Proveedor: {
+                [db.Sequelize.Op.like]: `%${proveedor}%`
+            }
+        }
+    })
+    .then(data => {
+        if (data.length) {
+            res.send(data);
+        } else {
+            res.status(404).send({
+                message: `No se encontraron proveedores con nombre similar a ${proveedor}.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "Ocurrió algún error al buscar los proveedores."
+        });
+    });
+};
