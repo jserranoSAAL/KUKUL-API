@@ -110,3 +110,23 @@ exports.delete = (req, res) => {
     });
 };
 
+// Método para buscar categorías por nombre con LIKE
+exports.findByName = (req, res) => {
+    const nombre = req.params.nombre;
+
+    Categoria.findAll({
+        where: {
+            Nombre: {
+                [db.Sequelize.Op.like]: `%${nombre}%` // Utiliza LIKE para búsqueda parcial
+            }
+        }
+    })
+    .then(data => {
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || `Ocurrió algún error al buscar las categorías con nombre similar a ${nombre}.`
+        });
+    });
+};
