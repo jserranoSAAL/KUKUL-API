@@ -19,6 +19,10 @@ module.exports = app => {
     // Ruta para eliminar un Gasto con id
     proyectoVentaRouter.delete("/:id", requireAuth, proyectoVentaController.delete);
 
+    // Buscar Proyectos de Venta por prospecto con LIKE
+    proyectoVentaRouter.get("/buscar/prospect/:prospect", requireAuth, proyectoVentaController.findByProspect);
+
+
     // Montar el enrutador bajo la ruta /api/gastos
     app.use("/api/proyectoVenta", proyectoVentaRouter);
 };
