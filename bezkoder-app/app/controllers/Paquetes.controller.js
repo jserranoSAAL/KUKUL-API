@@ -1,5 +1,6 @@
 const db = require('../models');
 const Paquete = db.Paquetes;
+const { Op } = require('sequelize');
 
 // Obtener todos los paquetes
 exports.findAll = (req, res) => {
@@ -116,15 +117,17 @@ exports.findByName = (req, res) => {
 
     Paquete.findAll({
         where: {
-            Nombre: nombre
+            Nombre: {
+                [Op.like]: `%${nombre}%` // Utiliza LIKE para búsqueda parcial
+            }
         }
     })
     .then(data => {
-        if (data) {
+        if (data.length) {
             res.send(data);
         } else {
             res.status(404).send({
-                message: `No se encontraron paquetes con el nombre ${nombre}.`
+                message: `No se encontraron paquetes con el nombre similar a ${nombre}.`
             });
         }
     })
@@ -134,4 +137,5 @@ exports.findByName = (req, res) => {
         });
     });
 };
+
 
