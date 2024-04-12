@@ -11,7 +11,7 @@ module.exports = app => {
     slogansRouter.put("/:id", requireAuth, slogansController.update); // Actualizar un Slogan por id
     slogansRouter.delete("/:id", requireAuth, slogansController.delete); // Eliminar un Slogan por id
     slogansRouter.post("/upsert", requireAuth, slogansController.upsert); // Upsert un Slogan
-    slogansRouter.get("/latest", requireAuth, slogansController.findLatest); // Obtener el último Slogan
+    slogansRouter.get("/latest/one", requireAuth, slogansController.findLatest); // Obtener el último Slogan
 
     app.use("/api/slogans", slogansRouter);
 };

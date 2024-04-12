@@ -11,7 +11,7 @@ module.exports = app => {
     websitesRouter.put("/:id", requireAuth, websitesController.update); // Actualizar un Website por id
     websitesRouter.delete("/:id", requireAuth, websitesController.delete); // Eliminar un Website por id
     websitesRouter.post("/upsert", requireAuth, websitesController.upsert); // Upsert un Website
-    websitesRouter.get("/latest", requireAuth, websitesController.findLatest); // Obtener el último Website
+    websitesRouter.get("/latest/one", requireAuth, websitesController.findLatest); // Obtener el último Website
 
     app.use("/api/websites", websitesRouter);
 };

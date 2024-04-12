@@ -11,7 +11,7 @@ module.exports = app => {
     termsAndConditionsRouter.put("/:id", requireAuth, termsAndConditionsController.update); // Actualizar Términos y Condiciones por id
     termsAndConditionsRouter.delete("/:id", requireAuth, termsAndConditionsController.delete); // Eliminar Términos y Condiciones por id
     termsAndConditionsRouter.post("/upsert", requireAuth, termsAndConditionsController.upsert); // Upsert Términos y Condiciones
-    termsAndConditionsRouter.get("/latest", requireAuth, termsAndConditionsController.findLatest); // Obtener el último registro de Términos y Condiciones
+    termsAndConditionsRouter.get("/latest/one", requireAuth, termsAndConditionsController.findLatest); // Obtener el último registro de Términos y Condiciones
 
     app.use("/api/termsAndConditions", termsAndConditionsRouter);
 };

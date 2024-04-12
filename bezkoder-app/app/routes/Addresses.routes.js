@@ -11,7 +11,7 @@ module.exports = app => {
     addressesRouter.put("/:id", requireAuth, addressesController.update); // Actualizar un Address por id
     addressesRouter.delete("/:id", requireAuth, addressesController.delete); // Eliminar un Address por id
     addressesRouter.post("/upsert", requireAuth, addressesController.upsert); // Upsert un Address
-    addressesRouter.get("/latest", requireAuth, addressesController.findLatest); // Obtener el último Address
+    addressesRouter.get("/latest/one", requireAuth, addressesController.findLatest); // Obtener el último Address
 
     app.use("/api/addresses", addressesRouter);
 };

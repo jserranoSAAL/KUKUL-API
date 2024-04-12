@@ -11,7 +11,7 @@ module.exports = app => {
     logosRouter.put("/:id", requireAuth, logosController.update); // Actualizar un Logo por id
     logosRouter.delete("/:id", requireAuth, logosController.delete); // Eliminar un Logo por id
     logosRouter.post("/upsert", requireAuth, logosController.upsert); // Upsert un Logo
-    logosRouter.get("/latest", requireAuth, logosController.findLatest); // Obtener el último Logo
+    logosRouter.get("/latest/one", requireAuth, logosController.findLatest); // Obtener el último Logo
 
     app.use("/api/logos", logosRouter);
 };

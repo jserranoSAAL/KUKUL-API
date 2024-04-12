@@ -11,7 +11,7 @@ module.exports = app => {
     miscellaneousRouter.put("/:id", requireAuth, miscellaneousController.update); // Actualizar un Miscellaneous por id
     miscellaneousRouter.delete("/:id", requireAuth, miscellaneousController.delete); // Eliminar un Miscellaneous por id
     miscellaneousRouter.post("/upsert", requireAuth, miscellaneousController.upsert); // Upsert un Miscellaneous
-    miscellaneousRouter.get("/latest", requireAuth, miscellaneousController.findLatest); // Obtener el último Miscellaneous
+    miscellaneousRouter.get("/latest/one", requireAuth, miscellaneousController.findLatest); // Obtener el último Miscellaneous
 
     app.use("/api/miscellaneous", miscellaneousRouter);
 };
