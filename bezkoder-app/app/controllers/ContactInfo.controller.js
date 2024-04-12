@@ -112,30 +112,81 @@ exports.delete = (req, res) => {
     });
 };
 
-// Método para actualizar o insertar un ContactInfo
 exports.upsert = async (req, res) => {
-    const id = req.body.id; // Asumiendo que el cuerpo de la solicitud contiene un 'id'
+    const { id, email, phone, skype_contact, chat1, chat2 } = req.body;
 
     try {
-        const [instance, created] = await ContactInfo.upsert({
-            id: id,
-            email: req.body.email,
-            phone: req.body.phone,
-            skype_contact: req.body.skype_contact,
-            chat1: req.body.chat1,
-            chat2: req.body.chat2
-        }, { returning: true });
+        // Si se proporciona un ID, intenta actualizar el registro existente
+        if (id) {
+            const updated = await ContactInfo.update({
+                email: email,
+                phone: phone,
+                skype_contact: skype_contact,
+                chat1: chat1,
+                chat2: chat2
+            }, {
+                where: { id: id }
+            });
 
-        res.send({
-            message: created ? "ContactInfo creado exitosamente!" : "ContactInfo actualizado exitosamente!",
-            data: instance
-        });
+            if (updated[0] > 0) {  // Comprueba si alguna fila fue realmente actualizada
+                const updatedContact = await ContactInfo.findByPk(id);
+                return res.send({
+                    message: "ContactInfo actualizado exitosamente!",
+                    data: updatedContact
+                });
+            } else {
+                return res.status(404).send({
+                    message: "No se encontró ContactInfo con este ID para actualizar."
+                });
+            }
+        }
+
+        // Si no se proporciona un ID, intenta actualizar el primer registro existente
+        const existingRecord = await ContactInfo.findOne();
+        if (existingRecord) {
+            const updated = await ContactInfo.update({
+                email: email,
+                phone: phone,
+                skype_contact: skype_contact,
+                chat1: chat1,
+                chat2: chat2
+            }, {
+                where: { id: existingRecord.id }
+            });
+
+            if (updated[0] > 0) {
+                const updatedContact = await ContactInfo.findByPk(existingRecord.id);
+                return res.send({
+                    message: "ContactInfo actualizado exitosamente usando el primer registro disponible!",
+                    data: updatedContact
+                });
+            } else {
+                return res.status(500).send({
+                    message: "Error al actualizar el primer registro de ContactInfo."
+                });
+            }
+        } else {
+            // Si no hay registros, crea un nuevo registro
+            const newContact = await ContactInfo.create({
+                email: email,
+                phone: phone,
+                skype_contact: skype_contact,
+                chat1: chat1,
+                chat2: chat2
+            });
+            return res.send({
+                message: "ContactInfo creado exitosamente como el primer registro en la tabla!",
+                data: newContact
+            });
+        }
     } catch (err) {
         res.status(500).send({
-            message: "Error al actualizar o crear ContactInfo."
+            message: "Error al procesar la solicitud de ContactInfo: " + err.message
         });
     }
 };
+
+
 
 // Método para obtener el último registro de ContactInfo
 exports.findLatest = (req, res) => {
