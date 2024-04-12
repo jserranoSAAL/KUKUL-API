@@ -20,7 +20,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// Importar los modelos existentes
+// Importar los modelos
 db.Usuarios = require("./usuario.model.js")(sequelize, Sequelize);
 db.Reservas = require("./reserva.model.js")(sequelize, Sequelize);
 db.Paquetes = require("./paquete.model.js")(sequelize, Sequelize);
@@ -30,26 +30,29 @@ db.Productos = require("./producto.model.js")(sequelize, Sequelize);
 db.AgenciasDeViaje = require("./agenciaDeViaje.model.js")(sequelize, Sequelize);
 db.Categorias = require("./categoria.model.js")(sequelize, Sequelize);
 db.Geografia = require("./geografia.model.js")(sequelize, Sequelize);
-
-// Importar los nuevos modelos
 db.CentroFinanciero = require("./centroFinanciero.model.js")(sequelize, Sequelize);
 db.CreditosDebitos = require("./creditosDebitos.model.js")(sequelize, Sequelize);
-db.Gasto = require("./gastos.model.js")(sequelize, Sequelize);
+db.Gastos = require("./gastos.model.js")(sequelize, Sequelize);
 db.Grupo = require("./grupo.model.js")(sequelize, Sequelize);
 db.Logistica = require("./logistica.model.js")(sequelize, Sequelize);
-db.Factura = require("./facturas.model.js")(sequelize, Sequelize);
-db.Ingreso = require("./ingresos.model.js")(sequelize, Sequelize);
-db.Persona = require("./personas.model.js")(sequelize, Sequelize);
+db.Facturas = require("./facturas.model.js")(sequelize, Sequelize);
+db.Ingresos = require("./ingresos.model.js")(sequelize, Sequelize);
+db.Personas = require("./personas.model.js")(sequelize, Sequelize);
 db.ProspectoVenta = require("./prospectoVenta.model.js")(sequelize, Sequelize);
 db.ProyectoVenta = require("./proyectoVenta.model.js")(sequelize, Sequelize);
 db.Tarifario = require("./tarifario.model.js")(sequelize, Sequelize);
+db.Addresses = require("./addresses.model.js")(sequelize, Sequelize);
+db.ContactInfo = require("./contactInfo.model.js")(sequelize, Sequelize);
+db.Logos = require("./logos.model.js")(sequelize, Sequelize);
+db.Websites = require("./websites.model.js")(sequelize, Sequelize);
+db.Slogans = require("./slogans.model.js")(sequelize, Sequelize);
+db.TermsAndConditions = require("./termsAndConditions.model.js")(sequelize, Sequelize);
+db.Miscellaneous = require("./miscellaneous.model.js")(sequelize, Sequelize);
 
 // Aquí podrías definir las relaciones entre modelos si es necesario
-// Por ejemplo, si Usuarios tiene muchas Reservas
 db.Usuarios.hasMany(db.Reservas, { foreignKey: 'UsuarioID' });
 db.Reservas.belongsTo(db.Usuarios, { foreignKey: 'UsuarioID' });
 
-// Relaciones para Paquetes y Detalles de Reservas (ejemplo)
 db.Paquetes.hasMany(db.DetallesReservas, { foreignKey: 'PaqueteID' });
 db.DetallesReservas.belongsTo(db.Paquetes, { foreignKey: 'PaqueteID' });
 
