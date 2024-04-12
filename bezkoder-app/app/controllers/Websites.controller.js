@@ -112,26 +112,52 @@ exports.delete = (req, res) => {
 
 // Método para actualizar o insertar un Website
 exports.upsert = async (req, res) => {
-    const id = req.body.id; // Asumiendo que el cuerpo de la solicitud contiene un 'id'
+    const { website_en, website_es, website_fr } = req.body;
 
     try {
-        const [instance, created] = await Website.upsert({
-            id: id,
-            website_en: req.body.website_en,
-            website_es: req.body.website_es,
-            website_fr: req.body.website_fr
-        }, { returning: true });
+        // Primero verifica si hay registros existentes
+        const existingWebsite = await Website.findOne();
 
-        res.send({
-            message: created ? "Website creado exitosamente!" : "Website actualizado exitosamente!",
-            data: instance
-        });
+        if (existingWebsite) {
+            // Si existe, actualiza el registro existente
+            const updated = await Website.update({
+                website_en: website_en,
+                website_es: website_es,
+                website_fr: website_fr
+            }, {
+                where: { id: existingWebsite.id }
+            });
+
+            if (updated[0] > 0) {
+                const updatedWebsite = await Website.findByPk(existingWebsite.id);
+                res.send({
+                    message: "Website actualizado exitosamente!",
+                    data: updatedWebsite
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error al actualizar el Website existente."
+                });
+            }
+        } else {
+            // Si no hay registros existentes, crea un nuevo registro
+            const newWebsite = await Website.create({
+                website_en: website_en,
+                website_es: website_es,
+                website_fr: website_fr
+            });
+            res.send({
+                message: "Website creado exitosamente!",
+                data: newWebsite
+            });
+        }
     } catch (err) {
         res.status(500).send({
-            message: "Error al actualizar o crear el Website."
+            message: "Error al procesar la solicitud de Website: " + err.message
         });
     }
 };
+
 
 // Método para obtener el último registro de Website
 exports.findLatest = (req, res) => {
