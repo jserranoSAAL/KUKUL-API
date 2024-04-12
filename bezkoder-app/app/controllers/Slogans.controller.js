@@ -112,26 +112,52 @@ exports.delete = (req, res) => {
 
 // Método para actualizar o insertar un Slogan
 exports.upsert = async (req, res) => {
-    const id = req.body.id; // Asumiendo que el cuerpo de la solicitud contiene un 'id'
+    const { slogan_en, slogan_es, slogan_fr } = req.body;
 
     try {
-        const [instance, created] = await Slogan.upsert({
-            id: id,
-            slogan_en: req.body.slogan_en,
-            slogan_es: req.body.slogan_es,
-            slogan_fr: req.body.slogan_fr
-        }, { returning: true });
+        // Verifica si ya existe algún registro en la tabla
+        const existingSlogan = await Slogan.findOne();
 
-        res.send({
-            message: created ? "Slogan creado exitosamente!" : "Slogan actualizado exitosamente!",
-            data: instance
-        });
+        if (existingSlogan) {
+            // Si existe, actualiza el registro existente
+            const updated = await Slogan.update({
+                slogan_en: slogan_en,
+                slogan_es: slogan_es,
+                slogan_fr: slogan_fr
+            }, {
+                where: { id: existingSlogan.id }
+            });
+
+            if (updated[0] > 0) {
+                const updatedSlogan = await Slogan.findByPk(existingSlogan.id);
+                res.send({
+                    message: "Slogan actualizado exitosamente!",
+                    data: updatedSlogan
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error al actualizar el Slogan existente."
+                });
+            }
+        } else {
+            // Si no hay registros existentes, crea un nuevo registro
+            const newSlogan = await Slogan.create({
+                slogan_en: slogan_en,
+                slogan_es: slogan_es,
+                slogan_fr: slogan_fr
+            });
+            res.send({
+                message: "Slogan creado exitosamente!",
+                data: newSlogan
+            });
+        }
     } catch (err) {
         res.status(500).send({
-            message: "Error al actualizar o crear el Slogan."
+            message: "Error al procesar la solicitud de Slogan: " + err.message
         });
     }
 };
+
 
 // Método para obtener el último registro de Slogan
 exports.findLatest = (req, res) => {
