@@ -11,7 +11,7 @@ module.exports = app => {
     contactInfoRouter.put("/:id", requireAuth, contactInfoController.update); // Actualizar un ContactInfo por id
     contactInfoRouter.delete("/:id", requireAuth, contactInfoController.delete); // Eliminar un ContactInfo por id
     contactInfoRouter.post("/upsert", requireAuth, contactInfoController.upsert); // Upsert un ContactInfo
-    contactInfoRouter.get("/latest/one/one", requireAuth, contactInfoController.findLatest); // Obtener el último ContactInfo
+    contactInfoRouter.get("/latest/one", requireAuth, contactInfoController.findLatest); // Obtener el último ContactInfo
 
     app.use("/api/contactInfo", contactInfoRouter);
 };
