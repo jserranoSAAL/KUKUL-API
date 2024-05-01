@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger'); // Ruta al archivo swagger.js
 
 const app = express();
 
@@ -91,6 +93,9 @@ require("./app/routes/descriptionProduct.routes")(app);
 require("./app/routes/travelBookProduct.routes")(app);
 
 // ... Otras importaciones y configuraciones ...
+// Ruta para servir la documentación de Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // set port, listen for requests
 const PORT = process.env.NODE_DOCKER_PORT || 8080;

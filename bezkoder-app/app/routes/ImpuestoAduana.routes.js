@@ -1,5 +1,5 @@
 module.exports = app => {
-    const impuestoAduanaController = require("../controllers/impuestoAduana.controller");
+    const impuestoAduanaController = require("../controllers/ImpuestoAduana.controller");
     const { requireAuth } = require("../middlewares/auth");
 
     const router = require("express").Router();

@@ -11,7 +11,7 @@ module.exports = app => {
     proveedoresRouter.put("/:id", requireAuth, proveedoresController.update); // Actualizar un proveedor
     proveedoresRouter.delete("/:id", requireAuth, proveedoresController.delete); // Eliminar un proveedor
     // Buscar Proveedores por nombre con LIKE
-    proveedoresRouter.get("/buscar/:proveedor", requireAuth, proveedoresController.findByProveedor);
+    proveedoresRouter.get("/buscar/:proveedor", requireAuth, proveedoresController.findByNombre);
 
     app.use("/api/proveedores", proveedoresRouter);
 };

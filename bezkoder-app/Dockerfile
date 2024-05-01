@@ -10,5 +10,7 @@ RUN npm install aws-sdk
 RUN npm install multer
 RUN npm install multer-s3@2.10.0
 RUN npm install @aws-sdk/client-s3
+RUN npm install swagger-ui-express
+RUN npm install swagger-jsdoc
 COPY . .
 CMD nodemon server.js

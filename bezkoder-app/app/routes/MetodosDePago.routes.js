@@ -1,7 +1,7 @@
 // routes/metodosDePago.routes.js
 
 module.exports = app => {
-    const metodosDePagoController = require("../controllers/metodosDePago.controller");
+    const metodosDePagoController = require("../controllers/MetodosDePago.controller");
     const { requireAuth } = require("../middlewares/auth"); // Middleware de autenticación
 
     const router = require("express").Router();

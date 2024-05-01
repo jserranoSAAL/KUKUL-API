@@ -1,3 +1,227 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Addresses
+ *   description: Endpoints para manejar direcciones
+ */
+
+/**
+ * @swagger
+ * /api/addresses:
+ *   post:
+ *     summary: Crear una nueva dirección
+ *     description: Crea una nueva dirección.
+ *     tags: [Addresses]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               street:
+ *                 type: string
+ *               district:
+ *                 type: string
+ *               town:
+ *                 type: string
+ *               zip_code:
+ *                 type: string
+ *               state:
+ *                 type: string
+ *               country:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Dirección creada exitosamente
+ *       '400':
+ *         description: Bad request, la solicitud es incorrecta
+ *       '401':
+ *         description: Unauthorized, el usuario no tiene autorización
+ *       '500':
+ *         description: Error interno del servidor
+ */
+
+/**
+ * @swagger
+ * /api/addresses:
+ *   get:
+ *     summary: Obtener todas las direcciones
+ *     description: Retorna una lista de todas las direcciones.
+ *     tags: [Addresses]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: OK
+ *       '401':
+ *         description: Unauthorized, el usuario no tiene autorización
+ *       '500':
+ *         description: Error interno del servidor
+ */
+
+/**
+ * @swagger
+ * /api/addresses/{id}:
+ *   get:
+ *     summary: Obtener una dirección por ID
+ *     description: Retorna una dirección específica según el ID proporcionado.
+ *     tags: [Addresses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la dirección a obtener
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '200':
+ *         description: OK
+ *       '401':
+ *         description: Unauthorized, el usuario no tiene autorización
+ *       '404':
+ *         description: No se encontró la dirección con el ID proporcionado
+ *       '500':
+ *         description: Error interno del servidor
+ */
+
+/**
+ * @swagger
+ * /api/addresses/{id}:
+ *   put:
+ *     summary: Actualizar una dirección por ID
+ *     description: Actualiza una dirección existente según el ID proporcionado.
+ *     tags: [Addresses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la dirección a actualizar
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               street:
+ *                 type: string
+ *               district:
+ *                 type: string
+ *               town:
+ *                 type: string
+ *               zip_code:
+ *                 type: string
+ *               state:
+ *                 type: string
+ *               country:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Dirección actualizada exitosamente
+ *       '400':
+ *         description: Bad request, la solicitud es incorrecta
+ *       '401':
+ *         description: Unauthorized, el usuario no tiene autorización
+ *       '404':
+ *         description: No se encontró la dirección con el ID proporcionado
+ *       '500':
+ *         description: Error interno del servidor
+ */
+
+/**
+ * @swagger
+ * /api/addresses/{id}:
+ *   delete:
+ *     summary: Eliminar una dirección por ID
+ *     description: Elimina una dirección existente según el ID proporcionado.
+ *     tags: [Addresses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la dirección a eliminar
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '200':
+ *         description: Dirección eliminada exitosamente
+ *       '401':
+ *         description: Unauthorized, el usuario no tiene autorización
+ *       '404':
+ *         description: No se encontró la dirección con el ID proporcionado
+ *       '500':
+ *         description: Error interno del servidor
+ */
+
+/**
+ * @swagger
+ * /api/addresses/upsert:
+ *   post:
+ *     summary: Actualizar o insertar una dirección
+ *     description: Actualiza una dirección existente o inserta una nueva dirección si no existe.
+ *     tags: [Addresses]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               street:
+ *                 type: string
+ *               district:
+ *                 type: string
+ *               town:
+ *                 type: string
+ *               zip_code:
+ *                 type: string
+ *               state:
+ *                 type: string
+ *               country:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Dirección actualizada o insertada exitosamente
+ *       '400':
+ *         description: Bad request, la solicitud es incorrecta
+ *       '401':
+ *         description: Unauthorized, el usuario no tiene autorización
+ *       '500':
+ *         description: Error interno del servidor
+ */
+
+/**
+ * @swagger
+ * /api/addresses/latest/one:
+ *   get:
+ *     summary: Obtener la última dirección
+ *     description: Retorna la última dirección ingresada en la base de datos.
+ *     tags: [Addresses]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: OK
+ *       '401':
+ *         description: Unauthorized, el usuario no tiene autorización
+ *       '500':
+ *         description: Error interno del servidor
+ */
+
 const db = require("../models");
 const Address = db.Addresses;
 

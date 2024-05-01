@@ -1,7 +1,7 @@
 // lugares.routes.js
 
 module.exports = app => {
-    const lugaresController = require("../controllers/Lugares.controller");
+    const lugaresController = require("../controllers/Lugar.controller");
     const { requireAuth } = require("../middlewares/auth");
 
     const router = require("express").Router();
