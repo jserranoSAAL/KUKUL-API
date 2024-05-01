@@ -16,6 +16,21 @@ module.exports = (sequelize, DataTypes) => {
         },
         CorreoElectronico: {
             type: DataTypes.STRING(100)
+        },
+        Categoria: {
+            type: DataTypes.STRING(50)
+        },
+        Prioridad: {
+            type: DataTypes.INTEGER
+        },
+        Nacionalidad: {
+            type: DataTypes.STRING(50)
+        },
+        Website: {
+            type: DataTypes.STRING(100)
+        },
+        SedeCentral: {
+            type: DataTypes.STRING(100)
         }
     }, {
         tableName: 'AgenciasDeViaje',

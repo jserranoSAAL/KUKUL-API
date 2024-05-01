@@ -1,5 +1,5 @@
 const db = require('../models');
-const AgenciaDeViaje = db.AgenciasDeViaje;
+const AgenciaDeViaje = db.AgenciaDeViaje;
 
 // Obtener todas las agencias de viaje
 exports.findAll = (req, res) => {
@@ -19,7 +19,7 @@ exports.create = (req, res) => {
     // Validar solicitud
     if (!req.body.Nombre) {
         res.status(400).send({
-            message: "El contenido no puede estar vacío!"
+            message: "El nombre de la agencia de viaje no puede estar vacío!"
         });
         return;
     }
@@ -29,7 +29,12 @@ exports.create = (req, res) => {
         Nombre: req.body.Nombre,
         Contacto: req.body.Contacto,
         Telefono: req.body.Telefono,
-        CorreoElectronico: req.body.CorreoElectronico
+        CorreoElectronico: req.body.CorreoElectronico,
+        Categoria: req.body.Categoria,
+        Prioridad: req.body.Prioridad,
+        Nacionalidad: req.body.Nacionalidad,
+        Website: req.body.Website,
+        SedeCentral: req.body.SedeCentral
     };
 
     // Guardar AgenciaDeViaje en la base de datos

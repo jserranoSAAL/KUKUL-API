@@ -42,10 +42,95 @@ module.exports = (sequelize, DataTypes) => {
                 min: 0, // La calificación mínima
                 max: 5  // La calificación máxima
             }
+        },
+        formula: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        calculo: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        creador: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        host: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        sitio_web: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        codigo: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        licencia: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        supplier_check_in: {
+            type: DataTypes.TIME,
+            allowNull: false
+        },
+        supplier_check_out: {
+            type: DataTypes.TIME,
+            allowNull: false
+        },
+        capacidad_proveedor: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        calle: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        colonia: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        ciudad: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        codigo_postal: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        estado: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        pais: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        lenguaje_comunicacion: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        modo_comunicacion: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        centro_efectivo: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        divisa_centro_efectivo: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        metodo_pago_defecto: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     }, {
         tableName: 'Proveedores',
         timestamps: false // Si no deseas que Sequelize maneje automáticamente los campos createdAt y updatedAt
     });
+
     return Proveedor;
 };

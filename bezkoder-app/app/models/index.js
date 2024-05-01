@@ -27,7 +27,7 @@ db.Paquetes = require("./paquete.model.js")(sequelize, Sequelize);
 db.DetallesReservas = require("./detallesReserva.model.js")(sequelize, Sequelize);
 db.Proveedores = require("./proveedor.model.js")(sequelize, Sequelize);
 db.Productos = require("./producto.model.js")(sequelize, Sequelize);
-db.AgenciasDeViaje = require("./agenciaDeViaje.model.js")(sequelize, Sequelize);
+db.AgenciaDeViaje = require("./agenciaDeViaje.model.js")(sequelize, Sequelize);
 db.Categorias = require("./categoria.model.js")(sequelize, Sequelize);
 db.Geografia = require("./geografia.model.js")(sequelize, Sequelize);
 db.CentroFinanciero = require("./centroFinanciero.model.js")(sequelize, Sequelize);
@@ -48,6 +48,21 @@ db.Websites = require("./websites.model.js")(sequelize, Sequelize);
 db.Slogans = require("./slogans.model.js")(sequelize, Sequelize);
 db.TermsAndConditions = require("./termsAndConditions.model.js")(sequelize, Sequelize);
 db.Miscellaneous = require("./miscellaneous.model.js")(sequelize, Sequelize);
+db.MetodosDePago = require("./metodosPago.model.js")(sequelize, Sequelize);
+db.PoliticasCancelacion = require("./politicasCancelacion.model.js")(sequelize, Sequelize);
+db.Traduccion = require("./traduccion.model.js")(sequelize, Sequelize);
+db.ImpuestoAduana = require("./impuestoAduana.model.js")(sequelize, Sequelize);
+db.CreditosDebitosProveedores = require("./creditosDebitos.model.js")(sequelize, Sequelize);
+db.BancosDeProveedores = require("./bancosDeProveedores.model.js")(sequelize, Sequelize);
+db.CategoriasDeProveedores = require("./CategoriasDeProveedores.model.js")(sequelize, Sequelize);
+db.Pais = require("./paises.model.js")(sequelize, Sequelize);
+db.Estado = require("./estado.model.js")(sequelize, Sequelize);
+db.Lugares = require("./lugar.model.js")(sequelize, Sequelize);
+db.ImagenesLugar = require("./imagenesLugar.model.js")(sequelize, Sequelize);
+db.TranslationNameProduct = require("./translationNameProduct.model.js")(sequelize, Sequelize);
+db.DescriptionProduct = require("./descriptionProduct.model.js")(sequelize, Sequelize);
+db.TravelBookProduct = require("./travelBookProduct.model.js")(sequelize, Sequelize);
+
 
 // Aquí podrías definir las relaciones entre modelos si es necesario
 db.Usuarios.hasMany(db.Reservas, { foreignKey: 'UsuarioID' });

@@ -74,6 +74,21 @@ require("./app/routes/Miscellaneous.routes")(app);
 require("./app/routes/Slogans.routes")(app);
 require("./app/routes/TermsAndConditions.routes")(app);
 require("./app/routes/Websites.routes")(app);
+require("./app/routes/MetodosDePago.routes")(app);
+require("./app/routes/ImpuestoAduana.routes")(app);
+require("./app/routes/MetodosDePago.routes")(app);
+require("./app/routes/PoliticasCancelacion.routes")(app);
+require("./app/routes/Traduccion.routes")(app);
+require("./app/routes/CreditosDebitos.routes")(app);
+require("./app/routes/BancosDeProveedores.routes")(app);
+require("./app/routes/CategoriasDeProveedores.routes")(app);
+require("./app/routes/Paises.routes")(app);
+require("./app/routes/Estados.routes")(app);
+require("./app/routes/lugares.routes")(app);
+require("./app/routes/ImagenesLugar.routes")(app);
+require("./app/routes/translationNameProduct.routes")(app);
+require("./app/routes/descriptionProduct.routes")(app);
+require("./app/routes/travelBookProduct.routes")(app);
 
 // ... Otras importaciones y configuraciones ...
 
