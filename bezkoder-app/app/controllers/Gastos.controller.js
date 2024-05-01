@@ -1,5 +1,5 @@
 const db = require("../models");
-const Gasto = db.Gasto;
+const Gasto = db.Gastos;
 
 // Crear y guardar un nuevo Gasto
 exports.create = (req, res) => {
