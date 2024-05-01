@@ -1,5 +1,5 @@
 const db = require("../models");
-const Ingreso = db.Ingreso;
+const Ingreso = db.Ingresos;
 
 // Crear y guardar un nuevo Ingreso
 exports.create = (req, res) => {
