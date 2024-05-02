@@ -1,5 +1,5 @@
 const db = require("../models");
-const Factura = db.Factura;
+const Factura = db.Facturas;
 
 // Crear y guardar una nueva Factura
 exports.create = (req, res) => {
