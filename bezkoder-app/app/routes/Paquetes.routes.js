@@ -1,5 +1,11 @@
 /**
  * @swagger
+ * tags:
+ *   name: Paquetes
+ *   description: Endpoints para manejar los paquetes registrados
+ */
+/**
+ * @swagger
  * /api/paquetes:
  *   post:
  *     summary: Crear un nuevo paquete.

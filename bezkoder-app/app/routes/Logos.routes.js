@@ -1,3 +1,11 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Logos
+ *   description: Endpoints para manejar los logos almcenados
+ */
+
 /**
  * @swagger
  * /api/logos:

@@ -1,3 +1,11 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Metodos de pago
+ *   description: Endpoints para manejar los metodos e pago registrados
+ */
+
 /**
  * @swagger
  * /api/metodos-de-pago:

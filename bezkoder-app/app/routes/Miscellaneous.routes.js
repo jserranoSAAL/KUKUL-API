@@ -1,3 +1,11 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Miscellaneous
+ *   description: Endpoints para manejar los datos miscellaneous registrados
+ */
+
 /**
  * @swagger
  * /api/miscellaneous:

@@ -1,3 +1,11 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Logistica
+ *   description: Endpoints para manejar las logisticas registradas
+ */
+
 /**
  * @swagger
  * /api/logistica:

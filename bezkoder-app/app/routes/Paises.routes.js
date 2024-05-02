@@ -1,5 +1,12 @@
 /**
  * @swagger
+ * tags:
+ *   name: Paises
+ *   description: Endpoints para manejar los paises registrados
+ */
+
+/**
+ * @swagger
  * /api/paises:
  *   post:
  *     summary: Crear un nuevo país.

@@ -1,5 +1,11 @@
 /**
  * @swagger
+ * tags:
+ *   name: Personas
+ *   description: Endpoints para manejar las personas reistradas
+ */
+/**
+ * @swagger
  * /api/personas:
  *   post:
  *     summary: Crear una nueva persona.

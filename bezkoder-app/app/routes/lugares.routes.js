@@ -1,3 +1,12 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Lugares
+ *   description: Endpoints para manejar los lugares
+ */
+
+
 /**
  * @swagger
  * /api/lugares:

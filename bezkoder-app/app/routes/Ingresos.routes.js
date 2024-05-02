@@ -1,3 +1,12 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Ingresos
+ *   description: Este es el listado de ingresos verificados
+ */
+
+
 /**
  * @swagger
  * /api/ingresos:
