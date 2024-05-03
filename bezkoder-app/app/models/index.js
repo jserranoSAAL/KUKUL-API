@@ -63,6 +63,7 @@ db.TranslationNameProduct = require("./translationNameProduct.model.js")(sequeli
 db.DescriptionProduct = require("./descriptionProduct.model.js")(sequelize, Sequelize);
 db.TravelBookProduct = require("./travelBookProduct.model.js")(sequelize, Sequelize);
 db.Currency = require("./currency.model.js")(sequelize, Sequelize);
+db.Costos = require("./costos.model.js")(sequelize, Sequelize);
 
 
 // Aquí podrías definir las relaciones entre modelos si es necesario

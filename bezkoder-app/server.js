@@ -92,6 +92,7 @@ require("./app/routes/translationNameProduct.routes")(app);
 require("./app/routes/descriptionProduct.routes")(app);
 require("./app/routes/travelBookProduct.routes")(app);
 require("./app/routes/currency.routes")(app);
+require("./app/routes/Costos.routes")(app);
 
 // ... Otras importaciones y configuraciones ...
 // Ruta para servir la documentación de Swagger
