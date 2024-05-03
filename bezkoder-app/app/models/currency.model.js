@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     }, {
-      tableName: 'Currencies'
+      tableName: 'Currencies',
+      timestamps: false
     });
   
     return Currency;
