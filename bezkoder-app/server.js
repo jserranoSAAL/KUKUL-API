@@ -93,6 +93,9 @@ require("./app/routes/descriptionProduct.routes")(app);
 require("./app/routes/travelBookProduct.routes")(app);
 require("./app/routes/currency.routes")(app);
 require("./app/routes/Costos.routes")(app);
+require("./app/routes/Venta.routes")(app);
+require("./app/routes/DetalleVenta.routes")(app);
+require("./app/routes/Cliente.routes")(app);
 
 // ... Otras importaciones y configuraciones ...
 // Ruta para servir la documentación de Swagger
