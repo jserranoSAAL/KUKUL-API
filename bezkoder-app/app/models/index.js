@@ -66,6 +66,7 @@ db.Currency = require("./currency.model.js")(sequelize, Sequelize);
 db.Costos = require("./costos.model.js")(sequelize, Sequelize);
 db.Venta = require("./venta.model.js")(sequelize, Sequelize);
 db.DetalleVenta = require("./detalleVenta.model.js")(sequelize, Sequelize);
+db.Cliente = require("./cliente.model.js")(sequelize, Sequelize);
 
 
 // Aquí podrías definir las relaciones entre modelos si es necesario
