@@ -12,5 +12,8 @@ module.exports = app => {
     router.put('/:id', requireAuth, costos.update);
     router.delete('/:id', requireAuth, costos.delete);
 
+     // Nueva ruta para obtener costos por ProductoID
+    router.get('/by-producto/:productoId', requireAuth, costos.findByProductoId);
+
     app.use('/api/costos', router);
 };

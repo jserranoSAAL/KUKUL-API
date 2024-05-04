@@ -83,3 +83,27 @@ exports.delete = async (req, res) => {
         });
     }
 };
+
+
+// controllers/costos.controller.js
+
+// Método para recuperar todos los costos por ProductoID
+exports.findByProductoId = async (req, res) => {
+    const productoId = req.params.productoId;
+    try {
+        const costos = await Costos.findAll({
+            where: { ProductoID: productoId }
+        });
+        if (costos.length > 0) {
+            res.send(costos);
+        } else {
+            res.status(404).send({
+                message: `No costs found for ProductoID=${productoId}.`
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: "Error retrieving Costs for ProductoID=" + productoId
+        });
+    }
+};
