@@ -37,8 +37,32 @@ db.AgenciasDeViaje.associate = function(models) {
     db.AgenciasDeViaje.hasOne(models.AgenciasDeViajeInformacion, { foreignKey: 'AgenciasDeViajeID', as: 'informacion' });
 };
 
+db.Contactos = require('./contactos.model')(sequelize, Sequelize.DataTypes);
+db.Direcciones = require('./direcciones.model')(sequelize, Sequelize.DataTypes);
+db.ExtranetClient = require('./extranetClient.model')(sequelize, Sequelize.DataTypes);
+
+// Definir asociaciones
+db.AgenciasDeViaje.associate = function(models) {
+    db.AgenciasDeViaje.hasOne(models.AgenciasDeViajeInformacion, { foreignKey: 'AgenciasDeViajeID', as: 'informacion' });
+    db.AgenciasDeViaje.hasMany(models.Contactos, { foreignKey: 'AgenciasDeViajeID', as: 'contactos' });
+    db.AgenciasDeViaje.hasOne(models.Direcciones, { foreignKey: 'AgenciasDeViajeID', as: 'direccion' });
+    db.AgenciasDeViaje.hasOne(models.ExtranetClient, { foreignKey: 'AgenciasDeViajeID', as: 'extranetClient' });
+};
+
 db.AgenciasDeViajeInformacion.associate = function(models) {
     db.AgenciasDeViajeInformacion.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
+};
+
+db.Contactos.associate = function(models) {
+    db.Contactos.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
+};
+
+db.Direcciones.associate = function(models) {
+    db.Direcciones.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
+};
+
+db.ExtranetClient.associate = function(models) {
+    db.ExtranetClient.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
 };
 
 Object.keys(db).forEach(modelName => {
@@ -46,6 +70,8 @@ Object.keys(db).forEach(modelName => {
       db[modelName].associate(db);
   }
 });
+
+
 
 
 

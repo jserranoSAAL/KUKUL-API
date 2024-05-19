@@ -99,6 +99,9 @@ require("./app/routes/Costos.routes")(app);
 require("./app/routes/Venta.routes")(app);
 require("./app/routes/DetalleVenta.routes")(app);
 require("./app/routes/Cliente.routes")(app);
+require("./app/routes/contactos.routes")(app);
+require("./app/routes/direcciones.routes")(app);
+require("./app/routes/extranetClient.routes")(app);
 
 // ... Otras importaciones y configuraciones ...
 // Ruta para servir la documentación de Swagger
