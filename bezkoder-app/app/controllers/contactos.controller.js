@@ -26,7 +26,7 @@ exports.findAll = async (req, res) => {
 // Obtener un Contacto por AgenciasDeViajeID
 exports.findOne = async (req, res) => {
     try {
-        const contacto = await Contactos.findOne({
+        const contacto = await Contactos.findAll({
             where: { AgenciasDeViajeID: req.params.id }
         });
 
