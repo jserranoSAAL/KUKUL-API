@@ -36,7 +36,7 @@
  *               EstadoDelProyecto:
  *                 type: string
  *                 description: Estado actual del proyecto de venta.
- *               AgenciaDeViaje:
+ *               AgenciasDeViaje:
  *                 type: string
  *                 description: Agencia de viaje asociada al proyecto de venta.
  *               GrupoConfirmado:
@@ -127,7 +127,7 @@
  *               EstadoDelProyecto:
  *                 type: string
  *                 description: Estado actual del proyecto de venta.
- *               AgenciaDeViaje:
+ *               AgenciasDeViaje:
  *                 type: string
  *                 description: Agencia de viaje asociada al proyecto de venta.
  *               GrupoConfirmado:

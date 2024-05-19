@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false // Asegura que el campo Estado del Proyecto no sea nulo
         },
-        AgenciaDeViaje: {
+        AgenciasDeViaje: {
             type: DataTypes.STRING,
-            allowNull: false // Referencia a la agencia de viaje, puedes cambiar a ID si vas a enlazarlo directamente con el modelo AgenciaDeViaje
+            allowNull: false // Referencia a la agencia de viaje, puedes cambiar a ID si vas a enlazarlo directamente con el modelo AgenciasDeViaje
         },
         GrupoConfirmado: {
             type: DataTypes.BOOLEAN,

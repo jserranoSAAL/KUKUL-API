@@ -18,7 +18,7 @@ exports.create = (req, res) => {
         Pax: req.body.Pax,
         PrimerDiaDelViaje: req.body.PrimerDiaDelViaje,
         EstadoDelProyecto: req.body.EstadoDelProyecto,
-        AgenciaDeViaje: req.body.AgenciaDeViaje,
+        AgenciasDeViaje: req.body.AgenciasDeViaje,
         GrupoConfirmado: req.body.GrupoConfirmado,
         Codigo: req.body.Codigo,
         Manager: req.body.Manager,

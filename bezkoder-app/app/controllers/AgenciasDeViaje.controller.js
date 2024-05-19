@@ -1,9 +1,9 @@
 const db = require('../models');
-const AgenciaDeViaje = db.AgenciaDeViaje;
+const AgenciasDeViaje = db.AgenciasDeViaje;
 
 // Obtener todas las agencias de viaje
 exports.findAll = (req, res) => {
-    AgenciaDeViaje.findAll()
+    AgenciasDeViaje.findAll()
         .then(agenciasDeViaje => {
             res.json(agenciasDeViaje);
         })
@@ -37,8 +37,8 @@ exports.create = (req, res) => {
         SedeCentral: req.body.SedeCentral
     };
 
-    // Guardar AgenciaDeViaje en la base de datos
-    AgenciaDeViaje.create(agencia)
+    // Guardar AgenciasDeViaje en la base de datos
+    AgenciasDeViaje.create(agencia)
         .then(data => {
             res.send(data);
         })
@@ -53,19 +53,19 @@ exports.create = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    AgenciaDeViaje.findByPk(id)
+    AgenciasDeViaje.findByPk(id)
         .then(data => {
             if (data) {
                 res.send(data);
             } else {
                 res.status(404).send({
-                    message: `No se pudo encontrar la AgenciaDeViaje con ID=${id}.`
+                    message: `No se pudo encontrar la AgenciasDeViaje con ID=${id}.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error recuperando la AgenciaDeViaje con ID=" + id
+                message: "Error recuperando la AgenciasDeViaje con ID=" + id
             });
         });
 };
@@ -74,23 +74,23 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    AgenciaDeViaje.update(req.body, {
+    AgenciasDeViaje.update(req.body, {
         where: { ID: id }
     })
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "AgenciaDeViaje actualizada correctamente."
+                message: "AgenciasDeViaje actualizada correctamente."
             });
         } else {
             res.send({
-                message: `No se puede actualizar la AgenciaDeViaje con ID=${id}. Tal vez la AgenciaDeViaje no fue encontrada o req.body está vacío.`
+                message: `No se puede actualizar la AgenciasDeViaje con ID=${id}. Tal vez la AgenciasDeViaje no fue encontrada o req.body está vacío.`
             });
         }
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error actualizando la AgenciaDeViaje con ID=" + id
+            message: "Error actualizando la AgenciasDeViaje con ID=" + id
         });
     });
 };
@@ -99,23 +99,23 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    AgenciaDeViaje.destroy({
+    AgenciasDeViaje.destroy({
         where: { ID: id }
     })
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "AgenciaDeViaje eliminada correctamente."
+                message: "AgenciasDeViaje eliminada correctamente."
             });
         } else {
             res.send({
-                message: `No se pudo eliminar la AgenciaDeViaje con ID=${id}. Tal vez la AgenciaDeViaje no fue encontrada.`
+                message: `No se pudo eliminar la AgenciasDeViaje con ID=${id}. Tal vez la AgenciasDeViaje no fue encontrada.`
             });
         }
     })
     .catch(err => {
         res.status(500).send({
-            message: "No se pudo eliminar la AgenciaDeViaje con ID=" + id
+            message: "No se pudo eliminar la AgenciasDeViaje con ID=" + id
         });
     });
 };

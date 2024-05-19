@@ -27,7 +27,28 @@ db.Paquetes = require("./paquete.model.js")(sequelize, Sequelize);
 db.DetallesReservas = require("./detallesReserva.model.js")(sequelize, Sequelize);
 db.Proveedores = require("./proveedor.model.js")(sequelize, Sequelize);
 db.Productos = require("./producto.model.js")(sequelize, Sequelize);
-db.AgenciaDeViaje = require("./agenciaDeViaje.model.js")(sequelize, Sequelize);
+
+
+db.AgenciasDeViaje = require('./agenciaDeViaje.model')(sequelize, Sequelize.DataTypes);
+db.AgenciasDeViajeInformacion = require('./agenciasDeViajeInformacion.model')(sequelize, Sequelize.DataTypes);
+
+// Definir asociaciones
+db.AgenciasDeViaje.associate = function(models) {
+    db.AgenciasDeViaje.hasOne(models.AgenciasDeViajeInformacion, { foreignKey: 'AgenciasDeViajeID', as: 'informacion' });
+};
+
+db.AgenciasDeViajeInformacion.associate = function(models) {
+    db.AgenciasDeViajeInformacion.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
+};
+
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+      db[modelName].associate(db);
+  }
+});
+
+
+
 db.Categorias = require("./categoria.model.js")(sequelize, Sequelize);
 db.Geografia = require("./geografia.model.js")(sequelize, Sequelize);
 db.CentroFinanciero = require("./centroFinanciero.model.js")(sequelize, Sequelize);
@@ -67,6 +88,7 @@ db.Costos = require("./costos.model.js")(sequelize, Sequelize);
 db.Venta = require("./venta.model.js")(sequelize, Sequelize);
 db.DetalleVenta = require("./detalleVenta.model.js")(sequelize, Sequelize);
 db.Cliente = require("./cliente.model.js")(sequelize, Sequelize);
+
 
 
 // Aquí podrías definir las relaciones entre modelos si es necesario

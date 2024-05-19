@@ -48,6 +48,9 @@ app.get("/", (req, res) => {
 
 // Importa las nuevas rutas generadas
 require("./app/routes/authentication.routes")(app);
+
+require("./app/routes/AgenciasDeViajeInformacion.routes")(app);
+
 require("./app/routes/AgenciasDeViaje.routes")(app);
 require("./app/routes/Categorias.routes")(app);
 require("./app/routes/DetallesReservas.routes")(app);

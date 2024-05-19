@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const AgenciaDeViaje = sequelize.define('AgenciaDeViaje', {
+    const AgenciasDeViaje = sequelize.define('AgenciasDeViaje', {
         ID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -36,5 +36,10 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'AgenciasDeViaje',
         timestamps: false
     });
-    return AgenciaDeViaje;
+
+    AgenciasDeViaje.associate = function(models) {
+        AgenciasDeViaje.hasOne(models.AgenciasDeViajeInformacion, { foreignKey: 'AgenciasDeViajeID', as: 'informacion' });
+    };
+
+    return AgenciasDeViaje;
 };
