@@ -103,6 +103,11 @@ require("./app/routes/contactos.routes")(app);
 require("./app/routes/direcciones.routes")(app);
 require("./app/routes/extranetClient.routes")(app);
 
+
+require('./app/routes/parametrosCotizacion.routes')(app);
+require('./app/routes/parametrosDocumentos.routes')(app);
+require('./app/routes/parametrosEmails.routes')(app);
+
 // ... Otras importaciones y configuraciones ...
 // Ruta para servir la documentación de Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

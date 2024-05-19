@@ -72,7 +72,15 @@ Object.keys(db).forEach(modelName => {
 });
 
 
+// Agregar las líneas para importar los nuevos modelos
+db.ParametrosCotizacion = require('./parametrosCotizacion.model')(sequelize, Sequelize.DataTypes);
+db.ParametrosDocumentos = require('./parametrosDocumentos.model')(sequelize, Sequelize.DataTypes);
+db.ParametrosEmails = require('./parametrosEmails.model')(sequelize, Sequelize.DataTypes);
 
+// Asociar los nuevos modelos con AgenciasDeViaje
+db.ParametrosCotizacion.associate(db);
+db.ParametrosDocumentos.associate(db);
+db.ParametrosEmails.associate(db);
 
 
 db.Categorias = require("./categoria.model.js")(sequelize, Sequelize);
