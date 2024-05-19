@@ -22,7 +22,7 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
   try {
     const parametrosDocumentos = await ParametrosDocumentos.findOne({
-      where: { AgenciasDeViajeID: req.params.agenciaId }
+      where: { AgenciasDeViajeID: req.params.id }
     });
     if (parametrosDocumentos) {
       res.status(200).json(parametrosDocumentos);
@@ -37,11 +37,11 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const [updated] = await ParametrosDocumentos.update(req.body, {
-      where: { AgenciasDeViajeID: req.params.agenciaId }
+      where: { AgenciasDeViajeID: req.params.id }
     });
     if (updated) {
       const updatedParametrosDocumentos = await ParametrosDocumentos.findOne({
-        where: { AgenciasDeViajeID: req.params.agenciaId }
+        where: { AgenciasDeViajeID: req.params.id }
       });
       res.status(200).json(updatedParametrosDocumentos);
     } else {
@@ -55,7 +55,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const deleted = await ParametrosDocumentos.destroy({
-      where: { AgenciasDeViajeID: req.params.agenciaId }
+      where: { AgenciasDeViajeID: req.params.id }
     });
     if (deleted) {
       res.status(204).send();
