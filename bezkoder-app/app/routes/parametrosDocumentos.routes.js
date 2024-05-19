@@ -1,24 +1,55 @@
-module.exports = app => {
-    const parametrosDocumentosController = require("../controllers/parametrosDocumentos.controller.js");
-    const { requireAuth } = require("../middlewares/auth");
+module.exports = (app) => {
+  const parametrosDocumentosController = require("../controllers/parametrosDocumentos.controller.js");
+  const { requireAuth } = require("../middlewares/auth");
 
-    const parametrosDocumentosRouter = require("express").Router();
+  const parametrosDocumentosRouter = require("express").Router();
 
-    // Crear un nuevo registro de ParametrosDocumentos
-    parametrosDocumentosRouter.post("/", requireAuth, parametrosDocumentosController.create);
+  // Crear un nuevo registro de ParametrosDocumentos
+  parametrosDocumentosRouter.post(
+    "/",
+    requireAuth,
+    parametrosDocumentosController.create
+  );
 
-    // Recuperar todos los registros de ParametrosDocumentos
-    parametrosDocumentosRouter.get("/", requireAuth, parametrosDocumentosController.findAll);
+  // Recuperar todos los registros de ParametrosDocumentos
+  parametrosDocumentosRouter.get(
+    "/",
+    requireAuth,
+    parametrosDocumentosController.findAll
+  );
 
-    // Recuperar un único registro de ParametrosDocumentos con id
-    parametrosDocumentosRouter.get("/:id", requireAuth, parametrosDocumentosController.findOne);
+  // Recuperar un único registro de ParametrosDocumentos con id
+  parametrosDocumentosRouter.get(
+    "/:id",
+    requireAuth,
+    parametrosDocumentosController.findOne
+  );
 
-    // Actualizar un registro de ParametrosDocumentos con id
-    parametrosDocumentosRouter.put("/:id", requireAuth, parametrosDocumentosController.update);
+  // Actualizar un registro de ParametrosDocumentos con id
+  parametrosDocumentosRouter.put(
+    "/:id",
+    requireAuth,
+    parametrosDocumentosController.update
+  );
 
-    // Eliminar un registro de ParametrosDocumentos con id
-    parametrosDocumentosRouter.delete("/:id", requireAuth, parametrosDocumentosController.delete);
+  // Eliminar un registro de ParametrosDocumentos con id
+  parametrosDocumentosRouter.delete(
+    "/:id",
+    requireAuth,
+    parametrosDocumentosController.delete
+  );
 
-    // Montar el enrutador bajo la ruta /api/parametrosDocumentos
-    app.use("/api/parametrosDocumentos", parametrosDocumentosRouter);
+  parametrosDocumentosRouter.post(
+    "/",
+    requireAuth,
+    parametrosDocumentosController.createOrUpdate
+  );
+  parametrosDocumentosRouter.put(
+    "/:id",
+    requireAuth,
+    parametrosDocumentosController.createOrUpdate
+  );
+
+  // Montar el enrutador bajo la ruta /api/parametrosDocumentos
+  app.use("/api/parametrosDocumentos", parametrosDocumentosRouter);
 };

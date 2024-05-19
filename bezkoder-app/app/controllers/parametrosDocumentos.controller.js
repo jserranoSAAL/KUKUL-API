@@ -62,3 +62,22 @@ exports.delete = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
+exports.createOrUpdate = async (req, res) => {
+  try {
+    const { AgenciasDeViajeID, ...data } = req.body;
+    const [parametrosDocumentos, created] = await ParametrosDocumentos.findOrCreate({
+      where: { AgenciasDeViajeID },
+      defaults: { ...data, AgenciasDeViajeID }
+    });
+
+    if (!created) {
+      await parametrosDocumentos.update(data);
+    }
+
+    res.send(parametrosDocumentos);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
