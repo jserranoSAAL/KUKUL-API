@@ -44,10 +44,13 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(`Actualizando información para AgenciasDeViajeID: ${id}`);
+        console.log(`Valor de req.params.id: ${id}`);
+        console.log(`Datos recibidos: ${JSON.stringify(req.body)}`);
+
         const [updated] = await AgenciasDeViajeInformacion.update(req.body, {
             where: { AgenciasDeViajeID: id }  // Usar AgenciasDeViajeID
         });
+
         if (updated) {
             const updatedInformacion = await AgenciasDeViajeInformacion.findOne({
                 where: { AgenciasDeViajeID: id }
@@ -57,7 +60,7 @@ exports.update = async (req, res) => {
             res.status(404).json({ error: 'Información de Agencia de Viaje no encontrada' });
         }
     } catch (error) {
-        console.error(`Error al actualizar información para AgenciasDeViajeID: ${req.params.id}`, error);
+        console.error(`Error al actualizar información para AgenciasDeViajeID: ${id}`, error);
         res.status(400).json({ error: error.message });
     }
 };
