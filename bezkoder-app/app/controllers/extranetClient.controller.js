@@ -27,7 +27,7 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
     try {
         const extranetClient = await ExtranetClient.findOne({
-            where: { AgenciasDeViajeAgenciasDeViajeID: req.params.id }
+            where: { AgenciasDeViajeID: req.params.id }
         });
 
         if (extranetClient) {
@@ -50,7 +50,7 @@ exports.update = async (req, res) => {
 
         if (updated) {
             const updatedExtranetClient = await ExtranetClient.findOne({
-                where: { AgenciasDeViajeAgenciasDeViajeID: id }
+                where: { AgenciasDeViajeID: id }
             });
             res.json(updatedExtranetClient);
         } else {
@@ -65,7 +65,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const deleted = await ExtranetClient.destroy({
-            where: { AgenciasDeViajeAgenciasDeViajeID: req.params.id }
+            where: { AgenciasDeViajeID: req.params.id }
         });
         if (deleted) {
             res.status(204).json();
