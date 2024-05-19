@@ -24,7 +24,10 @@ exports.findAll = async (req, res) => {
 // Obtener una Información de Agencia de Viaje por ID
 exports.findOne = async (req, res) => {
     try {
-        const informacion = await AgenciasDeViajeInformacion.findByPk(req.params.id);
+        const informacion = await AgenciasDeViajeInformacion.findOne({
+            where: { AgenciaDeViajeId: req.params.id }
+        });
+
         if (informacion) {
             res.json(informacion);
         } else {
