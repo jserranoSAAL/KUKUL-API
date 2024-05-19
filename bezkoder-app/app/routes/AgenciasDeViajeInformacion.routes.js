@@ -13,7 +13,6 @@ module.exports = app => {
     // Recuperar una única Agencia de Viaje por ID
     agenciasDeViajeInformacionRouter.get("/:id", requireAuth, agenciasDeViajeInformacionController.findOne);
 
-    // Actualizar una Agencia de Viaje por ID
     agenciasDeViajeInformacionRouter.put("/:id", requireAuth, agenciasDeViajeInformacionController.update);
 
     // Eliminar una Agencia de Viaje por ID
