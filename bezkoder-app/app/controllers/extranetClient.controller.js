@@ -23,11 +23,11 @@ exports.findAll = async (req, res) => {
     }
 };
 
-// Obtener un ExtranetClient por ID
+// Obtener un ExtranetClient por AgenciasDeViajeID
 exports.findOne = async (req, res) => {
     try {
         const extranetClient = await ExtranetClient.findOne({
-            where: { AgenciasDeViajeID: req.params.id }
+            where: { AgenciasDeViajeAgenciasDeViajeID: req.params.id }
         });
 
         if (extranetClient) {
@@ -40,17 +40,17 @@ exports.findOne = async (req, res) => {
     }
 };
 
-// Actualizar un ExtranetClient por ID
+// Actualizar un ExtranetClient por AgenciasDeViajeID
 exports.update = async (req, res) => {
     try {
         const { id } = req.params;
         const [updated] = await ExtranetClient.update(req.body, {
-            where: { ID: id }
+            where: { AgenciasDeViajeID: id }
         });
 
         if (updated) {
             const updatedExtranetClient = await ExtranetClient.findOne({
-                where: { AgenciasDeViajeID: id }
+                where: { AgenciasDeViajeAgenciasDeViajeID: id }
             });
             res.json(updatedExtranetClient);
         } else {
@@ -61,11 +61,11 @@ exports.update = async (req, res) => {
     }
 };
 
-// Eliminar un ExtranetClient por ID
+// Eliminar un ExtranetClient por AgenciasDeViajeID
 exports.delete = async (req, res) => {
     try {
         const deleted = await ExtranetClient.destroy({
-            where: { AgenciasDeViajeID: req.params.id }
+            where: { AgenciasDeViajeAgenciasDeViajeID: req.params.id }
         });
         if (deleted) {
             res.status(204).json();
