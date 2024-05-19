@@ -44,7 +44,7 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const [updated] = await AgenciasDeViajeInformacion.update(req.body, {
-            where: { AgenciasDeViajeID: req.params.id }
+            where: { AgenciasDeViajeID: req.params.id }  // Usar AgenciasDeViajeID
         });
         if (updated) {
             const updatedInformacion = await AgenciasDeViajeInformacion.findOne({
