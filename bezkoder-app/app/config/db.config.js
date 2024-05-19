@@ -1,5 +1,5 @@
 module.exports = {
-  HOST: process.env.DB_HOST,
+  HOST: '54.88.119.103',
   USER: process.env.DB_USER,
   PASSWORD: process.env.MYSQL_ROOT_PASSWORD,
   DB: process.env.DB_NAME,

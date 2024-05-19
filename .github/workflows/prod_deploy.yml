@@ -16,7 +16,7 @@ jobs:
         ssh-private-key: ${{ secrets.SSH_KEY }}
     - name: Deploy to Lightsail      
       run: |        
-        ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }}@${{ secrets.DB_HOST }} <<EOF
+        ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
           sudo su
           cd /home/ubuntu/KUKUL-API          
           git pull
