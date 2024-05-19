@@ -27,7 +27,7 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
     try {
         const direccion = await Direcciones.findOne({
-            where: { ID: req.params.id }
+            where: { AgenciasDeViajeID: req.params.id }
         });
 
         if (direccion) {
@@ -45,12 +45,12 @@ exports.update = async (req, res) => {
     try {
         const { id } = req.params;
         const [updated] = await Direcciones.update(req.body, {
-            where: { ID: id }
+            where: { AgenciasDeViajeID: id }
         });
 
         if (updated) {
             const updatedDireccion = await Direcciones.findOne({
-                where: { ID: id }
+                where: { AgenciasDeViajeID: id }
             });
             res.json(updatedDireccion);
         } else {
