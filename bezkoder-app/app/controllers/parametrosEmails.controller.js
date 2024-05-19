@@ -21,7 +21,9 @@ exports.findAll = async (req, res) => {
 
 exports.findOne = async (req, res) => {
   try {
-    const parametrosEmails = await ParametrosEmails.findByPk(req.params.id);
+    const parametrosEmails = await ParametrosEmails.findOne({
+      where: { AgenciasDeViajeID: req.params.agenciaId }
+    });
     if (parametrosEmails) {
       res.status(200).json(parametrosEmails);
     } else {
@@ -35,10 +37,12 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const [updated] = await ParametrosEmails.update(req.body, {
-      where: { ID: req.params.id }
+      where: { AgenciasDeViajeID: req.params.agenciaId }
     });
     if (updated) {
-      const updatedParametrosEmails = await ParametrosEmails.findByPk(req.params.id);
+      const updatedParametrosEmails = await ParametrosEmails.findOne({
+        where: { AgenciasDeViajeID: req.params.agenciaId }
+      });
       res.status(200).json(updatedParametrosEmails);
     } else {
       res.status(404).json({ error: 'ParametrosEmails not found' });
@@ -51,7 +55,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const deleted = await ParametrosEmails.destroy({
-      where: { ID: req.params.id }
+      where: { AgenciasDeViajeID: req.params.agenciaId }
     });
     if (deleted) {
       res.status(204).send();
@@ -62,7 +66,6 @@ exports.delete = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
 
 exports.createOrUpdate = async (req, res) => {
   try {
