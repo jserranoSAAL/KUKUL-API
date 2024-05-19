@@ -25,8 +25,10 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
     try {
         const informacion = await AgenciasDeViajeInformacion.findOne({
-            where: { AgenciasDeViajeID: req.params.id }
+            where: { AgenciasDeViajeID: req.params.id }  // Usar AgenciasDeViajeID
         });
+
+        console.log('Buscando por AgenciasDeViajeID:', req.params.id);
 
         if (informacion) {
             res.json(informacion);
