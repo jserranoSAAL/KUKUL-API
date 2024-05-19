@@ -23,11 +23,11 @@ exports.findAll = async (req, res) => {
     }
 };
 
-// Obtener un Contacto por ID
+// Obtener un Contacto por AgenciasDeViajeID
 exports.findOne = async (req, res) => {
     try {
         const contacto = await Contactos.findOne({
-            where: { ID: req.params.id }
+            where: { AgenciasDeViajeID: req.params.id }
         });
 
         if (contacto) {
@@ -40,17 +40,17 @@ exports.findOne = async (req, res) => {
     }
 };
 
-// Actualizar un Contacto por ID
+// Actualizar un Contacto por AgenciasDeViajeID
 exports.update = async (req, res) => {
     try {
         const { id } = req.params;
         const [updated] = await Contactos.update(req.body, {
-            where: { ID: id }
+            where: { AgenciasDeViajeID: id }
         });
 
         if (updated) {
             const updatedContacto = await Contactos.findOne({
-                where: { ID: id }
+                where: { AgenciasDeViajeID: id }
             });
             res.json(updatedContacto);
         } else {
@@ -61,11 +61,11 @@ exports.update = async (req, res) => {
     }
 };
 
-// Eliminar un Contacto por ID
+// Eliminar un Contacto por AgenciasDeViajeID
 exports.delete = async (req, res) => {
     try {
         const deleted = await Contactos.destroy({
-            where: { ID: req.params.id }
+            where: { AgenciasDeViajeID: req.params.id }
         });
         if (deleted) {
             res.status(204).json();
