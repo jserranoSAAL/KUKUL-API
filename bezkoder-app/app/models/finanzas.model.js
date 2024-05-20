@@ -1,54 +1,52 @@
 module.exports = (sequelize, DataTypes) => {
-    const Finanzas = sequelize.define("Finanzas", {
+  const Finanzas = sequelize.define("Finanzas", {
+      ID: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true
+      },
+      AgenciasDeViajeID: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+      },
       CentroFinancieroIngresos: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       PlantillaFactura: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       CentroFinancieroPagos: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       TemplateProforma: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       CategoriaIngreso: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       MetodoPago: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       PagoAPartirDe: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+          type: DataTypes.INTEGER
       },
       Deposito: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
+          type: DataTypes.DECIMAL(10, 2)
       },
       Saldo: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+          type: DataTypes.INTEGER
       }
-    });
-  
-    Finanzas.associate = (models) => {
-      Finanzas.hasMany(models.CreditosDeudasDetalle, {
-        foreignKey: "FinanzasId",
-        as: "CreditosDeudasDetalle",
+  }, {
+      tableName: "Finanzas",
+      timestamps: false
+  });
+
+  Finanzas.associate = models => {
+      Finanzas.belongsTo(models.AgenciasDeViaje, {
+          foreignKey: 'AgenciasDeViajeID',
+          as: 'agencia'
       });
-      Finanzas.hasMany(models.CuentasBancarias, {
-        foreignKey: "FinanzasId",
-        as: "CuentasBancarias",
-      });
-    };
-  
-    return Finanzas;
   };
-  
+
+  return Finanzas;
+};

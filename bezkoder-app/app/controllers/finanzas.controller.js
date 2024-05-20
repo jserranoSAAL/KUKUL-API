@@ -1,101 +1,59 @@
 const db = require("../models");
 const Finanzas = db.Finanzas;
-const CreditosDeudasDetalle = db.CreditosDeudasDetalle;
-const CuentasBancarias = db.CuentasBancarias;
 
+// Crear una nueva entrada de Finanzas
 exports.create = (req, res) => {
-  Finanzas.create(req.body)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the Finanzas."
-      });
-    });
+    Finanzas.create(req.body)
+        .then(data => res.send(data))
+        .catch(err => res.status(500).send({
+            message: err.message || "Ocurrió un error al crear la entrada de Finanzas."
+        }));
 };
 
+// Obtener todas las entradas de Finanzas
 exports.findAll = (req, res) => {
-  Finanzas.findAll({
-    include: [CreditosDeudasDetalle, CuentasBancarias]
-  })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving Finanzas."
-      });
-    });
+    Finanzas.findAll()
+        .then(data => res.send(data))
+        .catch(err => res.status(500).send({
+            message: err.message || "Ocurrió un error al obtener las entradas de Finanzas."
+        }));
 };
 
+// Obtener una entrada de Finanzas por ID de Agencia de Viaje
 exports.findOne = (req, res) => {
-  const id = req.params.AgenciasDeViajeID;
-
-  Finanzas.findOne({
-    where: { AgenciasDeViajeID: id },
-    include: [CreditosDeudasDetalle, CuentasBancarias]
-  })
-    .then(data => {
-      if (data) {
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find Finanzas with AgenciasDeViajeID=${id}.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `Error retrieving Finanzas with AgenciasDeViajeID=${id}.`
-      });
-    });
+    const id = req.params.id;
+    Finanzas.findOne({ where: { AgenciasDeViajeID: id } })
+        .then(data => {
+            if (!data) res.status(404).send({ message: "No se encontró la entrada de Finanzas con el id " + id });
+            else res.send(data);
+        })
+        .catch(err => res.status(500).send({
+            message: "Error al obtener la entrada de Finanzas con id " + id
+        }));
 };
 
+// Actualizar una entrada de Finanzas por ID de Agencia de Viaje
 exports.update = (req, res) => {
-  const id = req.params.AgenciasDeViajeID;
-
-  Finanzas.update(req.body, {
-    where: { AgenciasDeViajeID: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Finanzas was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Finanzas with AgenciasDeViajeID=${id}. Maybe Finanzas was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `Error updating Finanzas with AgenciasDeViajeID=${id}.`
-      });
-    });
+    const id = req.params.id;
+    Finanzas.update(req.body, { where: { AgenciasDeViajeID: id } })
+        .then(num => {
+            if (num == 1) res.send({ message: "La entrada de Finanzas fue actualizada exitosamente." });
+            else res.send({ message: `No se pudo actualizar la entrada de Finanzas con id=${id}. Tal vez la entrada no fue encontrada o req.body está vacío.` });
+        })
+        .catch(err => res.status(500).send({
+            message: "Error al actualizar la entrada de Finanzas con id " + id
+        }));
 };
 
+// Eliminar una entrada de Finanzas por ID de Agencia de Viaje
 exports.delete = (req, res) => {
-  const id = req.params.AgenciasDeViajeID;
-
-  Finanzas.destroy({
-    where: { AgenciasDeViajeID: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Finanzas was deleted successfully!"
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Finanzas with AgenciasDeViajeID=${id}. Maybe Finanzas was not found!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `Could not delete Finanzas with AgenciasDeViajeID=${id}.`
-      });
-    });
+    const id = req.params.id;
+    Finanzas.destroy({ where: { AgenciasDeViajeID: id } })
+        .then(num => {
+            if (num == 1) res.send({ message: "La entrada de Finanzas fue eliminada exitosamente." });
+            else res.send({ message: `No se pudo eliminar la entrada de Finanzas con id=${id}. Tal vez la entrada no fue encontrada.` });
+        })
+        .catch(err => res.status(500).send({
+            message: "Error al eliminar la entrada de Finanzas con id " + id
+        }));
 };

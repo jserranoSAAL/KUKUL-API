@@ -1,25 +1,24 @@
 module.exports = app => {
-    const creditosDeudasDetalleController = require("../controllers/creditosDeudasDetalle.controller.js");
-    const { requireAuth } = require("../middlewares/auth");
-  
-    const creditosDeudasDetalleRouter = require("express").Router();
-  
-    // Crear un nuevo registro de CreditosDeudasDetalle
-    creditosDeudasDetalleRouter.post("/", requireAuth, creditosDeudasDetalleController.create);
-  
-    // Recuperar todos los registros de CreditosDeudasDetalle
-    creditosDeudasDetalleRouter.get("/", requireAuth, creditosDeudasDetalleController.findAll);
-  
-    // Recuperar un único registro de CreditosDeudasDetalle con AgenciasDeViajeID
-    creditosDeudasDetalleRouter.get("/:AgenciasDeViajeID", requireAuth, creditosDeudasDetalleController.findOne);
-  
-    // Actualizar un registro de CreditosDeudasDetalle con AgenciasDeViajeID
-    creditosDeudasDetalleRouter.put("/:AgenciasDeViajeID", requireAuth, creditosDeudasDetalleController.update);
-  
-    // Eliminar un registro de CreditosDeudasDetalle con AgenciasDeViajeID
-    creditosDeudasDetalleRouter.delete("/:AgenciasDeViajeID", requireAuth, creditosDeudasDetalleController.delete);
-  
-    // Montar el enrutador bajo la ruta /api/creditosDeudasDetalle
-    app.use("/api/creditosDeudasDetalle", creditosDeudasDetalleRouter);
-  };
-  
+  const creditosDeudasController = require("../controllers/creditosDeudasDetalle.controller.js");
+  const { requireAuth } = require("../middlewares/auth");
+
+  const creditosDeudasRouter = require("express").Router();
+
+  // Crear una nueva entrada de CreditosDeudasDetalle
+  creditosDeudasRouter.post("/", requireAuth, creditosDeudasController.create);
+
+  // Obtener todas las entradas de CreditosDeudasDetalle
+  creditosDeudasRouter.get("/", requireAuth, creditosDeudasController.findAll);
+
+  // Obtener una entrada de CreditosDeudasDetalle por ID de Agencia de Viaje
+  creditosDeudasRouter.get("/:id", requireAuth, creditosDeudasController.findOne);
+
+  // Actualizar una entrada de CreditosDeudasDetalle por ID de Agencia de Viaje
+  creditosDeudasRouter.put("/:id", requireAuth, creditosDeudasController.update);
+
+  // Eliminar una entrada de CreditosDeudasDetalle por ID de Agencia de Viaje
+  creditosDeudasRouter.delete("/:id", requireAuth, creditosDeudasController.delete);
+
+  // Montar el enrutador bajo la ruta /api/creditosDeudasDetalle
+  app.use("/api/creditosDeudasDetalle", creditosDeudasRouter);
+};

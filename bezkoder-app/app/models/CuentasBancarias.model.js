@@ -1,38 +1,43 @@
 module.exports = (sequelize, DataTypes) => {
-    const CuentasBancarias = sequelize.define("CuentasBancarias", {
+  const CuentasBancarias = sequelize.define("CuentasBancarias", {
+      ID: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true
+      },
+      AgenciasDeViajeID: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+      },
       Banco: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       Moneda: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING(10)
       },
       NumeroCuenta: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       Beneficiario: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       CodigoSWIFT: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING
       },
       PorDefecto: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+          type: DataTypes.BOOLEAN
       }
-    });
-  
-    CuentasBancarias.associate = (models) => {
-      CuentasBancarias.belongsTo(models.Finanzas, {
-        foreignKey: "FinanzasId",
-        as: "Finanzas",
+  }, {
+      tableName: "CuentasBancarias",
+      timestamps: false
+  });
+
+  CuentasBancarias.associate = models => {
+      CuentasBancarias.belongsTo(models.AgenciasDeViaje, {
+          foreignKey: 'AgenciasDeViajeID',
+          as: 'agencia'
       });
-    };
-  
-    return CuentasBancarias;
   };
-  
+
+  return CuentasBancarias;
+};
