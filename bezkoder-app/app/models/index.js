@@ -132,6 +132,11 @@ db.Reservas.belongsTo(db.Usuarios, { foreignKey: 'UsuarioID' });
 db.Paquetes.hasMany(db.DetallesReservas, { foreignKey: 'PaqueteID' });
 db.DetallesReservas.belongsTo(db.Paquetes, { foreignKey: 'PaqueteID' });
 
+
+db.Finanzas = require("./finanzas.model.js")(sequelize, Sequelize);
+db.CreditosDeudasDetalle = require("./creditosDebitos.model.js")(sequelize, Sequelize);
+db.CuentasBancarias = require("./CuentasBancarias.model.js")(sequelize, Sequelize);
+
 // Continuar definiendo otras relaciones
 // Agrega aquí cualquier relación nueva necesaria entre los modelos recién añadidos
 

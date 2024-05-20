@@ -108,6 +108,11 @@ require('./app/routes/parametrosCotizacion.routes')(app);
 require('./app/routes/parametrosDocumentos.routes')(app);
 require('./app/routes/parametrosEmails.routes')(app);
 
+require("./app/routes/finanzas.routes.js")(app);
+require("./app/routes/creditosDeudasDetalle.routes.js")(app);
+require("./app/routes/cuentasBancarias.routes.js")(app);
+
+
 // ... Otras importaciones y configuraciones ...
 // Ruta para servir la documentación de Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
