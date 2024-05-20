@@ -38,14 +38,15 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   
-    Finanzas.associate = models => {
-      Finanzas.belongsTo(models.AgenciasDeViaje, {
-        foreignKey: {
-          allowNull: false
-        }
+    Finanzas.associate = (models) => {
+      Finanzas.hasMany(models.CreditosDeudasDetalle, {
+        foreignKey: "FinanzasId",
+        as: "CreditosDeudasDetalle",
       });
-      Finanzas.hasMany(models.CreditosDeudasDetalle, { onDelete: 'cascade' });
-      Finanzas.hasMany(models.CuentasBancarias, { onDelete: 'cascade' });
+      Finanzas.hasMany(models.CuentasBancarias, {
+        foreignKey: "FinanzasId",
+        as: "CuentasBancarias",
+      });
     };
   
     return Finanzas;

@@ -38,11 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   
-    CreditosDeudasDetalle.associate = models => {
+    CreditosDeudasDetalle.associate = (models) => {
       CreditosDeudasDetalle.belongsTo(models.Finanzas, {
-        foreignKey: {
-          allowNull: false
-        }
+        foreignKey: "FinanzasId",
+        as: "Finanzas",
       });
     };
   

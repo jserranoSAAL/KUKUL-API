@@ -26,11 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   
-    CuentasBancarias.associate = models => {
+    CuentasBancarias.associate = (models) => {
       CuentasBancarias.belongsTo(models.Finanzas, {
-        foreignKey: {
-          allowNull: false
-        }
+        foreignKey: "FinanzasId",
+        as: "Finanzas",
       });
     };
   
