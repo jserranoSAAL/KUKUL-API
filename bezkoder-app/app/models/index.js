@@ -37,7 +37,6 @@ db.ParametrosDocumentos = require('./parametrosDocumentos.model')(sequelize, Seq
 db.ParametrosEmails = require('./parametrosEmails.model')(sequelize, Sequelize.DataTypes);
 db.Categorias = require("./categoria.model.js")(sequelize, Sequelize);
 db.Geografia = require("./geografia.model.js")(sequelize, Sequelize);
-db.CentroFinanciero = require("./centroFinanciero.model.js")(sequelize, Sequelize);
 db.CreditosDebitos = require("./creditosDebitos.model.js")(sequelize, Sequelize);
 db.Gastos = require("./gastos.model.js")(sequelize, Sequelize);
 db.Grupo = require("./grupo.model.js")(sequelize, Sequelize);
@@ -147,6 +146,17 @@ db.TipoDeTasa.associate = function(models) {
 db.MetodoDePago.associate = function(models) {
     db.MetodoDePago.belongsTo(models.ParametrosFinanzas, { foreignKey: 'ParametrosFinanzasID', as: 'parametrosFinanzas' });
 };
+
+
+// Importar los modelos
+db.CentroFinanciero = require("./centrosFinancieros.model.js")(sequelize, Sequelize);
+db.CentroFinancieroDefault = require("./centrosFinancierosDefault.model.js")(sequelize, Sequelize);
+
+// Definir las asociaciones
+db.CentroFinanciero.hasMany(db.CentroFinancieroDefault, { foreignKey: 'centro_financiero_id' });
+db.CentroFinancieroDefault.belongsTo(db.CentroFinanciero, { foreignKey: 'centro_financiero_id' });
+
+
 
 // Continuar definiendo otras relaciones necesarias entre los modelos
 

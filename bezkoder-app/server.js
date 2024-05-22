@@ -60,7 +60,6 @@ require("./app/routes/Productos.routes")(app);
 require("./app/routes/Proveedores.routes")(app);
 require("./app/routes/Reservas.routes")(app);
 require("./app/routes/Usuarios.routes")(app);
-require("./app/routes/CentroFinanciero.routes")(app);
 require("./app/routes/CreditosDebitos.routes")(app);
 require("./app/routes/Facturas.routes")(app);
 require("./app/routes/Gastos.routes")(app);
@@ -117,6 +116,10 @@ require("./app/routes/metodoDePago.routes.js")(app);
 require("./app/routes/parametrosFinanzas.routes.js")(app);
 require("./app/routes/politicaDeCancelacion.routes.js")(app);
 require("./app/routes/tipoDeTasa.routes.js")(app);
+
+require("./app/routes/centrosFinancieros.routes")(app);
+require("./app/routes/centrosFinancierosDefault.routes")(app);
+
 
 
 // ... Otras importaciones y configuraciones ...
