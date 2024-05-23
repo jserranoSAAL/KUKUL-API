@@ -156,7 +156,78 @@ db.CentroFinancieroDefault = require("./centrosFinancierosDefault.model.js")(seq
 db.CentroFinanciero.hasMany(db.CentroFinancieroDefault, { foreignKey: 'centro_financiero_id' });
 db.CentroFinancieroDefault.belongsTo(db.CentroFinanciero, { foreignKey: 'centro_financiero_id' });
 
+// Importar los modelos
+db.EstadoPago = require("./estadosPago.model.js")(sequelize, Sequelize);
 
+
+// Importar los modelos
+db.ParametroLogisticaGeneral = require("./parametrosLogisticaGeneral.model.js")(sequelize, Sequelize);
+
+
+// Importar los modelos
+db.CentroDeOperacion = require("./centrosDeOperacion.model.js")(sequelize, Sequelize);
+
+// Importar los modelos
+db.TareaAutomaticaLogistica = require("./tareasAutomaticasLogistica.model.js")(sequelize, Sequelize);
+
+
+// Importar los modelos
+db.EstadoReservacion = require("./estadoReservacion.model.js")(sequelize, Sequelize);
+
+
+db.DescripcionProducto = require('./descripcionProducto.model.js')(sequelize, Sequelize);
+
+db.ProductoInfos = require("./productoInfos.model.js")(sequelize, Sequelize);
+
+
+db.ProductoCostos = require("./ProductoCostos.model.js")(sequelize, Sequelize);
+db.ProductoTemporadas = require("./ProductoTemporadas.model.js")(sequelize, Sequelize);
+db.ProductoCostosAdicionales = require("./ProductoCostosAdicionales.model.js")(sequelize, Sequelize);
+db.ProductoLogistica = require("./productoLogistica.model.js")(sequelize, Sequelize);
+db.ProductoCupo = require("./productoCupo.model.js")(sequelize, Sequelize);
+db.ProductoAdmin = require("./productoAdmin.model.js")(sequelize, Sequelize);
+db.ProveedoresInfo = require("./proveedoresInfo.model.js")(sequelize, Sequelize);;
+db.ProveedoresContactos = require("./ProveedoresContactos.model")(sequelize, Sequelize);
+
+db.ProveedoresFinanzas = require("./ProveedoresFinanzas.model.js")(sequelize, Sequelize);
+db.CuentasBancariasProveedor = require("./CuentasBancariasProveedor.model.js")(sequelize, Sequelize);
+
+db.ProveedoresLogistica = require("./ProveedoresLogistica.model")(sequelize, Sequelize);
+
+db.ProveedoresDescripcionImagenes = require("./ProveedoresDescripcionImagenes.model")(sequelize, Sequelize);
+
+// Añadir esta línea donde se importan los modelos
+db.TarifarioGeneral = require("./tarifarioGeneral.model.js")(sequelize, Sequelize);
+
+db.ConstruccionViaje = require("./construccionViaje.model.js")(sequelize, Sequelize);
+db.ViajeProducto = require("./viajeProducto.model.js")(sequelize, Sequelize);
+
+// Asociaciones
+db.ConstruccionViaje.hasMany(db.ViajeProducto, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
+db.ViajeProducto.belongsTo(db.ConstruccionViaje, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
+db.ViajeProducto.belongsTo(db.Productos, { foreignKey: 'productoId', onDelete: 'CASCADE' });
+
+
+db.CotizacionesTarifario = require("./CotizacionesTarifario.model")(sequelize, Sequelize);
+db.ParametrosCotizacionTarifario = require("./ParametrosCotizacionTarifario.model")(sequelize, Sequelize);
+db.PreciosCalculadosTarifario = require("./PreciosCalculadosTarifario.model")(sequelize, Sequelize);
+
+// Agregar relaciones
+ConstruccionViaje.associate = function(models) {
+    ConstruccionViaje.hasMany(models.ViajeProducto, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
+    ConstruccionViaje.belongsTo(models.AgenciasDeViaje, { foreignKey: 'agenciaDeViajeId', onDelete: 'CASCADE' });
+};
+
+
+// Definir las relaciones
+db.Productos.hasOne(db.DescripcionProducto, {
+    foreignKey: 'productoId',
+    as: 'descripcion'
+});
+db.DescripcionProducto.belongsTo(db.Productos, {
+    foreignKey: 'productoId',
+    as: 'productos'
+});
 
 // Continuar definiendo otras relaciones necesarias entre los modelos
 

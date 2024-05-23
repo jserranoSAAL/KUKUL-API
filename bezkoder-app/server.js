@@ -121,6 +121,45 @@ require("./app/routes/centrosFinancieros.routes")(app);
 require("./app/routes/centrosFinancierosDefault.routes")(app);
 
 
+require("./app/routes/estadosPago.routes")(app);
+
+require("./app/routes/parametrosLogisticaGeneral.routes")(app);
+require("./app/routes/centrosDeOperacion.routes")(app);
+
+require("./app/routes/tareasAutomaticasLogistica.routes")(app);
+require("./app/routes/estadoReservacion.routes")(app);
+require('./app/routes/descripcionProducto.routes')(app);
+
+require("./app/routes/productoInfos.routes")(app);
+require("./app/routes/ProductoCostos.routes")(app);
+require("./app/routes/ProductoTemporadas.routes")(app);
+require("./app/routes/ProductoCostosAdicionales.routes")(app);
+require("./app/routes/productoLogistica.routes")(app);
+require("./app/routes/productoCupo.routes")(app);
+require("./app/routes/productoAdmin.routes")(app);
+require("./app/routes/proveedoresInfo.routes")(app);
+require("./app/routes/ProveedoresContactos.routes")(app);
+
+require("./app/routes/ProveedoresFinanzas.routes")(app);
+require("./app/routes/CuentasBancariasProveedor.routes.js")(app);
+// Importar rutas
+require("./app/routes/ProveedoresLogistica.routes")(app);
+require("./app/routes/ProveedoresDescripcionImagenes.routes")(app);
+// Añadir esta línea donde se importan las rutas
+require("./app/routes/TarifarioGeneral.routes")(app);
+
+// Importar rutas
+require('./app/routes/construccionViaje.routes')(app);
+require('./app/routes/viajeProducto.routes')(app);
+
+require("./app/routes/CotizacionesTarifario.routes")(app);
+require("./app/routes/ParametrosCotizacionTarifario.routes")(app);
+require("./app/routes/PreciosCalculadosTarifario.routes")(app);
+
+
+
+
+
 
 // ... Otras importaciones y configuraciones ...
 // Ruta para servir la documentación de Swagger
