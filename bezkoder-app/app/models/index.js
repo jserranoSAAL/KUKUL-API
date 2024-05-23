@@ -213,9 +213,9 @@ db.ParametrosCotizacionTarifario = require("./ParametrosCotizacionTarifario.mode
 db.PreciosCalculadosTarifario = require("./PreciosCalculadosTarifario.model")(sequelize, Sequelize);
 
 // Agregar relaciones
-ConstruccionViaje.associate = function(models) {
-    ConstruccionViaje.hasMany(models.ViajeProducto, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
-    ConstruccionViaje.belongsTo(models.AgenciasDeViaje, { foreignKey: 'agenciaDeViajeId', onDelete: 'CASCADE' });
+db.ConstruccionViaje.associate = function(models) {
+    db.ConstruccionViaje.hasMany(models.ViajeProducto, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
+    db.ConstruccionViaje.belongsTo(models.AgenciasDeViaje, { foreignKey: 'agenciaDeViajeId', onDelete: 'CASCADE' });
 };
 
 
