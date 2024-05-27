@@ -214,8 +214,9 @@ db.PreciosCalculadosTarifario = require("./PreciosCalculadosTarifario.model")(se
 
 // Agregar relaciones
 db.ConstruccionViaje.associate = function(models) {
-    db.ConstruccionViaje.hasMany(models.ViajeProducto, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
-    db.ConstruccionViaje.belongsTo(models.AgenciasDeViaje, { foreignKey: 'agenciaDeViajeId', onDelete: 'CASCADE' });
+    ConstruccionViaje.hasMany(models.ViajeProducto, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
+    ConstruccionViaje.belongsTo(models.AgenciasDeViaje, { foreignKey: 'agenciaDeViajeId', onDelete: 'CASCADE' });
+    ConstruccionViaje.belongsTo(models.Paquetes, { foreignKey: 'paqueteId', onDelete: 'CASCADE' });
 };
 
 

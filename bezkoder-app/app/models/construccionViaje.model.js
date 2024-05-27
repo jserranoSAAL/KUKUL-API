@@ -39,13 +39,23 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id'
             },
             onDelete: 'CASCADE'
+        },
+        paqueteId: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Paquete',
+                key: 'id'
+            },
+            onDelete: 'CASCADE'
         }
     });
 
     ConstruccionViaje.associate = function(models) {
         ConstruccionViaje.hasMany(models.ViajeProducto, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
         ConstruccionViaje.belongsTo(models.AgenciasDeViaje, { foreignKey: 'agenciaDeViajeId', onDelete: 'CASCADE' });
+        ConstruccionViaje.belongsTo(models.Paquetes, { foreignKey: 'paqueteId', onDelete: 'CASCADE' });
     };
+
 
     return ConstruccionViaje;
 };

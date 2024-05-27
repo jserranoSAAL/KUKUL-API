@@ -75,18 +75,18 @@ exports.delete = async (req, res) => {
     }
 };
 
-// Buscar construcciones de viaje por agenciaDeViajeId
-exports.findByAgenciaDeViajeId = async (req, res) => {
+// Buscar construcciones de viaje por paqueteId
+exports.findByPaqueteId = async (req, res) => {
     try {
-        const agenciaDeViajeId = req.params.agenciaDeViajeId;
-        const construccionesViaje = await ConstruccionViaje.findAll({ where: { agenciaDeViajeId } });
+        const paqueteId = req.params.paqueteId;
+        const construccionesViaje = await ConstruccionViaje.findAll({ where: { paqueteId } });
 
         if (construccionesViaje.length > 0) {
             res.json(construccionesViaje);
         } else {
-            res.status(404).send({ message: `No se encontraron construcciones de viaje para agenciaDeViajeId=${agenciaDeViajeId}.` });
+            res.status(404).send({ message: `No se encontraron construcciones de viaje para paqueteId=${paqueteId}.` });
         }
     } catch (err) {
-        res.status(500).send({ message: err.message || "Ocurrió un error al recuperar las construcciones de viaje por agenciaDeViajeId." });
+        res.status(500).send({ message: err.message || "Ocurrió un error al recuperar las construcciones de viaje por paqueteId." });
     }
 };
