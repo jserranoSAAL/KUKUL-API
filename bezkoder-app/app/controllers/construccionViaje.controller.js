@@ -5,8 +5,8 @@ const ConstruccionViaje = db.ConstruccionViaje;
 // Crear una nueva construcción de viaje
 exports.create = async (req, res) => {
     try {
-        const { nombre, fecha_inicio, fecha_fin, descripcion, agenciaDeViajeId } = req.body;
-        const construccionViaje = await ConstruccionViaje.create({ nombre, fecha_inicio, fecha_fin, descripcion, agenciaDeViajeId });
+        const { nombre, fecha_inicio, fecha_fin, descripcion, agenciaDeViajeId, paqueteId } = req.body;
+        const construccionViaje = await ConstruccionViaje.create({ nombre, fecha_inicio, fecha_fin, descripcion, agenciaDeViajeId, paqueteId });
         res.status(201).json({ message: "Construcción de viaje creada exitosamente.", construccionViaje });
     } catch (err) {
         res.status(500).send({ message: err.message || "Ocurrió un error al crear la construcción de viaje." });
