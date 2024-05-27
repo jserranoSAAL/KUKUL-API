@@ -20,5 +20,8 @@ module.exports = app => {
     // Eliminar una construcción de viaje por ID
     router.delete("/:id", requireAuth, construccionViaje.delete);
 
+    // Buscar construcciones de viaje por agenciaDeViajeId
+    router.get("/buscarPorAgencia/:agenciaDeViajeId", requireAuth, construccionViaje.findByAgenciaDeViajeId);
+
     app.use('/api/construccionViaje', router);
 };

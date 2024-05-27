@@ -156,6 +156,7 @@ require("./app/routes/CotizacionesTarifario.routes")(app);
 require("./app/routes/ParametrosCotizacionTarifario.routes")(app);
 require("./app/routes/PreciosCalculadosTarifario.routes")(app);
 
+require("./app/routes/construccionViaje.routes.js")(app);
 
 
 
