@@ -61,3 +61,110 @@ exports.findByProductoCostoId = async (req, res) => {
         });
     }
 };
+
+// Crear una nueva Temporada de Producto
+exports.create = async (req, res) => {
+    try {
+        const temporada = await ProductoTemporadas.create(req.body);
+        res.status(201).json(temporada);
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al crear la Temporada de Producto."
+        });
+    }
+};
+
+// Obtener todas las Temporadas de Producto
+exports.findAll = async (req, res) => {
+    try {
+        const temporadas = await ProductoTemporadas.findAll();
+        res.status(200).json(temporadas);
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al recuperar las Temporadas de Producto."
+        });
+    }
+};
+
+// Obtener una Temporada de Producto por ID
+exports.findOne = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const temporada = await ProductoTemporadas.findByPk(id);
+
+        if (temporada) {
+            res.status(200).json(temporada);
+        } else {
+            res.status(404).send({
+                message: `No se encontró la Temporada de Producto con ID=${id}.`
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al recuperar la Temporada de Producto."
+        });
+    }
+};
+
+// Actualizar una Temporada de Producto por ID
+exports.update = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const num = await ProductoTemporadas.update(req.body, {
+            where: { id }
+        });
+
+        if (num == 1) {
+            res.send({
+                message: "Temporada de Producto actualizada exitosamente."
+            });
+        } else {
+            res.send({
+                message: `No se pudo actualizar la Temporada de Producto con ID=${id}. Tal vez la Temporada de Producto no fue encontrada o req.body está vacío.`
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al actualizar la Temporada de Producto."
+        });
+    }
+};
+
+// Eliminar una Temporada de Producto por ID
+exports.delete = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const num = await ProductoTemporadas.destroy({
+            where: { id }
+        });
+
+        if (num == 1) {
+            res.send({
+                message: "Temporada de Producto eliminada exitosamente."
+            });
+        } else {
+            res.send({
+                message: `No se pudo eliminar la Temporada de Producto con ID=${id}. Tal vez la Temporada de Producto no fue encontrada.`
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "No se pudo eliminar la Temporada de Producto con ID=" + id
+        });
+    }
+};
+
+// Eliminar todas las Temporadas de Producto
+exports.deleteAll = async (req, res) => {
+    try {
+        const nums = await ProductoTemporadas.destroy({
+            where: {},
+            truncate: false
+        });
+        res.send({ message: `${nums} Temporadas de Producto fueron eliminadas exitosamente!` });
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al eliminar todas las Temporadas de Producto."
+        });
+    }
+};
