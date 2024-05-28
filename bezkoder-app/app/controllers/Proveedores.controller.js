@@ -87,7 +87,7 @@ exports.update = async (req, res) => {
         }
     } catch (err) {
         res.status(500).send({
-            message: "Error al actualizar el Proveedor con ID=" + id
+            message: "Error al actualizar el Proveedor con ID=" + id + "error: "+err
         });
     }
 };

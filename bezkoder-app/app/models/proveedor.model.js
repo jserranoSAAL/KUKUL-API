@@ -7,30 +7,30 @@ module.exports = (sequelize, DataTypes) => {
         },
         Proveedor: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Proveedor no sea nulo
+            allowNull: true // Asegura que el campo Proveedor no sea nulo
         },
         CategoriaProveedor: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Categoría de Proveedor no sea nulo
+            allowNull: true // Asegura que el campo Categoría de Proveedor no sea nulo
         },
         Ciudad: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Ciudad no sea nulo
+            allowNull: true // Asegura que el campo Ciudad no sea nulo
         },
         Contacto: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Contacto no sea nulo
+            allowNull: true // Asegura que el campo Contacto no sea nulo
         },
         Telefono: {
             type: DataTypes.STRING,
-            allowNull: false, // Asegura que el campo Teléfono no sea nulo
+            allowNull: true, // Asegura que el campo Teléfono no sea nulo
             validate: {
                 is: /^\+?([0-9]{2,3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4,6})$/ // Esta es una expresión regular para validar formatos de número de teléfono. Modifícalo según tus necesidades.
             }
         },
         Email: {
             type: DataTypes.STRING,
-            allowNull: false, // Asegura que el campo Email no sea nulo
+            allowNull: true, // Asegura que el campo Email no sea nulo
             validate: {
                 isEmail: true // Valida que el campo sea un correo electrónico válido
             }
@@ -45,87 +45,87 @@ module.exports = (sequelize, DataTypes) => {
         },
         formula: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         calculo: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         creador: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         host: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         sitio_web: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         codigo: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         licencia: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         supplier_check_in: {
             type: DataTypes.TIME,
-            allowNull: false
+            allowNull: true
         },
         supplier_check_out: {
             type: DataTypes.TIME,
-            allowNull: false
+            allowNull: true
         },
         capacidad_proveedor: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         calle: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         colonia: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         ciudad: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         codigo_postal: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         estado: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         pais: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         lenguaje_comunicacion: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         modo_comunicacion: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         centro_efectivo: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         divisa_centro_efectivo: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         metodo_pago_defecto: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         }
     }, {
         tableName: 'Proveedores',
