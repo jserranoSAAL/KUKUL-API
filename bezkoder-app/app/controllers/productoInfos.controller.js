@@ -6,22 +6,29 @@ exports.upsert = async (req, res) => {
     try {
         const { productoId, ...infoData } = req.body;
 
-        const result = await ProductoInfos.upsert({
-            ...infoData,
-            productoId
-        });
+        // Verificar si ya existe una información de producto con el productoId
+        const existingProductoInfo = await ProductoInfos.findOne({ where: { productoId } });
 
-        const productoInfo = result[0];
-        const created = result[1];
-
-        if (created) {
-            res.status(201).json({
-                message: "Información de Producto creada exitosamente.",
+        let productoInfo;
+        if (existingProductoInfo) {
+            // Actualizar la información existente
+            await ProductoInfos.update(
+                { ...infoData },
+                { where: { productoId } }
+            );
+            productoInfo = await ProductoInfos.findOne({ where: { productoId } });
+            res.status(200).json({
+                message: "Información de Producto actualizada exitosamente.",
                 productoInfo
             });
         } else {
-            res.status(200).json({
-                message: "Información de Producto actualizada exitosamente.",
+            // Crear una nueva información de producto
+            productoInfo = await ProductoInfos.create({
+                ...infoData,
+                productoId
+            });
+            res.status(201).json({
+                message: "Información de Producto creada exitosamente.",
                 productoInfo
             });
         }
