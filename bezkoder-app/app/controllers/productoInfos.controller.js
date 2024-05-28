@@ -6,10 +6,13 @@ exports.upsert = async (req, res) => {
     try {
         const { productoId, ...infoData } = req.body;
 
-        const [productoInfo, created] = await ProductoInfos.upsert({
+        const result = await ProductoInfos.upsert({
             ...infoData,
             productoId
         });
+
+        const productoInfo = result[0];
+        const created = result[1];
 
         if (created) {
             res.status(201).json({
