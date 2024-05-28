@@ -138,7 +138,7 @@ exports.findOne = async (req, res) => {
 
 // Buscar proveedores por nombre
 exports.findByNombre = async (req, res) => {
-    const nombre = req.params.nombre;
+    const nombre = req.params.proveedor;
 
     try {
         const proveedores = await Proveedor.findAll({
