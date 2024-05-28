@@ -219,6 +219,20 @@ db.ConstruccionViaje.associate = function(models) {
     ConstruccionViaje.belongsTo(models.Paquetes, { foreignKey: 'paqueteId', onDelete: 'CASCADE' });
 };
 
+db.CotizacionesPaquete = require("./cotizacionesPaquete.model")(sequelize, Sequelize);
+db.ParametrosCotizacionPaquete = require("./parametrosCotizacionPaquete.model")(sequelize, Sequelize);
+db.PreciosCalculadosPaquete = require("./preciosCalculadosPaquete.model")(sequelize, Sequelize);
+
+
+db.ParametrosCotizacionPaquete = require("./parametrosCotizacionPaquete.model.js")(sequelize, Sequelize);
+db.PreciosCalculadosPaquete = require("./preciosCalculadosPaquete.model.js")(sequelize, Sequelize);;
+
+db.ParametrosCotizacionPaquete.associate(db);
+db.PreciosCalculadosPaquete.associate(db);
+
+
+
+
 
 // Definir las relaciones
 db.Productos.hasOne(db.DescripcionProducto, {
@@ -229,6 +243,8 @@ db.DescripcionProducto.belongsTo(db.Productos, {
     foreignKey: 'productoId',
     as: 'productos'
 });
+
+
 
 // Continuar definiendo otras relaciones necesarias entre los modelos
 
