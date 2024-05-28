@@ -14,9 +14,14 @@ module.exports = (sequelize, DataTypes) => {
             },
             onDelete: 'CASCADE'
         },
-        proveedor: {
-            type: DataTypes.STRING(255),
-            allowNull: true
+        proveedorId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Proveedores',
+                key: 'ID'
+            },
+            onDelete: 'CASCADE'
         },
         agenteReservas: {
             type: DataTypes.BOOLEAN,
@@ -43,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
 
     ProductoLogistica.associate = function(models) {
         ProductoLogistica.belongsTo(models.Productos, { foreignKey: 'productoId', onDelete: 'CASCADE' });
+        ProductoLogistica.belongsTo(models.Proveedores, { foreignKey: 'proveedorId', onDelete: 'CASCADE' });
     };
 
     return ProductoLogistica;
