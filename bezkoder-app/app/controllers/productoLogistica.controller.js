@@ -8,7 +8,7 @@ exports.upsert = async (req, res) => {
 
         // Buscar si ya existe un registro con el productoId y proveedorId
         const existingLogistica = await ProductoLogistica.findOne({
-            where: { productoId, proveedorId }
+            where: { proveedorId }
         });
 
         let productoLogistica;
@@ -16,7 +16,7 @@ exports.upsert = async (req, res) => {
             // Actualizar el registro existente
             productoLogistica = await ProductoLogistica.update(
                 { ...logisticaData },
-                { where: { productoId, proveedorId } }
+                { where: { proveedorId } }
             );
             res.status(200).json({
                 message: "Logística de Producto actualizada exitosamente.",
