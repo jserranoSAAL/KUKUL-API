@@ -23,5 +23,7 @@ module.exports = app => {
     // Buscar construcciones de viaje por paqueteId
     router.get("/buscarPorPaquete/:paqueteId", requireAuth, construccionViaje.findByPaqueteId);
 
+    router.post("/generatorQuotation", requireAuth, construccionViaje.generatorQuotation);
+
     app.use('/api/construccionViaje', router);
 };

@@ -230,7 +230,7 @@ db.PreciosCalculadosPaquete = require("./preciosCalculadosPaquete.model.js")(seq
 db.ParametrosCotizacionPaquete.associate(db);
 db.PreciosCalculadosPaquete.associate(db);
 
-
+db.DireccionAgenciaViaje = require("./direccionAgenciaViaje.model.js")(sequelize, Sequelize);;
 
 
 

@@ -1,6 +1,7 @@
 // controllers/construccionViaje.controller.js
 const db = require('../models');
 const ConstruccionViaje = db.ConstruccionViaje;
+const AgenciaDeViaje = db.AgenciasDeViaje; 
 
 // Crear una nueva construcción de viaje
 exports.create = async (req, res) => {
@@ -88,5 +89,24 @@ exports.findByPaqueteId = async (req, res) => {
         }
     } catch (err) {
         res.status(500).send({ message: err.message || "Ocurrió un error al recuperar las construcciones de viaje por paqueteId." });
+    }
+};
+
+
+// Buscar agencia de viaje por ID desde un cuerpo de JSON en una solicitud POST y guardar la información en una variable
+exports.generatorQuotation = async (req, res) => {
+    try {
+        const { agenciaId } = req.body;
+        const agenciaDeViaje = await AgenciaDeViaje.findByPk(agenciaId);
+
+        if (agenciaDeViaje) {
+            // Guardar la información de la agencia de viaje en una variable
+            const agenciaInfo = agenciaDeViaje;
+            res.json(agenciaInfo);
+        } else {
+            res.status(404).send({ message: `No se encontró la agencia de viaje con ID=${agenciaId}.` });
+        }
+    } catch (err) {
+        res.status(500).send({ message: err.message || "Ocurrió un error al recuperar la agencia de viaje por ID." });
     }
 };

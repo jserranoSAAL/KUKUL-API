@@ -55,7 +55,7 @@ exports.upsert = async (req, res) => {
         }
     } catch (err) {
         res.status(500).send({
-            message: err.message || "Ocurrió un error al crear o actualizar la descripción e imágenes del proveedor."
+            message: err.message || "Ocurrió un error al crear o actualizar la descripción e imágenes del proveedor. "
         });
     }
 };

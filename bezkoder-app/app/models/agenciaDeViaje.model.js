@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50)
         },
         Prioridad: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING(50)
         },
         Nacionalidad: {
             type: DataTypes.STRING(50)
