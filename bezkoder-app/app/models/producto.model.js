@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         Region: {
             type: DataTypes.STRING
-        },        
+        },
         ProveedorID: {
             type: DataTypes.INTEGER,
             references: {
@@ -39,9 +39,22 @@ module.exports = (sequelize, DataTypes) => {
         Status: {
             type: DataTypes.STRING
         },
+        GeografiaID: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Geografia',
+                key: 'ID'
+            },
+            onDelete: 'CASCADE'
+        }
     }, {
         tableName: 'Productos',
         timestamps: false
     });
+
+    Producto.associate = function(models) {
+        Producto.belongsTo(models.Geografia, { foreignKey: 'GeografiaID', as: 'geografia' });
+    };
+
     return Producto;
 };

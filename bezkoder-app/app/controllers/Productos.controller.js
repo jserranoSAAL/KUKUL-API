@@ -5,7 +5,9 @@ const Producto = db.Productos;
 
 // Obtener todos los productos
 exports.findAll = (req, res) => {
-    Producto.findAll()
+    Producto.findAll({
+        include: [{ model: db.Geografia, as: 'geografia' }]
+    })
         .then(productos => {
             res.json(productos);
         })
@@ -37,7 +39,8 @@ exports.create = (req, res) => {
         DEF: req.body.DEF,
         GEN: req.body.GEN,
         Codigo: req.body.Codigo,
-        Status: req.body.Status
+        Status: req.body.Status,
+        GeografiaID: req.body.GeografiaID
     };
 
     // Guardar el producto en la base de datos
@@ -56,7 +59,9 @@ exports.create = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Producto.findByPk(id)
+    Producto.findByPk(id, {
+        include: [{ model: db.Geografia, as: 'geografia' }]
+    })
         .then(data => {
             if (data) {
                 res.send(data);
@@ -109,8 +114,9 @@ exports.delete = (req, res) => {
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: "No se pudo eliminar el producto con ID=" + id
-            });
+            res.status
+                (500).send({
+                    message: "No se pudo eliminar el producto con ID=" + id
+                });
         });
 };

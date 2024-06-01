@@ -47,9 +47,13 @@ module.exports = app => {
     const geografiaController = require("../controllers/Geografia.controller");
 
     const geografiaRouter = require("express").Router();
+    const { requireAuth } = require("../middlewares/auth");
 
     // Rutas para Geografia    
-    geografiaRouter.get("/", geografiaController.findAll);    
+    geografiaRouter.get("/", requireAuth, geografiaController.findAll);    
+    geografiaRouter.post("/", requireAuth, geografiaController.create);
+    geografiaRouter.get("/:id", requireAuth, geografiaController.findOne);
+    geografiaRouter.put("/:id", requireAuth, geografiaController.update);
 
     app.use("/api/geografia", geografiaRouter);
 };

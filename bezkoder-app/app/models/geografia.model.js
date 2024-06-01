@@ -5,9 +5,29 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        Name: {
+        nombre_es: {
             type: DataTypes.STRING,
-            allowNull: false  // Asegura que el campo Nombre no sea nulo
+            allowNull: false  // Asegura que el campo nombre_es no sea nulo
+        },
+        nombre_en: {
+            type: DataTypes.STRING,
+            allowNull: false  // Asegura que el campo nombre_en no sea nulo
+        },
+        nombre_fr: {
+            type: DataTypes.STRING,
+            allowNull: false  // Asegura que el campo nombre_fr no sea nulo
+        },
+        desc_es: {
+            type: DataTypes.TEXT,
+            allowNull: true  // El campo desc_es puede ser nulo
+        },
+        desc_en: {
+            type: DataTypes.TEXT,
+            allowNull: true  // El campo desc_en puede ser nulo
+        },
+        desc_fr: {
+            type: DataTypes.TEXT,
+            allowNull: true  // El campo desc_fr puede ser nulo
         },
         Latitude: {
             type: DataTypes.DOUBLE,
@@ -21,5 +41,10 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'Geografia',
         timestamps: false  // Si no deseas que Sequelize maneje automáticamente los campos createdAt y updatedAt
     });
+
+    Geografia.associate = function(models) {
+        Geografia.hasMany(models.Producto, { foreignKey: 'GeografiaID', as: 'productos' });
+    };
+
     return Geografia;
 };

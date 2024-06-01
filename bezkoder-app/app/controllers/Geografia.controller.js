@@ -16,7 +16,7 @@ exports.findAll = (req, res) => {
 
 // Crear y guardar una nueva ubicación geográfica
 exports.create = (req, res) => {
-    if (!req.body.Name || !req.body.Latitude || !req.body.Longitude) {
+    if (!req.body.nombre_es || !req.body.Latitude || !req.body.Longitude) {
         res.status(400).send({
             message: "El contenido no puede estar vacío."
         });
@@ -24,7 +24,12 @@ exports.create = (req, res) => {
     }
 
     const geografia = {
-        Name: req.body.Name,
+        nombre_es: req.body.nombre_es,
+        nombre_en: req.body.nombre_en,
+        nombre_fr: req.body.nombre_fr,
+        desc_es: req.body.desc_es,
+        desc_en: req.body.desc_en,
+        desc_fr: req.body.desc_fr,
         Latitude: req.body.Latitude,
         Longitude: req.body.Longitude
     };
@@ -57,6 +62,27 @@ exports.findOne = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message: "Error recuperando la Geografía con id=" + id
+            });
+        });
+};
+
+// Actualizar una ubicación geográfica por ID
+exports.update = (req, res) => {
+    const id = req.params.id;
+
+    Geografia.update(req.body, { where: { ID: id } })
+        .then(num => {
+            if (num == 1) {
+                res.send({ message: "Geografía actualizada correctamente." });
+            } else {
+                res.send({
+                    message: `No se puede actualizar la Geografía con ID=${id}. Tal vez la Geografía no fue encontrada o req.body está vacío.`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error actualizando la Geografía con ID=" + id
             });
         });
 };

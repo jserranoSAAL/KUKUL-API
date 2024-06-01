@@ -1,7 +1,15 @@
 // controllers/construccionViaje.controller.js
 const db = require('../models');
 const ConstruccionViaje = db.ConstruccionViaje;
-const AgenciaDeViaje = db.AgenciasDeViaje; 
+const AgenciaDeViaje = db.AgenciasDeViaje;
+const DireccionAgenciaViaje = db.DireccionAgenciaViaje;
+const AgenciaViajeInfo = db.AgenciasDeViajeInformacion;
+const ViajeProductos = db.ViajeProducto;
+const Productos = db.Productos;
+const Geografia = db.Geografia;
+const DescripcionProducto = db.DescripcionProducto;
+const Paquetes = db.Paquetes;
+
 
 // Crear una nueva construcción de viaje
 exports.create = async (req, res) => {
@@ -96,15 +104,95 @@ exports.findByPaqueteId = async (req, res) => {
 // Buscar agencia de viaje por ID desde un cuerpo de JSON en una solicitud POST y guardar la información en una variable
 exports.generatorQuotation = async (req, res) => {
     try {
-        const { agenciaId } = req.body;
-        const agenciaDeViaje = await AgenciaDeViaje.findByPk(agenciaId);
+        const { paqueteId, idioma, basePersonas } = req.body;
 
-        if (agenciaDeViaje) {
-            // Guardar la información de la agencia de viaje en una variable
-            const agenciaInfo = agenciaDeViaje;
-            res.json(agenciaInfo);
+        const paqueteEnviado = await Paquetes.findByPk(paqueteId);
+
+        if (paqueteEnviado) {
+            const agenciaDeViaje = await AgenciaDeViaje.findByPk(paqueteEnviado.id);
+
+            if (agenciaDeViaje) {
+                const agenciaInfo = agenciaDeViaje;
+
+                const direccion = await DireccionAgenciaViaje.findOne({ where: { agenciaDeViajeId: agenciaInfo.ID } });
+                if (direccion) {
+                    agenciaInfo.dataValues.direccion = direccion;
+                }
+
+                const agenciaCompleteInfo = await AgenciaViajeInfo.findOne({ where: { AgenciasDeViajeID: agenciaInfo.ID } });
+                if (agenciaCompleteInfo) {
+                    agenciaInfo.dataValues.complete_information = agenciaCompleteInfo;
+                }
+
+                const construccionViajeInfo = await ConstruccionViaje.findOne({ where: { paqueteId: paqueteId } });
+                let resumen = "Résumé de votre voyage\n";
+                let alojamientosAgregados = [];
+                let totalCosto = 0;
+                const productosDescripcion = [];
+                if (construccionViajeInfo) {
+                    agenciaInfo.dataValues.construccion_viaje = construccionViajeInfo;
+                    const viajeId = construccionViajeInfo.id;
+
+                    const viajeProductosInfo = await ViajeProductos.findAll({ where: { viajeId } });
+                    const ubicacionesGeograficas = [];
+                    
+                    if (viajeProductosInfo) {
+                        for (const viajeProducto of viajeProductosInfo) {
+                            const productoInfo = await Productos.findByPk(viajeProducto.productoId);
+                            if (productoInfo) {
+                                const geografiaInfo = await Geografia.findByPk(productoInfo.GeografiaID);
+                                if (geografiaInfo) {
+                                    productoInfo.dataValues.geografia_info = geografiaInfo;
+                                    ubicacionesGeograficas.push({ fecha: viajeProducto.fecha, geografia: geografiaInfo });
+                                }
+
+                                const descripcionProducto = await DescripcionProducto.findOne({ where: { productoId: productoInfo.ID } });
+                                if (descripcionProducto) {
+                                    productosDescripcion.push(descripcionProducto);
+
+                                    if (descripcionProducto.categoria === "Hotel") {
+                                        alojamientosAgregados.push(descripcionProducto);
+                                    }
+                                }
+
+                                viajeProducto.dataValues.producto_info = productoInfo;
+                                totalCosto += parseFloat(viajeProducto.costo_unitario);
+                            }
+                        }
+                        agenciaInfo.dataValues.viaje_productos = viajeProductosInfo;
+                        agenciaInfo.dataValues.productos_descripcion = productosDescripcion;
+                        agenciaInfo.dataValues.alojamientos_agregados = alojamientosAgregados;
+                    }
+
+                    if (ubicacionesGeograficas.length > 0) {
+                        let dia = 1;
+                        for (const ubicacion of ubicacionesGeograficas) {
+                            const fecha = new Date(ubicacion.fecha).toLocaleDateString("fr-FR");
+                            const nombreLocacion = ubicacion.geografia[`nombre_${idioma}`] || "Nombre no disponible";
+                            resumen += `Jour ${dia} - ${fecha}: ${nombreLocacion}\n`;
+                            dia++;
+                        }
+                    }
+                }
+
+                const tarifaPorPersona = (totalCosto / 2).toFixed(2); // Ejemplo para 2 personas
+                const tarifaTotal = totalCosto.toFixed(2);
+
+                res.json({
+                    resumen,
+                    agenciaInfo,
+                    tarifa: {
+                        tarifaPorPersona: `${tarifaPorPersona} USD`,
+                        tarifaTotal: `${tarifaTotal} USD`,
+                        basePersonas: basePersonas, // Número de personas base para el cálculo
+                    },
+                    productosDescripcion
+                });
+            } else {
+                res.status(404).send({ message: `No se encontró la agencia de viaje con ID=${paqueteEnviado.agenciaDeViajeId}.` });
+            }
         } else {
-            res.status(404).send({ message: `No se encontró la agencia de viaje con ID=${agenciaId}.` });
+            res.status(404).send({ message: `No se encontró el paquete con ID=${paqueteId}.` });
         }
     } catch (err) {
         res.status(500).send({ message: err.message || "Ocurrió un error al recuperar la agencia de viaje por ID." });
