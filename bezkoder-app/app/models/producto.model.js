@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         Region: {
             type: DataTypes.STRING
-        },
+        },        
         ProveedorID: {
             type: DataTypes.INTEGER,
             references: {
@@ -44,8 +44,7 @@ module.exports = (sequelize, DataTypes) => {
             references: {
                 model: 'Geografia',
                 key: 'ID'
-            },
-            onDelete: 'CASCADE'
+            }
         }
     }, {
         tableName: 'Productos',

@@ -232,7 +232,9 @@ db.PreciosCalculadosPaquete.associate(db);
 
 db.DireccionAgenciaViaje = require("./direccionAgenciaViaje.model.js")(sequelize, Sequelize);;
 
-
+// Associations
+db.Geografia.associate(db);
+db.Productos.associate(db);
 
 // Definir las relaciones
 db.Productos.hasOne(db.DescripcionProducto, {
