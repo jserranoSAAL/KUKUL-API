@@ -158,7 +158,7 @@ exports.generatorQuotation = async (req, res) => {
                                 viajeProducto.dataValues.producto_info = productoInfo;
                                 totalCosto += parseFloat(viajeProducto.costo_unitario);
                             }
-                        }
+                        }                        
                         agenciaInfo.dataValues.viaje_productos = viajeProductosInfo;
                         agenciaInfo.dataValues.productos_descripcion = productosDescripcion;
                         agenciaInfo.dataValues.alojamientos_agregados = alojamientosAgregados;
@@ -179,9 +179,10 @@ exports.generatorQuotation = async (req, res) => {
                 const tarifaTotal = totalCosto.toFixed(2);
 
                 res.json({
+                    paqueteEnviado,
                     resumen,
                     agenciaInfo,
-                    tarifa: {
+                    tarifa: {                        
                         tarifaPorPersona: `${tarifaPorPersona} USD`,
                         tarifaTotal: `${tarifaTotal} USD`,
                         basePersonas: basePersonas, // Número de personas base para el cálculo
