@@ -4,11 +4,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
-        },
-        id_final: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+        },        
         data: {
             type: DataTypes.JSON,
             allowNull: false
@@ -20,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
                 model: 'Paquete',
                 key: 'id'
             }
+        },
+        id_final: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     }, {
         tableName: 'CotizaciónFinal',
