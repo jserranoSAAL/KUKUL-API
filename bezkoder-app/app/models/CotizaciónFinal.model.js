@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id'
             }
         },
-        id_final: {
+        code: {
             type: DataTypes.STRING,
             allowNull: false
         }
