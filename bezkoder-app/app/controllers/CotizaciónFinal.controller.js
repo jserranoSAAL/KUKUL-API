@@ -13,7 +13,7 @@ exports.create = (req, res) => {
 
     // Crear una CotizaciónFinal
     const cotizacion = {
-        id: req.body.id,
+        id_final: req.body.id_final,
         data: req.body.data,
         paquete_id: req.body.paquete_id
     };
