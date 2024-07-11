@@ -15,7 +15,7 @@ exports.create = (req, res) => {
     const cotizacion = {        
         data: req.body.data,
         paquete_id: req.body.paquete_id,
-        code: req.body.code
+        code: req.params.code
     };
 
     // Guardar CotizaciónFinal en la base de datos

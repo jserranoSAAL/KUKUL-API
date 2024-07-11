@@ -5,7 +5,7 @@ module.exports = app => {
     const router = require("express").Router();
 
     // Crear una nueva CotizaciónFinal
-    router.post("/", requireAuth, cotizacionController.create);
+    router.post("/:code", requireAuth, cotizacionController.create);
 
     // Recuperar todas las CotizacionesFinales
     router.get("/", requireAuth, cotizacionController.findAll);
