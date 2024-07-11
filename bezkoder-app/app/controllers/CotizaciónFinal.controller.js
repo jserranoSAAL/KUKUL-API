@@ -1,6 +1,5 @@
 const db = require("../models");
 const CotizaciónFinal = db.CotizaciónFinal;
-const Pauete = db.Paquetes; 
 
 // Crear y guardar una nueva CotizaciónFinal
 exports.create = (req, res) => {
@@ -34,7 +33,7 @@ exports.create = (req, res) => {
 exports.findByPaqueteId = (req, res) => {
     const paquete_id = req.params.paquete_id;
 
-    Pauete.findOne({ where: { id: paquete_id } })
+    CotizaciónFinal.findOne({ where: { paquete_id: paquete_id } })
         .then(data => {
             if (data) {
                 res.send(data);
