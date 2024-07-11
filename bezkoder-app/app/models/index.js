@@ -255,6 +255,12 @@ db.Grupo.associate = function(models) {
     db.Grupo.hasMany(models.Paquetes, { foreignKey: 'GrupoId', as: 'paquete' });
 };
 
+db.CotizaciónFinal = require("./CotizaciónFinal.model.js")(sequelize, Sequelize);
+
+// Asociaciones de CotizaciónFinal
+db.CotizaciónFinal.associate = function(models) {
+    db.CotizaciónFinal.belongsTo(models.Paquetes, { foreignKey: 'paquete_id', as: 'paquete' });
+};
 
 
 // Continuar definiendo otras relaciones necesarias entre los modelos
