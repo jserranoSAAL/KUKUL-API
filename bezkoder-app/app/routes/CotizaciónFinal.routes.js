@@ -19,6 +19,9 @@ module.exports = app => {
     // Eliminar una CotizaciónFinal con id
     router.delete("/:id", requireAuth, cotizacionController.delete);
 
+    // Buscar CotizaciónFinal por paquete_id
+    router.get("/paquete/:paquete_id", requireAuth, cotizacionController.findByPaqueteId);
+
     // Montar el enrutador bajo la ruta /api/cotizaciones
     app.use("/api/cotizaciones", router);
 };
