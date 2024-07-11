@@ -23,5 +23,5 @@ module.exports = app => {
     router.get("/paquete/:paquete_id", requireAuth, cotizacionController.findByPaqueteId);
 
     // Montar el enrutador bajo la ruta /api/cotizaciones
-    app.use("/api/cotizaciones", router);
+    app.use("/api/cotizacionesFinales", router);
 };
