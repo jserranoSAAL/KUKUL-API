@@ -64,10 +64,18 @@ module.exports = (sequelize, DataTypes) => {
         NotasInternas: {
             type: DataTypes.TEXT,
             allowNull: true
+        },        
+        GrupoId: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Grupos', // nombre de la tabla a referenciar
+                key: 'ID'
+            }
         }
     }, {
         tableName: 'Paquete',
         timestamps: false
-    });
+    });    
+
     return Paquete;
 };

@@ -246,6 +246,15 @@ db.DescripcionProducto.belongsTo(db.Productos, {
     as: 'productos'
 });
 
+// Definir las asociaciones de Paquete y Grupo
+db.Paquetes.associate = function(models) {
+    db.Paquetes.belongsTo(models.Grupo, { foreignKey: 'GrupoId', as: 'grupos' });
+};
+
+db.Grupo.associate = function(models) {
+    db.Grupo.hasMany(models.Paquetes, { foreignKey: 'GrupoId', as: 'paquete' });
+};
+
 
 
 // Continuar definiendo otras relaciones necesarias entre los modelos

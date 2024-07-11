@@ -241,6 +241,9 @@ module.exports = app => {
     // Ruta para buscar paquetes por nombre
     paquetesRouter.get("/nombre/:nombre", requireAuth, paquetesController.findByName);
 
+    // Nueva ruta para buscar el grupo por ID de paquete
+    paquetesRouter.get("/:id/grupo", requireAuth, paquetesController.findGroupByPackageId);
+
     
 
     app.use("/api/paquetes", paquetesRouter);

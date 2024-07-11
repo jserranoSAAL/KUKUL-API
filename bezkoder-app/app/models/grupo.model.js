@@ -57,6 +57,8 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         tableName: 'Grupos',
         timestamps: false // Si no deseas que Sequelize maneje automáticamente los campos createdAt y updatedAt
-    });
+    });    
+
+
     return Grupo;
 };

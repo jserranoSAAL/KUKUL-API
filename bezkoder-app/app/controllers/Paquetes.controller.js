@@ -1,5 +1,6 @@
 const db = require('../models');
 const Paquete = db.Paquetes;
+const Grupo = db.Grupo; 
 const { Op } = require('sequelize');
 
 // Obtener todos los paquetes
@@ -36,7 +37,8 @@ exports.create = (req, res) => {
         Nivel: req.body.Nivel,
         Traducciones: req.body.Traducciones,
         Imagenes: req.body.Imagenes,
-        NotasInternas: req.body.NotasInternas
+        NotasInternas: req.body.NotasInternas,
+        GrupoId: req.body.GrupoId // Referencia al grupo
     };
 
     Paquete.create(paquete)
@@ -122,20 +124,43 @@ exports.findByName = (req, res) => {
             }
         }
     })
-    .then(data => {
-        if (data.length) {
-            res.send(data);
-        } else {
-            res.status(404).send({
-                message: `No se encontraron paquetes con el nombre similar a ${nombre}.`
+        .then(data => {
+            if (data.length) {
+                res.send(data);
+            } else {
+                res.status(404).send({
+                    message: `No se encontraron paquetes con el nombre similar a ${nombre}.`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error buscando el paquete con nombre=" + nombre
             });
+        });
+};
+
+// Obtener el grupo asociado a un paquete por ID de paquete
+exports.findGroupByPackageId = (req, res) => {
+    const id = req.params.id;
+
+    Paquete.findByPk(id)
+    .then(data => {
+        if (data) {
+            Grupo.findByPk(data.GrupoId).then(data2 =>{
+                if (data2){
+                    res.send(data2);
+                }else {
+                    res.status(404).send({ message: `No se encontró el grupo asociado al paquete con ID=${id}.` });
+                }
+            })            
+        } else {
+            res.status(404).send({ message: `No se encontró el paquete con ID=${id}.` });
         }
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error buscando el paquete con nombre=" + nombre
+            message: "Error recuperando el grupo asociado al paquete con ID=" + id + " error:" + err
         });
     });
 };
-
-
