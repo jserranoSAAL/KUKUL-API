@@ -162,7 +162,7 @@ require("./app/routes/cotizacionesPaquete.routes")(app);
 require("./app/routes/parametrosCotizacionPaquete.routes.js")(app);
 require("./app/routes/preciosCalculadosPaquete.routes.js")(app);
 require("./app/routes/direccionAgenciaViaje.routes.js")(app);
-require("./app/routes/CotizaciónFinal.routes.js")(app);
+require("./app/routes/CotizacionFinal.routes.js")(app);
 
 
 

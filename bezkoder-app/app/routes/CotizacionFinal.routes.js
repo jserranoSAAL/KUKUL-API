@@ -1,25 +1,25 @@
 module.exports = app => {
-    const cotizacionController = require("../controllers/CotizaciónFinal.controller.js");
-    const { requireAuth } = require("../middlewares/auth");
+    const cotizacionController = require("../controllers/CotizacionFinal.controller.js");
+    const { requireAuth } = require("../middlewares/auth.js");
 
     const router = require("express").Router();
 
-    // Crear una nueva CotizaciónFinal
+    // Crear una nueva CotizacionFinal
     router.post("/:code", requireAuth, cotizacionController.create);
 
     // Recuperar todas las CotizacionesFinales
     router.get("/", requireAuth, cotizacionController.findAll);
 
-    // Recuperar una única CotizaciónFinal con id
+    // Recuperar una única CotizacionFinal con id
     router.get("/:id", cotizacionController.findOne);
 
-    // Actualizar una CotizaciónFinal con id
+    // Actualizar una CotizacionFinal con id
     router.put("/:id", requireAuth, cotizacionController.update);
 
-    // Eliminar una CotizaciónFinal con id
+    // Eliminar una CotizacionFinal con id
     router.delete("/:id", requireAuth, cotizacionController.delete);
 
-    // Buscar CotizaciónFinal por paquete_id
+    // Buscar CotizacionFinal por paquete_id
     router.get("/paquete/:paquete_id", requireAuth, cotizacionController.findByPaqueteId);
 
     // Montar el enrutador bajo la ruta /api/cotizaciones

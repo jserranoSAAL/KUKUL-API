@@ -1,7 +1,7 @@
 const db = require("../models");
-const CotizaciónFinal = db.CotizaciónFinal;
+const CotizacionFinal = db.CotizacionFinal;
 
-// Crear y guardar una nueva CotizaciónFinal
+// Crear y guardar una nueva CotizacionFinal
 exports.create = (req, res) => {
     // Validar la solicitud
     if (!req.body.data) {
@@ -11,21 +11,21 @@ exports.create = (req, res) => {
         return;
     }
 
-    // Crear una CotizaciónFinal
+    // Crear una CotizacionFinal
     const cotizacion = {                
         data: req.body.data,        
         code: req.params.code,
         paquete_id: req.body.paquete_id
     };
 
-    // Guardar CotizaciónFinal en la base de datos
-    CotizaciónFinal.create(cotizacion)
+    // Guardar CotizacionFinal en la base de datos
+    CotizacionFinal.create(cotizacion)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Ocurrió algún error al crear la CotizaciónFinal."
+                message: err.message || "Ocurrió algún error al crear la CotizacionFinal."
             });
         });
 };
@@ -33,26 +33,26 @@ exports.create = (req, res) => {
 exports.findByPaqueteId = (req, res) => {
     const paquete_id = req.params.paquete_id;
 
-    CotizaciónFinal.findOne({ where: { paquete_id: paquete_id } })
+    CotizacionFinal.findOne({ where: { paquete_id: paquete_id } })
         .then(data => {
             if (data) {
                 res.send(data);
             } else {
                 res.status(404).send({
-                    message: `No se pudo encontrar la CotizaciónFinal con paquete_id=${paquete_id}.`
+                    message: `No se pudo encontrar la CotizacionFinal con paquete_id=${paquete_id}.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error recuperando la CotizaciónFinal con paquete_id=" + paquete_id
+                message: "Error recuperando la CotizacionFinal con paquete_id=" + paquete_id
             });
         });
 };
 
 // Recuperar todas las CotizacionesFinales de la base de datos
 exports.findAll = (req, res) => {
-    CotizaciónFinal.findAll()
+    CotizacionFinal.findAll()
         .then(data => {
             res.send(data);
         })
@@ -63,73 +63,73 @@ exports.findAll = (req, res) => {
         });
 };
 
-// Encontrar una única CotizaciónFinal con un id
+// Encontrar una única CotizacionFinal con un id
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    CotizaciónFinal.findByPk(id)
+    CotizacionFinal.findByPk(id)
         .then(data => {
             if (data) {
                 res.send(data);
             } else {
                 res.status(404).send({
-                    message: `No se pudo encontrar la CotizaciónFinal con id=${id}.`
+                    message: `No se pudo encontrar la CotizacionFinal con id=${id}.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error recuperando la CotizaciónFinal con id=" + id
+                message: "Error recuperando la CotizacionFinal con id=" + id
             });
         });
 };
 
-// Actualizar una CotizaciónFinal por el id en la solicitud
+// Actualizar una CotizacionFinal por el id en la solicitud
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    CotizaciónFinal.update(req.body, {
+    CotizacionFinal.update(req.body, {
         where: { id: id }
     })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "CotizaciónFinal actualizada correctamente."
+                    message: "CotizacionFinal actualizada correctamente."
                 });
             } else {
                 res.send({
-                    message: `No se puede actualizar la CotizaciónFinal con id=${id}. Quizás la CotizaciónFinal no fue encontrada o req.body está vacío.`
+                    message: `No se puede actualizar la CotizacionFinal con id=${id}. Quizás la CotizacionFinal no fue encontrada o req.body está vacío.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error actualizando la CotizaciónFinal con id=" + id
+                message: "Error actualizando la CotizacionFinal con id=" + id
             });
         });
 };
 
-// Eliminar una CotizaciónFinal con el id especificado en la solicitud
+// Eliminar una CotizacionFinal con el id especificado en la solicitud
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    CotizaciónFinal.destroy({
+    CotizacionFinal.destroy({
         where: { id: id }
     })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "CotizaciónFinal eliminada correctamente!"
+                    message: "CotizacionFinal eliminada correctamente!"
                 });
             } else {
                 res.send({
-                    message: `No se pudo eliminar la CotizaciónFinal con id=${id}. Quizás la CotizaciónFinal no fue encontrada.`
+                    message: `No se pudo eliminar la CotizacionFinal con id=${id}. Quizás la CotizacionFinal no fue encontrada.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "No se pudo eliminar la CotizaciónFinal con id=" + id
+                message: "No se pudo eliminar la CotizacionFinal con id=" + id
             });
         });
 };
