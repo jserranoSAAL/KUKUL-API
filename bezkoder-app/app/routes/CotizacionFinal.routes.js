@@ -11,7 +11,7 @@ module.exports = app => {
     router.get("/", requireAuth, cotizacionController.findAll);
 
     // Recuperar una única CotizacionFinal con id
-    router.get("/:id", cotizacionController.findOne);
+    router.get("/:code", cotizacionController.findOne);
 
     // Actualizar una CotizacionFinal con id
     router.put("/:id", requireAuth, cotizacionController.update);
