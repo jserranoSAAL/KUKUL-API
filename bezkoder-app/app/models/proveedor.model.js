@@ -23,17 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         Telefono: {
             type: DataTypes.STRING,
-            allowNull: true, // Asegura que el campo Teléfono no sea nulo
-            validate: {
-                is: /^\+?([0-9]{2,3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4,6})$/ // Esta es una expresión regular para validar formatos de número de teléfono. Modifícalo según tus necesidades.
-            }
+            allowNull: true, // Asegura que el campo Teléfono no sea nulo            
         },
         Email: {
             type: DataTypes.STRING,
-            allowNull: true, // Asegura que el campo Email no sea nulo
-            validate: {
-                isEmail: true // Valida que el campo sea un correo electrónico válido
-            }
+            allowNull: true
         },
         Calificacion: {
             type: DataTypes.FLOAT,
