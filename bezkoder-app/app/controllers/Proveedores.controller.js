@@ -17,13 +17,7 @@ exports.findAll = (req, res) => {
 
 // Método para crear un nuevo proveedor
 exports.create = (req, res) => {
-    // Validar la solicitud
-    if (!req.body.Proveedor || !req.body.CategoriaProveedor || !req.body.Ciudad || !req.body.Contacto || !req.body.Telefono || !req.body.Email || !req.body.formula || !req.body.calculo || !req.body.creador || !req.body.host || !req.body.sitio_web || !req.body.codigo || !req.body.licencia || !req.body.supplier_check_in || !req.body.supplier_check_out || !req.body.capacidad_proveedor || !req.body.calle || !req.body.colonia || !req.body.ciudad || !req.body.codigo_postal || !req.body.estado || !req.body.pais || !req.body.lenguaje_comunicacion || !req.body.modo_comunicacion || !req.body.centro_efectivo || !req.body.divisa_centro_efectivo || !req.body.metodo_pago_defecto) {
-        res.status(400).send({
-            message: "Todos los campos son requeridos."
-        });
-        return;
-    }
+    
 
     const proveedor = {
         Proveedor: req.body.Proveedor,
