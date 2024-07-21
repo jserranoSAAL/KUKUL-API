@@ -1,5 +1,6 @@
 const db = require('../models');
 const Proveedor = db.Proveedores;
+const Currency = db.Currency;
 
 // Métodos de controlador para Proveedores
 // Ejemplo: Obtener todos los proveedores
@@ -163,3 +164,29 @@ exports.findByNombre = async (req, res) => {
     }
 };
 
+// Obtener la información de la divisa de un Proveedor por su ID
+exports.findCurrencyProvider = async (req, res) => {
+    const id = req.params.id;
+
+    try {        
+        const proveedor = await Proveedor.findByPk(id)
+
+        if (proveedor) {
+            const currencyId = proveedor.CurrencyID;
+
+            const currency = await Currency.findByPk(currencyId);
+
+            if (currency) {
+                res.send(currency);
+            } else {
+                res.status(404).send({
+                    message: `No se encontró la divisa asociada con el Proveedor con ID=${id}.`
+                });
+            }
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: "Error recuperando divisa del Proveedor con ID=" + id + " error:" + err
+        });
+    }
+};

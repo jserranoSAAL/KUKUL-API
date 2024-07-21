@@ -314,5 +314,7 @@ module.exports = app => {
     // Buscar Proveedores por nombre con LIKE
     proveedoresRouter.get("/buscar/:proveedor", requireAuth, proveedoresController.findByNombre);
 
+    proveedoresRouter.get("/currency/:id", requireAuth, proveedoresController.findCurrencyProvider); // Obtener la divisa de un proveedor
+
     app.use("/api/proveedores", proveedoresRouter);
 };
