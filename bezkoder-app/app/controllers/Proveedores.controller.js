@@ -17,7 +17,13 @@ exports.findAll = (req, res) => {
 
 // Método para crear un nuevo proveedor
 exports.create = (req, res) => {
-    
+    // Validar la solicitud
+    if (!req.body.Proveedor || !req.body.CurrencyID) {
+        res.status(400).send({
+            message: "El contenido no puede estar vacío, y CurrencyID es requerido."
+        });
+        return;
+    }
 
     const proveedor = {
         Proveedor: req.body.Proveedor,
@@ -47,7 +53,8 @@ exports.create = (req, res) => {
         modo_comunicacion: req.body.modo_comunicacion,
         centro_efectivo: req.body.centro_efectivo,
         divisa_centro_efectivo: req.body.divisa_centro_efectivo,
-        metodo_pago_defecto: req.body.metodo_pago_defecto
+        metodo_pago_defecto: req.body.metodo_pago_defecto,
+        CurrencyID: req.body.CurrencyID // Nuevo campo
     };
 
     // Guardar Proveedor en la base de datos
@@ -81,7 +88,7 @@ exports.update = async (req, res) => {
         }
     } catch (err) {
         res.status(500).send({
-            message: "Error al actualizar el Proveedor con ID=" + id + "error: "+err
+            message: "Error al actualizar el Proveedor con ID=" + id + "error: " + err
         });
     }
 };

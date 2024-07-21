@@ -1,36 +1,47 @@
 // models/currency.js
 module.exports = (sequelize, DataTypes) => {
-    const Currency = sequelize.define('Currency', {
+  const Currency = sequelize.define('Currency', {
+      ID: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+      },
       currency_name: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING,
+          allowNull: false
       },
       abbreviation: {
-        type: DataTypes.STRING,
-        allowNull: false
+          type: DataTypes.STRING,
+          allowNull: false
       },
       is_default: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: false
       },
       customer_exchange_rate: {
-        type: DataTypes.DECIMAL(10, 6),
-        allowNull: false
+          type: DataTypes.DECIMAL(10, 6),
+          allowNull: false
       },
       supplier_exchange_rate: {
-        type: DataTypes.DECIMAL(10, 6),
-        allowNull: false
+          type: DataTypes.DECIMAL(10, 6),
+          allowNull: false
       },
       last_update: {
-        type: DataTypes.DATE,
-        allowNull: false
+          type: DataTypes.DATE,
+          allowNull: false
       }
-    }, {
+  }, {
       tableName: 'Currencies',
       timestamps: false
-    });
-  
-    return Currency;
+  });
+
+  Currency.associate = (models) => {
+      Currency.hasMany(models.Proveedores, {
+          foreignKey: 'CurrencyID',
+          as: 'proveedores'
+      });
   };
-  
+
+  return Currency;
+};

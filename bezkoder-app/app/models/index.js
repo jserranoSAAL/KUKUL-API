@@ -267,6 +267,10 @@ db.Grupo.hasOne(db.Logistica, { foreignKey: 'GrupoID' });
 db.Logistica.belongsTo(db.Grupo, { foreignKey: 'GrupoID' });
 
 
+// Establecer relaciones
+db.Proveedores.associate(db);
+db.Currency.associate(db);
+
 
 // Continuar definiendo otras relaciones necesarias entre los modelos
 

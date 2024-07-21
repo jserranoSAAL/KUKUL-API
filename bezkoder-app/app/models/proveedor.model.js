@@ -1,3 +1,4 @@
+// models/proveedor.js
 module.exports = (sequelize, DataTypes) => {
     const Proveedor = sequelize.define('Proveedor', {
         ID: {
@@ -7,23 +8,23 @@ module.exports = (sequelize, DataTypes) => {
         },
         Proveedor: {
             type: DataTypes.STRING,
-            allowNull: true // Asegura que el campo Proveedor no sea nulo
+            allowNull: true
         },
         CategoriaProveedor: {
             type: DataTypes.STRING,
-            allowNull: true // Asegura que el campo Categoría de Proveedor no sea nulo
+            allowNull: true
         },
         Ciudad: {
             type: DataTypes.STRING,
-            allowNull: true // Asegura que el campo Ciudad no sea nulo
+            allowNull: true
         },
         Contacto: {
             type: DataTypes.STRING,
-            allowNull: true // Asegura que el campo Contacto no sea nulo
+            allowNull: true
         },
         Telefono: {
             type: DataTypes.STRING,
-            allowNull: true, // Asegura que el campo Teléfono no sea nulo            
+            allowNull: true
         },
         Email: {
             type: DataTypes.STRING,
@@ -31,10 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         Calificacion: {
             type: DataTypes.FLOAT,
-            allowNull: true, // Este campo puede ser nulo
+            allowNull: true,
             validate: {
-                min: 0, // La calificación mínima
-                max: 5  // La calificación máxima
+                min: 0,
+                max: 5
             }
         },
         formula: {
@@ -84,11 +85,7 @@ module.exports = (sequelize, DataTypes) => {
         colonia: {
             type: DataTypes.STRING,
             allowNull: true
-        },
-        ciudad: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
+        },        
         codigo_postal: {
             type: DataTypes.STRING,
             allowNull: true
@@ -120,11 +117,26 @@ module.exports = (sequelize, DataTypes) => {
         metodo_pago_defecto: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        CurrencyID: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'Currencies',
+                key: 'ID'
+            }
         }
     }, {
         tableName: 'Proveedores',
-        timestamps: false // Si no deseas que Sequelize maneje automáticamente los campos createdAt y updatedAt
+        timestamps: false
     });
+
+    Proveedor.associate = (models) => {
+        Proveedor.belongsTo(models.Currency, {
+            foreignKey: 'CurrencyID',
+            as: 'currency'
+        });
+    };
 
     return Proveedor;
 };
