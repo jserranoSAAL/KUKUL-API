@@ -262,6 +262,10 @@ db.CotizacionFinal.associate = function(models) {
     db.CotizacionFinal.belongsTo(models.Paquetes, { foreignKey: 'paquete_id', as: 'paquete' });
 };
 
+// Definir la relación uno a uno entre Grupo y Logistica
+db.Grupo.hasOne(db.Logistica, { foreignKey: 'GrupoID' });
+db.Logistica.belongsTo(db.Grupo, { foreignKey: 'GrupoID' });
+
 
 
 // Continuar definiendo otras relaciones necesarias entre los modelos

@@ -1,8 +1,9 @@
 const db = require("../models");
 const Grupo = db.Grupo;
+const Logistica = db.Logistica; 
 
 // Crear y guardar un nuevo Grupo
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
     // Validar la solicitud
     if (!req.body.Nombre) {
         res.status(400).send({
@@ -27,16 +28,45 @@ exports.create = (req, res) => {
         ResponsableDelGrupo: req.body.ResponsableDelGrupo
     };
 
-    // Guardar Grupo en la base de datos
-    Grupo.create(grupo)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Ocurrió algún error al crear el Grupo."
-            });
+    try {
+        // Guardar Grupo en la base de datos
+        const grupoData = await Grupo.create(grupo);
+
+        // Crear la Logistica asociada al Grupo
+        const logistica = {
+            Fecha: grupoData.Fecha, // Usando datos del Grupo
+            Inicio: grupoData.FechaInicio || '', // Datos opcionales
+            Fin: grupoData.Fin || '',
+            Subgrupo: grupoData.Nombre || '',
+            Actividad: grupoData.Actividad || '',
+            PersonasConfirmadas: grupoData.ViajerosConfirmados || 0,
+            Servicio: grupoData.Servicio || '',
+            Proveedor: grupoData.Proveedor || '',
+            Reserva: grupoData.Nombre || '',
+            FechaReserva: grupoData.Fecha || null,
+            Pago: grupoData.Facturado || 0,
+            FechaPago: grupoData.FechaPago || null,
+            Duracion: grupoData.Duracion || 0,
+            Cantidad: grupoData.Cantidad || 0,
+            Categoria: grupoData.Categoria || '',
+            Responsable: grupoData.ResponsableDelGrupo || '',
+            GrupoID: grupoData.ID // Asociar la Logistica con el Grupo recién creado
+        };
+
+        // Guardar Logistica en la base de datos
+        await Logistica.create(logistica);
+
+        // Responder con el Grupo y Logistica creada
+        res.send({
+            grupo: grupoData,
+            logistica: logistica
         });
+
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió algún error al crear el Grupo y Logistica."
+        });
+    }
 };
 
 // Recuperar todos los Grupos de la base de datos

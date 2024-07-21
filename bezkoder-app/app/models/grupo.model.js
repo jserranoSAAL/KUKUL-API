@@ -7,58 +7,56 @@ module.exports = (sequelize, DataTypes) => {
         },
         Fecha: {
             type: DataTypes.DATEONLY,
-            allowNull: false // Asegura que el campo Fecha no sea nulo
+            allowNull: false
         },
         FechaInicio: {
             type: DataTypes.DATEONLY,
-            allowNull: false // Asegura que el campo Fecha Inicio no sea nulo
+            allowNull: false
         },
         ViajerosConfirmados: {
             type: DataTypes.INTEGER,
-            allowNull: false // Asegura que el campo Viajeros Confirmados no sea nulo
+            allowNull: false
         },
         Nombre: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Nombre no sea nulo
+            allowNull: false
         },
         Estado: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Estado no sea nulo
+            allowNull: false
         },
         Agencia: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Agencia no sea nulo
+            allowNull: false
         },
         Periodo: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Periodo no sea nulo
+            allowNull: false
         },
         Facturado: {
             type: DataTypes.DECIMAL(10, 2),
-            allowNull: false // Asegura que el campo Facturado no sea nulo
+            allowNull: false
         },
         Real: {
             type: DataTypes.DECIMAL(10, 2),
-            allowNull: false // Asegura que el campo Real no sea nulo
+            allowNull: false
         },
         PorcentajePlaneado: {
             type: DataTypes.FLOAT,
-            allowNull: false // Asegura que el campo % Planeado no sea nulo
+            allowNull: false
         },
         PorcentajeReal: {
             type: DataTypes.FLOAT,
-            allowNull: false // Asegura que el campo % Real no sea nulo
+            allowNull: false
         },
         ResponsableDelGrupo: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Responsable del Grupo no sea nulo
+            allowNull: false
         }
-        // Nota: El campo 'Acciones' ha sido removido ya que generalmente se asocia con lógica de la aplicación más que con almacenamiento de datos.
     }, {
         tableName: 'Grupos',
-        timestamps: false // Si no deseas que Sequelize maneje automáticamente los campos createdAt y updatedAt
-    });    
-
+        timestamps: false
+    });
 
     return Grupo;
 };

@@ -7,71 +7,80 @@ module.exports = (sequelize, DataTypes) => {
         },
         Fecha: {
             type: DataTypes.DATEONLY,
-            allowNull: false // Asegura que el campo Fecha no sea nulo
+            allowNull: false
         },
         Inicio: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Inicio no sea nulo
+            allowNull: false
         },
         Fin: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Fin no sea nulo
+            allowNull: false
         },
         Subgrupo: {
             type: DataTypes.STRING,
-            allowNull: true // Dependiendo de tu modelo de datos, este campo puede ser nulo
+            allowNull: true
         },
         Actividad: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Actividad no sea nulo
+            allowNull: false
         },
         PersonasConfirmadas: {
             type: DataTypes.INTEGER,
-            allowNull: false // Asegura que el campo Personas Confirmadas no sea nulo
+            allowNull: false
         },
         Servicio: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Servicio no sea nulo
+            allowNull: false
         },
         Proveedor: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Proveedor no sea nulo
+            allowNull: false
         },
         Reserva: {
             type: DataTypes.STRING,
-            allowNull: true // Dependiendo de tu modelo de datos, este campo puede ser nulo
+            allowNull: true
         },
         FechaReserva: {
             type: DataTypes.DATEONLY,
-            allowNull: true // Dependiendo de tu modelo de datos, este campo puede ser nulo
+            allowNull: true
         },
         Pago: {
             type: DataTypes.DECIMAL(10, 2),
-            allowNull: true // Dependiendo de tu modelo de datos, este campo puede ser nulo
+            allowNull: true
         },
         FechaPago: {
             type: DataTypes.DATEONLY,
-            allowNull: true // Dependiendo de tu modelo de datos, este campo puede ser nulo
+            allowNull: true
         },
         Duracion: {
             type: DataTypes.INTEGER,
-            allowNull: false // Asegura que el campo Duración no sea nulo
+            allowNull: false
         },
         Cantidad: {
             type: DataTypes.INTEGER,
-            allowNull: false // Asegura que el campo Cantidad no sea nulo
+            allowNull: false
         },
         Categoria: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Categoría no sea nulo
+            allowNull: false
         },
         Responsable: {
             type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Responsable no sea nulo
+            allowNull: false
+        },
+        GrupoID: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Grupos',
+                key: 'ID'
+            },
+            allowNull: false
         }
     }, {
         tableName: 'Logistica',
-        timestamps: false // Si no deseas que Sequelize maneje automáticamente los campos createdAt y updatedAt
+        timestamps: false
     });
+
     return Logistica;
 };

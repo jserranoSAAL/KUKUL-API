@@ -21,6 +21,7 @@ jobs:
           cd /home/ubuntu/KUKUL-API          
           git pull
           # Aquí tus comandos para reiniciar la aplicación, por ejemplo:
+          echo "HOST_DB=${{ secrets.HOST_DB }}" > .env.local
           docker-compose up -d db
           docker-compose build
           docker-compose up -d app                    
