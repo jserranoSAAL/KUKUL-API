@@ -48,6 +48,7 @@ exports.uploadImages = (req, res) => {
       }
     });
   };
+  
 
   // Iterar sobre todas las imágenes y cargarlas en paralelo
   const uploadTasks = images.map(image => {
@@ -72,4 +73,29 @@ exports.uploadImages = (req, res) => {
     .catch(err => {
       res.status(500).json({ error: 'Error al cargar las imágenes en S3' });
     });
+};
+
+exports.uploadCoverPage = (req, res) => {
+  const { base64String } = req.body; // Imagen de portada en formato base64 recibida en la solicitud
+
+  // Configurar parámetros para la imagen de portada
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: "coverage-page-7683.jpg", // Nombre del archivo en S3
+    Body: Buffer.from(base64String, 'base64'),
+    ContentEncoding: 'base64',
+    ContentType: 'image/jpeg', // Cambia el tipo de contenido según el formato de imagen que estés subiendo
+    ACL: 'public-read' // Permisos de acceso a la imagen en S3
+  };
+
+  // Subir la imagen de portada a S3
+  s3.upload(params, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error al cargar la portada en S3 '+JSON.stringify(err) });
+    } else {
+      // Devolver la URL pública de la imagen de portada cargada
+      res.json({ imageUrl: data.Location });
+    }
+  });
 };

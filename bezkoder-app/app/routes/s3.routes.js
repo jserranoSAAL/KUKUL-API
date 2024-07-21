@@ -52,7 +52,10 @@ module.exports = app => {
     
 
     // Rutas para Paquetes con Middleware de Autenticación
-    s3Router.post('/upload-images', requireAuth, s3Controller.uploadImages);        
+    s3Router.post('/upload-images', requireAuth, s3Controller.uploadImages);
+
+    // Rutas para Paquetes con Middleware de Autenticación
+    s3Router.post('/upload-coverage', requireAuth, s3Controller.uploadCoverPage);
 
     app.use("/api/s3", s3Router);
 };
