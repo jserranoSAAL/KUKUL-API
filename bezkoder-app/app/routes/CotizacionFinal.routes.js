@@ -19,6 +19,9 @@ module.exports = app => {
     // Eliminar una CotizacionFinal con id
     router.delete("/:id", requireAuth, cotizacionController.delete);
 
+    // Upsert una CotizacionFinal por code
+    router.post("/upsert/:code", requireAuth, cotizacionController.upsert);
+
     // Buscar CotizacionFinal por paquete_id
     router.get("/paquete/:paquete_id", requireAuth, cotizacionController.findByPaqueteId);
 

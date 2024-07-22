@@ -12,8 +12,8 @@ exports.create = (req, res) => {
     }
 
     // Crear una CotizacionFinal
-    const cotizacion = {                
-        data: req.body.data,        
+    const cotizacion = {
+        data: req.body.data,
         code: req.params.code,
         paquete_id: req.body.paquete_id
     };
@@ -72,20 +72,20 @@ exports.findOne = (req, res) => {
             code: code
         }
     })
-    .then(data => {
-        if (data) {
-            res.send(data);
-        } else {
-            res.status(404).send({
-                message: `No se pudo encontrar la CotizacionFinal con code=${code}.`
+        .then(data => {
+            if (data) {
+                res.send(data);
+            } else {
+                res.status(404).send({
+                    message: `No se pudo encontrar la CotizacionFinal con code=${code}.`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error recuperando la CotizacionFinal con code=" + code
             });
-        }
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: "Error recuperando la CotizacionFinal con code=" + code
         });
-    });
 };
 
 
@@ -137,4 +137,52 @@ exports.delete = (req, res) => {
                 message: "No se pudo eliminar la CotizacionFinal con id=" + id
             });
         });
+};
+
+
+// Upsert una CotizacionFinal por code
+exports.upsert = async (req, res) => {
+    try {
+        // Validar la solicitud
+        if (!req.body.data || !req.params.code) {
+            return res.status(400).send({
+                message: "El contenido de la solicitud no puede estar vacío y se requiere code."
+            });
+        }
+
+        const code = req.params.code;
+        const cotizacionData = req.body.data;
+        const paquete_id = req.body.paquete_id;
+
+        // Buscar si existe una CotizacionFinal con el code dado
+        let cotizacion = await CotizacionFinal.findOne({ where: { code: code } });
+
+        if (cotizacion) {
+            // Actualizar la CotizacionFinal existente
+            cotizacion.data = cotizacionData;
+            cotizacion.paquete_id = paquete_id;
+            await cotizacion.save();
+
+            res.send({
+                message: "CotizacionFinal actualizada correctamente.",
+                data: cotizacion
+            });
+        } else {
+            // Crear una nueva CotizacionFinal
+            cotizacion = await CotizacionFinal.create({
+                data: cotizacionData,
+                code: code,
+                paquete_id: paquete_id
+            });
+
+            res.send({
+                message: "CotizacionFinal creada correctamente.",
+                data: cotizacion
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió algún error al crear o actualizar la CotizacionFinal."
+        });
+    }
 };
