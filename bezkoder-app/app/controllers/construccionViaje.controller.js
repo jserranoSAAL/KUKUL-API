@@ -108,8 +108,14 @@ exports.generatorQuotation = async (req, res) => {
 
         const paqueteEnviado = await Paquetes.findByPk(paqueteId);
 
-        if (paqueteEnviado) {
-            const agenciaDeViaje = await AgenciaDeViaje.findByPk(paqueteEnviado.id);
+        const construccionViajeInfo = await ConstruccionViaje.findOne({
+            where: {
+                paqueteId: paqueteId
+            }
+        });
+
+        if (construccionViajeInfo) {
+            const agenciaDeViaje = await AgenciaDeViaje.findByPk(construccionViajeInfo.agenciaDeViajeId);
 
             if (agenciaDeViaje) {
                 const agenciaInfo = agenciaDeViaje;
@@ -135,7 +141,7 @@ exports.generatorQuotation = async (req, res) => {
 
                     const viajeProductosInfo = await ViajeProductos.findAll({ where: { viajeId } });
                     const ubicacionesGeograficas = [];
-                    
+
                     if (viajeProductosInfo) {
                         for (const viajeProducto of viajeProductosInfo) {
                             const productoInfo = await Productos.findByPk(viajeProducto.productoId);
@@ -158,7 +164,7 @@ exports.generatorQuotation = async (req, res) => {
                                 viajeProducto.dataValues.producto_info = productoInfo;
                                 totalCosto += parseFloat(viajeProducto.costo_unitario);
                             }
-                        }                        
+                        }
                         agenciaInfo.dataValues.viaje_productos = viajeProductosInfo;
                         agenciaInfo.dataValues.productos_descripcion = productosDescripcion;
                         agenciaInfo.dataValues.alojamientos_agregados = alojamientosAgregados;
@@ -182,7 +188,7 @@ exports.generatorQuotation = async (req, res) => {
                     paqueteEnviado,
                     resumen,
                     agenciaInfo,
-                    tarifa: {                        
+                    tarifa: {
                         tarifaPorPersona: `${tarifaPorPersona} USD`,
                         tarifaTotal: `${tarifaTotal} USD`,
                         basePersonas: basePersonas, // Número de personas base para el cálculo
