@@ -74,3 +74,22 @@ exports.delete = async (req, res) => {
         res.status(500).send({ message: err.message || "No se pudo eliminar la relación Viaje-Producto con ID=" + id });
     }
 };
+
+
+// Obtener todas las relaciones Viaje-Producto por viajeId
+exports.findByViajeId = async (req, res) => {
+    try {
+        const viajeId = req.params.viajeId;
+        const viajeProductos = await ViajeProducto.findAll({
+            where: { viajeId }
+        });
+
+        if (viajeProductos.length > 0) {
+            res.json(viajeProductos);
+        } else {
+            res.status(404).send({ message: `No se encontraron relaciones Viaje-Producto con viajeId=${viajeId}.` });
+        }
+    } catch (err) {
+        res.status(500).send({ message: err.message || "Ocurrió un error al recuperar las relaciones Viaje-Producto." });
+    }
+};

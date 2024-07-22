@@ -18,5 +18,9 @@ module.exports = app => {
     // Eliminar una relación Viaje-Producto por ID
     router.delete("/:id", viajeProducto.delete);
 
+    // Obtener todas las relaciones Viaje-Producto por viajeId
+    router.get("/viaje/:viajeId", viajeProducto.findByViajeId);
+
+
     app.use('/api/viajeProducto', router);
 };

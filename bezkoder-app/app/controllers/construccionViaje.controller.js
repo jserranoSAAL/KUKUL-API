@@ -9,6 +9,8 @@ const Productos = db.Productos;
 const Geografia = db.Geografia;
 const DescripcionProducto = db.DescripcionProducto;
 const Paquetes = db.Paquetes;
+const Proveedores = db.Proveedores;
+const Currency = db.Currency;
 
 
 // Crear una nueva construcción de viaje
@@ -134,6 +136,7 @@ exports.generatorQuotation = async (req, res) => {
                 let resumen = "Résumé de votre voyage\n";
                 let alojamientosAgregados = [];
                 let totalCosto = 0;
+                let totalPersonas = 0;
                 const productosDescripcion = [];
                 if (construccionViajeInfo) {
                     agenciaInfo.dataValues.construccion_viaje = construccionViajeInfo;
@@ -146,6 +149,9 @@ exports.generatorQuotation = async (req, res) => {
                         for (const viajeProducto of viajeProductosInfo) {
                             const productoInfo = await Productos.findByPk(viajeProducto.productoId);
                             if (productoInfo) {
+                                const proveedorInfo = await Proveedores.findByPk(productoInfo.ProveedorID);
+                                const currencyProvider = await Currency.findByPk(proveedorInfo.CurrencyID);
+
                                 const geografiaInfo = await Geografia.findByPk(productoInfo.GeografiaID);
                                 if (geografiaInfo) {
                                     productoInfo.dataValues.geografia_info = geografiaInfo;
@@ -161,8 +167,19 @@ exports.generatorQuotation = async (req, res) => {
                                     }
                                 }
 
+                                // Obtener la divisa por defecto
+                                const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
+
+                                let costoUnitario = parseFloat(viajeProducto.costo_unitario);
+                                if (defaultCurrency) {
+                                    const exchangeRate = parseFloat(defaultCurrency.customer_exchange_rate);
+                                    // Convertir el costo a la divisa por defecto
+                                    costoUnitario = costoUnitario * exchangeRate;
+                                }
+
                                 viajeProducto.dataValues.producto_info = productoInfo;
-                                totalCosto += parseFloat(viajeProducto.costo_unitario);
+                                totalCosto += costoUnitario * parseInt(viajeProducto.cantidad);
+                                totalPersonas += parseInt(viajeProducto.cantidad);
                             }
                         }
                         agenciaInfo.dataValues.viaje_productos = viajeProductosInfo;
@@ -181,16 +198,18 @@ exports.generatorQuotation = async (req, res) => {
                     }
                 }
 
-                const tarifaPorPersona = (totalCosto / 2).toFixed(2); // Ejemplo para 2 personas
+                const tarifaPorPersona = (totalCosto / 2).toFixed(2); // Ejemplo para n personas
                 const tarifaTotal = totalCosto.toFixed(2);
+
+                const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
 
                 res.json({
                     paqueteEnviado,
                     resumen,
                     agenciaInfo,
                     tarifa: {
-                        tarifaPorPersona: `${tarifaPorPersona} USD`,
-                        tarifaTotal: `${tarifaTotal} USD`,
+                        tarifaPorPersona: `${tarifaPorPersona} ${defaultCurrency.abbreviation}`,
+                        tarifaTotal: `${tarifaTotal} ${defaultCurrency.abbreviation}`,
                         basePersonas: basePersonas, // Número de personas base para el cálculo
                     },
                     productosDescripcion
