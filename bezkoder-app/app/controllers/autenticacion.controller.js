@@ -33,28 +33,56 @@ const currentDate = new Date().toISOString();
 const formattedDate = moment(currentDate).format('YYYY-MM-DD HH:mm:ss');
 
 exports.register = async (req, res) => {
-  const { username, name_user, last_name_user, email, password_hash, rol, created_at} = req.body;  
+  const { username, name_user, last_name_user, email, password_hash, rol, created_at } = req.body;
 
-  
-  try {    
+
+  try {
     const user = await Users.create({
-      username: username,      
+      username: username,
       name_user: name_user,
       last_name_user: last_name_user,
-      email: email,      
+      email: email,
       password_hash: bcrypt.hashSync(password_hash, 8),
       rol: rol,
       created_at: formattedDate
     });
-          
-    
+
+
 
     const token = jwt.sign({ id: user.user_id }, process.env.SECRET, {
       expiresIn: 86400 // expires in 24 hours
-    });    
+    });
 
     res.status(201).send({ auth: true, token });
-  } catch (err) {     
-    res.status(500).send({ message: "Error al registrar usuario "+err });
+  } catch (err) {
+    res.status(500).send({ message: "Error al registrar usuario " + err });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    // Obtener el token del encabezado de autorización
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    // Verificar si el token está presente
+    if (token == null) return res.sendStatus(401);
+
+    // Verificar el token JWT
+    jwt.verify(token, process.env.SECRET, async (err, user) => {
+      if (err) return res.sendStatus(403);
+
+      // Buscar el usuario en la base de datos
+      const foundUser = await Users.findByPk(user.id);
+      if (!foundUser) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+
+      // Devolver solo el campo 'username'
+      res.status(200).json({ username: foundUser.username });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error al obtener información del usuario' });
   }
 };

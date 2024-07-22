@@ -79,6 +79,7 @@ module.exports = app => {
 
     authRouter.post("/login", authenticationController.login);
     authRouter.post("/register", authenticationController.register);
+    authRouter.get("/profile", authenticationController.getProfile);
 
     app.use("/api/auth", authRouter);
 };
