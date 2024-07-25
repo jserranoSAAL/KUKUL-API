@@ -162,7 +162,7 @@ exports.generatorQuotation = async (req, res) => {
                                 if (descripcionProducto) {
                                     productosDescripcion.push(descripcionProducto);
 
-                                    if (descripcionProducto.categoria === "Hotel") {
+                                    if (descripcionProducto.categoria === "Hotel" || descripcionProducto.categoria === "_hot") {
                                         alojamientosAgregados.push(descripcionProducto);
                                     }
                                 }
