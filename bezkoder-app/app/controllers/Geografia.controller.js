@@ -30,8 +30,8 @@ exports.create = (req, res) => {
         desc_es: req.body.desc_es,
         desc_en: req.body.desc_en,
         desc_fr: req.body.desc_fr,
-        Latitude: req.body.Latitude,
-        Longitude: req.body.Longitude
+        Latitude: parseFloat(req.body.Latitude), // Convierte a número flotante
+        Longitude: parseFloat(req.body.Longitude) // Convierte a número flotante
     };
 
     Geografia.create(geografia)
