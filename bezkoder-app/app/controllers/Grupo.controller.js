@@ -1,6 +1,8 @@
 const db = require("../models");
 const Grupo = db.Grupo;
 const Logistica = db.Logistica; 
+const { Op } = require("sequelize");
+
 
 // Crear y guardar un nuevo Grupo
 exports.create = async (req, res) => {
@@ -151,4 +153,32 @@ exports.delete = (req, res) => {
                 message: "No se pudo eliminar el Grupo con id=" + id
             });
         });
+};
+
+
+// Buscar Grupos por nombre
+exports.findByName = (req, res) => {
+    const nombre = req.params.nombre;
+
+    Grupo.findAll({
+        where: {
+            Nombre: {
+                [Op.like]: `%${nombre}%` // Utiliza el operador LIKE para buscar coincidencias parciales
+            }
+        }
+    })
+    .then(data => {
+        if (data.length > 0) {
+            res.send(data);
+        } else {
+            res.status(404).send({
+                message: `No se encontraron Grupos con el nombre=${nombre}.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Error buscando Grupos con el nombre=" + nombre
+        });
+    });
 };
