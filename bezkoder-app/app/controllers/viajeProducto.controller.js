@@ -5,8 +5,8 @@ const ViajeProducto = db.ViajeProducto;
 // Crear una nueva relación Viaje-Producto
 exports.create = async (req, res) => {
     try {
-        const { viajeId, productoId, fecha, hora_inicio, hora_fin, cantidad, costo_unitario } = req.body;
-        const viajeProducto = await ViajeProducto.create({ viajeId, productoId, fecha, hora_inicio, hora_fin, cantidad, costo_unitario });
+        const { viajeId, productoId, fecha, hora_inicio, fecha_salida, hora_fin, cantidad, costo_unitario } = req.body;
+        const viajeProducto = await ViajeProducto.create({ viajeId, productoId, fecha, hora_inicio, fecha_salida, hora_fin, cantidad, costo_unitario });
         res.status(201).json({ message: "Relación Viaje-Producto creada exitosamente.", viajeProducto });
     } catch (err) {
         res.status(500).send({ message: err.message || "Ocurrió un error al crear la relación Viaje-Producto." });
@@ -43,9 +43,9 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const id = req.params.id;
-        const { viajeId, productoId, fecha, hora_inicio, hora_fin, cantidad, costo_unitario } = req.body;
+        const { viajeId, productoId, fecha, hora_inicio, fecha_salida, hora_fin, cantidad, costo_unitario } = req.body;
         const [num] = await ViajeProducto.update(
-            { viajeId, productoId, fecha, hora_inicio, hora_fin, cantidad, costo_unitario },
+            { viajeId, productoId, fecha, hora_inicio, fecha_salida, hora_fin, cantidad, costo_unitario },
             { where: { id } }
         );
 

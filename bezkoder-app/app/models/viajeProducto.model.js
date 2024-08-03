@@ -44,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: true
         },
+        fecha_salida: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
