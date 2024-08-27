@@ -49,10 +49,14 @@ module.exports = (sequelize, DataTypes) => {
         cantidadDias: {
             type: DataTypes.BOOLEAN,
             allowNull: true
+        },
+        costo: {  // Nuevo campo agregado
+            type: DataTypes.DECIMAL(10, 2),  // Ajusta el tipo según tus necesidades
+            allowNull: true  // Permite valores nulos si es necesario
         }
     });
 
-    ProductoCostos.associate = function(models) {
+    ProductoCostos.associate = function (models) {
         ProductoCostos.belongsTo(models.Productos, { foreignKey: 'productoId', onDelete: 'CASCADE' });
         ProductoCostos.hasMany(models.ProductoTemporadas, { foreignKey: 'productoCostoId', onDelete: 'CASCADE' });
         ProductoCostos.hasMany(models.ProductoCostosAdicionales, { foreignKey: 'productoCostoId', onDelete: 'CASCADE' });
