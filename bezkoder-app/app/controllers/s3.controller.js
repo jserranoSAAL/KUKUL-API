@@ -1,3 +1,5 @@
+const db = require('../models');
+const Coverage = db.Coverage;
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
@@ -78,10 +80,19 @@ exports.uploadImages = (req, res) => {
 exports.uploadCoverPage = (req, res) => {
   const { base64String } = req.body; // Imagen de portada en formato base64 recibida en la solicitud
 
-  // Configurar parámetros para la imagen de portada
+  // Validación de la solicitud
+  if (!base64String) {
+    return res.status(400).send({ message: "Los datos de la portada no pueden estar vacíos!" });
+  }
+
+  // Generar un número aleatorio y asegurar que sea único
+  const randomNum = Math.floor(Math.random() * 100000); // Número aleatorio entre 0 y 99999
+  const key = `portadas/coverage-page-${randomNum}.jpg`; // Clave única con el número aleatorio
+
+  // Configurar parámetros para la imagen de portada en S3
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: "coverage-page-7683.jpg", // Nombre del archivo en S3
+    Key: key, // Nombre del archivo en S3 con el número aleatorio
     Body: Buffer.from(base64String, 'base64'),
     ContentEncoding: 'base64',
     ContentType: 'image/jpeg', // Cambia el tipo de contenido según el formato de imagen que estés subiendo
@@ -92,10 +103,30 @@ exports.uploadCoverPage = (req, res) => {
   s3.upload(params, (err, data) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ error: 'Error al cargar la portada en S3 '+JSON.stringify(err) });
-    } else {
-      // Devolver la URL pública de la imagen de portada cargada
-      res.json({ imageUrl: data.Location });
-    }
+      return res.status(500).json({ error: 'Error al cargar la portada en S3 ' + JSON.stringify(err) });
+    } 
+
+    // Guardar la URL pública de la imagen de portada en la base de datos
+    const imageUrl = `https://kukul-production.s3.us-east-2.amazonaws.com/${key}`;
+
+    // Crear un nuevo registro de portada en la base de datos
+    const coverage = {
+      key: key,
+      url: imageUrl,
+      default_status: false // Puedes ajustar esto según la lógica de tu aplicación
+    };
+
+    Coverage.create(coverage)
+      .then(data => {
+        res.send({
+          message: "Portada subida y registrada correctamente.",
+          coverage: data
+        });
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: err.message || "Ocurrió un error al guardar la portada en la base de datos."
+        });
+      });
   });
 };

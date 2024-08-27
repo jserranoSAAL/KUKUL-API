@@ -271,6 +271,7 @@ db.Logistica.belongsTo(db.Grupo, { foreignKey: 'GrupoID' });
 db.Proveedores.associate(db);
 db.Currency.associate(db);
 
+db.Coverage = require("./coverage.model.js")(sequelize, Sequelize);
 
 // Continuar definiendo otras relaciones necesarias entre los modelos
 

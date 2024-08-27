@@ -164,6 +164,8 @@ require("./app/routes/preciosCalculadosPaquete.routes.js")(app);
 require("./app/routes/direccionAgenciaViaje.routes.js")(app);
 require("./app/routes/CotizacionFinal.routes.js")(app);
 
+require("./app/routes/Coverage.routes.js")(app);
+
 
 
 
