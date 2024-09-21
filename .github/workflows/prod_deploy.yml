@@ -52,8 +52,7 @@ jobs:
             echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
             echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
             
-            # Comandos Docker para reconstruir y levantar la aplicación
-            docker-compose down  # Detener y eliminar contenedores anteriores
+            
             docker-compose build  # Construir imágenes de Docker
             docker-compose up -d db  # Iniciar base de datos en segundo plano
             
