@@ -36,21 +36,23 @@ jobs:
             git pull origin main
             
             # Crea un nuevo archivo .env con las variables de entorno
-            echo "HOST_DB=${{ secrets.HOST_DB }}" > .env
-            echo "MYSQLDB_DATABASE=${{ secrets.MYSQLDB_DATABASE }}" >> .env
-            echo "NODE_DOCKER_PORT=${{ secrets.NODE_DOCKER_PORT }}" >> .env
-            echo "PORT_DB=${{ secrets.PORT_DB }}" >> .env
-            echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-            echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-            echo "PORT=${{ secrets.PORT }}" >> .env
-            echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
-            echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-            echo "SECRET=${{ secrets.SECRET }}" >> .env
-            echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
-            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
-            echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
-            echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
+            cat <<EOT > .env
+            HOST_DB=${{ secrets.HOST_DB }}
+            MYSQLDB_DATABASE=${{ secrets.MYSQLDB_DATABASE }}
+            NODE_DOCKER_PORT=${{ secrets.NODE_DOCKER_PORT }}
+            PORT_DB=${{ secrets.PORT_DB }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            PORT=${{ secrets.PORT }}
+            MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+            DB_HOST=${{ secrets.DB_HOST }}
+            SECRET=${{ secrets.SECRET }}
+            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION=${{ secrets.AWS_REGION }}
+            AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}
+            EOT
             
             # Comandos Docker para reconstruir y levantar la aplicación
             docker-compose down  # Detener y eliminar contenedores anteriores
@@ -60,9 +62,9 @@ jobs:
             # Espera a que la base de datos esté lista antes de crear la DB
             sleep 20  # Espera unos segundos para asegurarse que la base de datos está levantada
 
-            # Crea la base de datos si no existe (asume que tienes MySQL Client instalado en tu Droplet)
+            # Crea la base de datos si no existe
             docker exec -i $(docker-compose ps -q db) mysql -u${{ secrets.DB_USER }} -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_NAME }};"
             
             # Inicia la aplicación
             docker-compose up -d app  # Inicia la app en segundo plano
-EOF
+          EOF
