@@ -35,24 +35,22 @@ jobs:
             # Realiza un pull del último código desde GitHub
             git pull origin main
             
-            # Crea un nuevo archivo .env con las variables de entorno
-            cat <<EOT > .env
-            HOST_DB=${{ secrets.HOST_DB }}
-            MYSQLDB_DATABASE=${{ secrets.MYSQLDB_DATABASE }}
-            NODE_DOCKER_PORT=${{ secrets.NODE_DOCKER_PORT }}
-            PORT_DB=${{ secrets.PORT_DB }}
-            DB_USER=${{ secrets.DB_USER }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            DB_NAME=${{ secrets.DB_NAME }}
-            PORT=${{ secrets.PORT }}
-            MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
-            DB_HOST=${{ secrets.DB_HOST }}
-            SECRET=${{ secrets.SECRET }}
-            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_REGION=${{ secrets.AWS_REGION }}
-            AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}
-            EOT
+            # Aquí tus comandos para reiniciar la aplicación, por ejemplo:
+            echo "HOST_DB=${{ secrets.HOST_DB }}" > .env
+            echo "MYSQLDB_DATABASE=${{ secrets.MYSQLDB_DATABASE }}" >> .env
+            echo "NODE_DOCKER_PORT=${{ secrets.NODE_DOCKER_PORT }}" >> .env
+            echo "PORT_DB=${{ secrets.PORT_DB }}" >> .env
+            echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+            echo "PORT=${{ secrets.PORT }}" >> .env
+            echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+            echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+            echo "SECRET=${{ secrets.SECRET }}" >> .env
+            echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+            echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
+            echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
             
             # Comandos Docker para reconstruir y levantar la aplicación
             docker-compose down  # Detener y eliminar contenedores anteriores
