@@ -10,17 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      
+      # Configura el agente SSH para conectar con el Droplet
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
-      - name: Deploy to Lightsail
+
+      # Conecta al Droplet y ejecuta los comandos
+      - name: Deploy to DigitalOcean Droplet
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
             sudo su
-            cd /home/ubuntu/KUKUL-API          
+            cd /home/ubuntu/KUKUL-API  # Cambia esta ruta si tu proyecto está en otro directorio
 
-            # Verifica si el archivo .env existe y elimínalo si es así
+            # Elimina el archivo .env si ya existe
             if [ -f .env ]; then
               rm .env
               echo ".env file deleted"
@@ -28,8 +32,10 @@ jobs:
               echo ".env file does not exist"
             fi
 
-            git pull
-            # Aquí tus comandos para reiniciar la aplicación, por ejemplo:
+            # Realiza un pull del último código desde GitHub
+            git pull origin main
+            
+            # Crea un nuevo archivo .env con las variables de entorno
             echo "HOST_DB=${{ secrets.HOST_DB }}" > .env
             echo "MYSQLDB_DATABASE=${{ secrets.MYSQLDB_DATABASE }}" >> .env
             echo "NODE_DOCKER_PORT=${{ secrets.NODE_DOCKER_PORT }}" >> .env
@@ -45,6 +51,18 @@ jobs:
             echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
             echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
             echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
-            docker-compose up -d db
-            docker-compose build
-            docker-compose up -d app
+            
+            # Comandos Docker para reconstruir y levantar la aplicación
+            docker-compose down  # Detener y eliminar contenedores anteriores
+            docker-compose build  # Construir imágenes de Docker
+            docker-compose up -d db  # Iniciar base de datos en segundo plano
+            
+            # Espera a que la base de datos esté lista antes de crear la DB
+            sleep 20  # Espera unos segundos para asegurarse que la base de datos está levantada
+
+            # Crea la base de datos si no existe (asume que tienes MySQL Client instalado en tu Droplet)
+            docker exec -i $(docker-compose ps -q db) mysql -u${{ secrets.DB_USER }} -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_NAME }};"
+            
+            # Inicia la aplicación
+            docker-compose up -d app  # Inicia la app en segundo plano
+EOF
