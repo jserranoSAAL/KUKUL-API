@@ -22,19 +22,13 @@ module.exports = (sequelize, DataTypes) => {
         Telefono: {
             type: DataTypes.STRING
         },
-        Direccion: {
+        Genero: {
             type: DataTypes.STRING
         },
-        Ciudad: {
+        Edad: {
             type: DataTypes.STRING
         },
-        Estado: {
-            type: DataTypes.STRING
-        },
-        CodigoPostal: {
-            type: DataTypes.STRING
-        },
-        Pais: {
+        Nacionalidad: {
             type: DataTypes.STRING
         }
     }, {

@@ -3,8 +3,22 @@ const db = require('../models');
 const Cliente = db.Cliente;
 
 exports.create = async (req, res) => {
+    if (!req.body.name || !req.body.lastname || !req.body.age) {
+        res.status(400).send({ message: "El contenido no puede estar vacío." });
+        return;
+    }
+
+    const clienteObj = {
+        Nombre: req.body.name,
+        Apellido: req.body.lastname,
+        Email: req.body.email,
+        Telefono: req.body.phone,
+        Genero: req.body.gender,
+        Edad: req.body.age,
+        Nacionalidad: "pendiente",
+    };
     try {
-        const cliente = await Cliente.create(req.body);
+        const cliente = await Cliente.create(clienteObj);
         res.send(cliente);
     } catch (err) {
         res.status(500).send({
@@ -44,8 +58,18 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
     const id = req.params.id;
+
+    const clienteObj = {
+        Nombre: req.body.name,
+        Apellido: req.body.lastname,
+        Email: req.body.email,
+        Telefono: req.body.phone,
+        Genero: req.body.gender,
+        Edad: req.body.age,
+        Nacionalidad: "pendiente",
+    };
     try {
-        const [updated] = await Cliente.update(req.body, {
+        const [updated] = await Cliente.update(clienteObj, {
             where: { ID: id }
         });
         if (updated) {
