@@ -21,7 +21,7 @@ jobs:
       - name: Deploy to DigitalOcean Droplet
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
-            sudo su
+            sudo -i
             cd /root/KUKUL-API  # Cambia esta ruta si tu proyecto está en otro directorio
 
             # Elimina el archivo .env si ya existe
