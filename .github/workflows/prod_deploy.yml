@@ -53,15 +53,22 @@ jobs:
             echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
             
             
-            docker-compose build  # Construir imágenes de Docker
-            docker-compose up -d db  # Iniciar base de datos en segundo plano
+            # Iniciar la base de datos en segundo plano si aún no está en ejecución
+            docker-compose up -d db
             
-            # Espera a que la base de datos esté lista antes de crear la DB
-            sleep 20  # Espera unos segundos para asegurarse que la base de datos está levantada
+            # Espera a que la base de datos esté lista antes de proceder
+            sleep 20  # Asegura que la base de datos esté completamente levantada
 
             # Crea la base de datos si no existe
             docker exec -i $(docker-compose ps -q db) mysql -u${{ secrets.DB_USER }} -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_NAME }};"
+
+            # Detener y eliminar solo el contenedor `app` si está en ejecución
+            docker-compose stop app || true  # Detiene el contenedor `app` si está corriendo
+            docker-compose rm -f app || true  # Elimina el contenedor `app` si existe
             
-            # Inicia la aplicación
-            docker-compose up -d app  # Inicia la app en segundo plano
+            # Reconstruir la imagen de `app` sin caché
+            docker-compose build --no-cache app
+            
+            # Inicia nuevamente el contenedor `app` en segundo plano
+            docker-compose up -d app
           EOF
