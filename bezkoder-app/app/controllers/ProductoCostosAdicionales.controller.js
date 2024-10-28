@@ -163,3 +163,166 @@ exports.delete = async (req, res) => {
         });
     }
 };
+
+// Calcular costos adicionales totales
+exports.calcularCostosAdicionales = async (req, res) => {
+    try {
+        const { productoCostoId, cantidadPax, fecha } = req.body; // recibir fecha y cantidad de pasajeros
+
+        // Log de entrada
+        console.log('Datos recibidos:', { productoCostoId, cantidadPax, fecha });
+
+        // Convertir la fecha a un objeto Date
+        const fechaConsulta = new Date(fecha);
+
+        // Obtener costos adicionales para el producto
+        const costosAdicionales = await ProductoCostosAdicionales.findAll({
+            where: { productoCostoId }
+        });
+
+        // Log de costos adicionales obtenidos
+        console.log('Costos adicionales obtenidos:', costosAdicionales);
+
+        let totalCostosAdicionales = 0;
+        const desglose = [];
+
+        // Lógica para calcular los costos adicionales basados en las condiciones
+        costosAdicionales.forEach(costo => {
+            // Log de cada costo en el bucle
+            console.log('Evaluando costo:', costo.dataValues);
+
+            // Convertir las fechas de inicio y fin a objetos Date
+            const fechaInicio = new Date(costo.fechaInicio);
+            const fechaFin = new Date(costo.fechaFin);
+
+            if (costo.dePax <= cantidadPax && costo.aPax >= cantidadPax) {
+                // Comparar las fechas correctamente
+                if (fechaInicio <= fechaConsulta && fechaFin >= fechaConsulta) {
+                    let costoAplicado = parseFloat(costo.valor); // Asegúrate de convertir el valor a un número
+
+                    // Verifica que costoAplicado sea un número válido
+                    if (isNaN(costoAplicado)) {
+                        console.error(`Valor no válido para costo: ${costo.valor}`);
+                        return; // Salir si no es un número
+                    }
+
+                    // Aplicar porcentaje si existe
+                    if (costo.porcentaje) {
+                        const porcentajeAplicado = parseFloat(costo.porcentaje) / 100;
+                        costoAplicado += costoAplicado * porcentajeAplicado; // Convertir porcentaje a número
+                    }
+
+                    // Log del costo aplicado
+                    console.log('Costo aplicado:', costoAplicado);
+
+                    totalCostosAdicionales += costoAplicado; // Sumar el costo aplicado
+                    desglose.push({
+                        tipoCosto: costo.tipoCosto,
+                        costoBase: costo.valor,
+                        porcentaje: costo.porcentaje,
+                        costoAplicado
+                    });
+                }
+            }
+        });
+
+        // Log del total de costos adicionales
+        console.log('Total costos adicionales:', totalCostosAdicionales);
+
+        res.status(200).json({ totalCostosAdicionales, desglose });
+    } catch (err) {
+        console.error('Error en calcularCostosAdicionales:', err); // Log del error
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al calcular los costos adicionales."
+        });
+    }
+};
+
+
+
+
+
+
+// Obtener detalles de costos adicionales para un producto
+exports.obtenerDetallesCostosAdicionales = async (req, res) => {
+    try {
+        const productoCostoId = req.params.productoCostoId;
+        const costosAdicionales = await ProductoCostosAdicionales.findAll({
+            where: { productoCostoId }
+        });
+
+        res.status(200).json(costosAdicionales);
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al obtener los detalles de costos adicionales."
+        });
+    }
+};
+
+// Generar cotización
+exports.generarCotizacion = async (req, res) => {
+    try {
+        const { productoCostoId, cantidadPax, fecha } = req.body;
+
+        // Obtener costo base del producto
+        const productoBase = await db.ProductoCostos.findByPk(productoCostoId);
+        const costoBase = productoBase ? parseFloat(productoBase.valor) : 0; // Asegurarse de que el valor sea un número
+
+        // Convertir fecha a objeto Date
+        const fechaConsulta = new Date(fecha);
+
+        // Calcular costos adicionales
+        const { totalCostosAdicionales, desglose } = await this.calcularCostosAdicionales(req, res);
+
+        // Sumar total para la cotización
+        const totalCotizacion = costoBase + totalCostosAdicionales;
+
+        res.status(200).json({
+            productoCostoId,
+            cantidadPax,
+            totalCotizacion,
+            desglose,
+            costosAdicionales: await ProductoCostosAdicionales.findAll({ where: { productoCostoId } })
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al generar la cotización."
+        });
+    }
+};
+
+
+// Filtrar costos adicionales por condiciones
+exports.filtrarCostosAdicionales = async (req, res) => {
+    try {
+        const { productoCostoId, cantidadPax, fecha } = req.body;
+
+        // Convertir fecha a objeto Date
+        const fechaConsulta = new Date(fecha);
+
+        const costosAdicionales = await ProductoCostosAdicionales.findAll({
+            where: { productoCostoId }
+        });
+
+        const costosFiltrados = costosAdicionales.filter(costo => {
+            // Convertir las fechas de inicio y fin a objetos Date
+            const fechaInicio = new Date(costo.fechaInicio);
+            const fechaFin = new Date(costo.fechaFin);
+
+            return (
+                costo.dePax <= cantidadPax &&
+                costo.aPax >= cantidadPax &&
+                fechaInicio <= fechaConsulta && 
+                fechaFin >= fechaConsulta
+            );
+        });
+
+        res.status(200).json(costosFiltrados);
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al filtrar los costos adicionales."
+        });
+    }
+};
+
+

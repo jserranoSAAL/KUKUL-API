@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: true
         },
+        dePax: {
+            type: DataTypes.INTEGER, // Suponiendo que es un número entero
+            allowNull: true
+        },
+        aPax: {
+            type: DataTypes.INTEGER, // Suponiendo que es un número entero
+            allowNull: true
+        },
         fechaInicio: {
             type: DataTypes.DATE,
             allowNull: true
@@ -26,8 +34,52 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: true
         },
+        deCant: {
+            type: DataTypes.INTEGER, // Suponiendo que es un número entero
+            allowNull: true
+        },
+        aCant: {
+            type: DataTypes.INTEGER, // Suponiendo que es un número entero
+            allowNull: true
+        },
+        ofertaRes: {
+            type: DataTypes.STRING(50), // Asumiendo que puede ser un texto corto
+            allowNull: true
+        },
+        dias: {
+            type: DataTypes.INTEGER, // Suponiendo que es un número entero
+            allowNull: true
+        },
+        deNoche: {
+            type: DataTypes.INTEGER, // Suponiendo que es un número entero
+            allowNull: true
+        },
+        hastaNoche: {
+            type: DataTypes.INTEGER, // Suponiendo que es un número entero
+            allowNull: true
+        },
         valor: {
             type: DataTypes.DECIMAL(10, 2),
+            allowNull: true
+        },
+        porcentaje: {
+            type: DataTypes.DECIMAL(5, 2), // Para porcentajes
+            allowNull: true
+        },
+        unoX: {
+            type: DataTypes.BOOLEAN, // Para indicar si se aplica una sola vez
+            allowNull: true
+        },
+        aplicar5SL: {
+            type: DataTypes.BOOLEAN, // Suponiendo que es un booleano
+            allowNull: true
+        },
+        guiaPaga: {
+            type: DataTypes.BOOLEAN, // Suponiendo que es un booleano
+            allowNull: true
+        },
+        codigo: {
+            type: DataTypes.STRING(50), // Suponiendo que es un texto corto
             allowNull: true
         },
         comentarios: {

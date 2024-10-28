@@ -25,5 +25,12 @@ module.exports = app => {
     // Eliminar un Costo Adicional de Producto por ID
     router.delete("/:id", requireAuth, productoCostosAdicionales.delete);
 
+    // Métodos para manejar costos adicionales
+    router.post("/calcular", requireAuth, productoCostosAdicionales.calcularCostosAdicionales);
+    router.get("/detalles/:productoCostoId", requireAuth, productoCostosAdicionales.obtenerDetallesCostosAdicionales);
+    router.post("/cotizacion", requireAuth, productoCostosAdicionales.generarCotizacion);
+    router.post("/filtrar", requireAuth, productoCostosAdicionales.filtrarCostosAdicionales);
+
+
     app.use('/api/productoCostosAdicionales', router);
 };
