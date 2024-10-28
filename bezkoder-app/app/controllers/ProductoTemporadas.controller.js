@@ -1,5 +1,6 @@
 const db = require("../models");
 const ProductoTemporadas = db.ProductoTemporadas;
+const ProductoCostos = db.ProductoCostos;
 
 // Crear o actualizar una Temporada de Producto (Upsert)
 exports.upsert = async (req, res) => {
@@ -165,6 +166,55 @@ exports.deleteAll = async (req, res) => {
     } catch (err) {
         res.status(500).send({
             message: err.message || "Ocurrió un error al eliminar todas las Temporadas de Producto."
+        });
+    }
+};
+
+
+exports.getActiveSeasonForProductAndDate = async (req, res) => {
+    try {
+        const { productoId, fechaServicio } = req.body;
+        const diaSemana = new Date(fechaServicio).toLocaleString('es-ES', { weekday: 'long' }).toLowerCase();
+
+        // 1. Buscar el productoCostoId para el productoId dado
+        const productoCosto = await ProductoCostos.findOne({
+            where: { productoId }
+        });
+
+        if (!productoCosto) {
+            return res.status(404).json({
+                message: `No se encontró productoCosto para productoId=${productoId}.`
+            });
+        }
+
+        const productoCostoId = productoCosto.id;
+
+        // 2. Buscar la temporada activa en ProductoTemporadas
+        const temporadaActiva = await ProductoTemporadas.findOne({
+            where: {
+                productoCostoId,
+                fechaInicio: { [db.Sequelize.Op.lte]: fechaServicio },
+                fechaFin: { [db.Sequelize.Op.gte]: fechaServicio },
+                [diaSemana]: true  // Comprobar si el día de la semana está habilitado en la temporada
+            }
+        });
+
+        if (temporadaActiva) {
+            // Temporada activa encontrada, devolver la temporada y disponibilidad
+            res.status(200).json({
+                message: "Temporada activa encontrada para la fecha y producto.",
+                temporadaActiva,
+                disponibilidad: `Disponible el ${diaSemana}`
+            });
+        } else {
+            res.status(404).json({
+                message: "No se encontró una temporada activa para la fecha y el producto seleccionados.",                
+                disponibilidad: `No disponible el ${diaSemana}`
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió un error al buscar la temporada activa para cotización."
         });
     }
 };

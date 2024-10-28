@@ -28,5 +28,8 @@ module.exports = app => {
     // Eliminar todas las Temporadas de Producto
     router.delete("/", requireAuth, productoTemporadas.deleteAll);
 
+    router.post("/productoTemporadas/checkAvailability", requireAuth, productoTemporadas.getActiveSeasonForProductAndDate);
+
+
     app.use('/api/productoTemporadas', router);
 };
