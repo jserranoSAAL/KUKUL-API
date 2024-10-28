@@ -171,10 +171,15 @@ exports.deleteAll = async (req, res) => {
 };
 
 
+// Función para remover acentos
+const removeAccents = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
+
 exports.getActiveSeasonForProductAndDate = async (req, res) => {
     try {
         const { productoId, fechaServicio } = req.body;
-        const diaSemana = new Date(fechaServicio).toLocaleString('es-ES', { weekday: 'long' }).toLowerCase();
+        const diaSemana = removeAccents(new Date(fechaServicio).toLocaleString('es-ES', { weekday: 'long' }).toLowerCase());
 
         // 1. Buscar el productoCostoId para el productoId dado
         const productoCosto = await ProductoCostos.findOne({
@@ -204,12 +209,14 @@ exports.getActiveSeasonForProductAndDate = async (req, res) => {
             res.status(200).json({
                 message: "Temporada activa encontrada para la fecha y producto.",
                 temporadaActiva,
-                disponibilidad: `Disponible el ${diaSemana}`
+                dayMessage: `Disponible el ${diaSemana}`,
+                disponibilidad: true
             });
         } else {
             res.status(404).json({
-                message: "No se encontró una temporada activa para la fecha y el producto seleccionados.",                
-                disponibilidad: `No disponible el ${diaSemana}`
+                message: "No se encontró una temporada activa para la fecha y el producto seleccionados.",
+                dayMessage: `No disponible el ${diaSemana}`,
+                disponibilidad: false
             });
         }
     } catch (err) {
