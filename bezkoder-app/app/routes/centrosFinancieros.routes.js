@@ -9,7 +9,7 @@ module.exports = app => {
     router.get("/:id", requireAuth, centrosFinancierosController.findOne);
     router.put("/:id", requireAuth, centrosFinancierosController.update);
     router.delete("/:id", requireAuth, centrosFinancierosController.delete);
-    router.get("/buscar/:nombre", requireAuth, centrosFinancierosController.findByName); // Nueva ruta para buscar por nombre
+    router.get("/buscar/:nombre", requireAuth, centrosFinancierosController.findByName); // Ruta para buscar por nombre
 
     app.use("/api/centrosFinancieros", router);
 };

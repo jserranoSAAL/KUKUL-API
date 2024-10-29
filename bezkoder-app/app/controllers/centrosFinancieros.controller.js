@@ -2,7 +2,6 @@ const db = require("../models");
 const CentroFinanciero = db.CentroFinanciero;
 const { Op } = require("sequelize");
 
-
 // Crear y Guardar un nuevo Centro Financiero
 exports.create = async (req, res) => {
     try {
@@ -80,7 +79,6 @@ exports.delete = async (req, res) => {
     }
 };
 
-
 // Buscar un Centro Financiero por nombre usando LIKE
 exports.findByName = async (req, res) => {
     const nombre = req.params.nombre;
@@ -101,7 +99,7 @@ exports.findByName = async (req, res) => {
         }
     } catch (err) {
         res.status(500).send({
-            message: "Error recuperando el Centro Financiero con nombre=" + nombre+ " error: "+err
+            message: "Error recuperando el Centro Financiero con nombre=" + nombre + " error: " + err
         });
     }
 };
