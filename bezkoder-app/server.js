@@ -167,6 +167,7 @@ require("./app/routes/CotizacionFinal.routes.js")(app);
 require("./app/routes/Coverage.routes.js")(app);
 
 require("./app/routes/AgenciaViajeContacto.routes.js")(app);
+require("./app/routes/AgenciaDeViajeCotizacion.routes.js")(app);
 
 
 

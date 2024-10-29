@@ -274,6 +274,8 @@ db.Currency.associate(db);
 db.Coverage = require("./coverage.model.js")(sequelize, Sequelize);
 db.AgenciaViajeContacto = require("./agenciaDeViajeContacto.model.js")(sequelize, Sequelize);
 
+db.AgenciaViajeCotizacion = require("./AgenciaDeViajeCotizacion.model.js")(sequelize, Sequelize);
+
 // Continuar definiendo otras relaciones necesarias entre los modelos
 
 module.exports = db;
