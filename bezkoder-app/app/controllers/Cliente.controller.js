@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
 // Obtiene todos los clientes de forma paginada
 exports.findAll = async (req, res) => {
 
-    const offsetV = req.body.offset;
+    const offsetV = req.body.offset-1;
     const limitV = req.body.limit;
     const search = req.body.search;
 
