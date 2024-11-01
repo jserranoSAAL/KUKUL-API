@@ -27,9 +27,17 @@ exports.create = async (req, res) => {
     }
 };
 
+// Obtiene todos los clientes de forma paginada
 exports.findAll = async (req, res) => {
+
+    const offsetV = req.body.offset;
+    const limitV = req.body.limit;
+
     try {
-        const clientes = await Cliente.findAll();
+        const clientes = await Cliente.findAll({
+            offset:offsetV,
+            limit:limitV
+        });
         res.send(clientes);
     } catch (err) {
         res.status(500).send({
