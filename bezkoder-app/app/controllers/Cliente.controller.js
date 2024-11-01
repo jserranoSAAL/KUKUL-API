@@ -36,7 +36,8 @@ exports.findAll = async (req, res) => {
     const search = req.body.search;
 
     try {
-        const clientes = await Cliente.findAll({
+        const totalRecords = await Cliente.findAll();
+        const filteredData = await Cliente.findAll({
             offset:offsetV,
             limit:limitV,
             where:{
@@ -54,7 +55,13 @@ exports.findAll = async (req, res) => {
                 ]
             }
         });
-        res.send(clientes);
+        
+        const responseObj = {
+            totalRecords: totalRecords.length,
+            filterRecords: filteredData.length,
+            data: filteredData
+        }
+        res.send(responseObj);
     } catch (err) {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving clients."
