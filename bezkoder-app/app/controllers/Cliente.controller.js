@@ -1,5 +1,6 @@
 // controllers/cliente.controller.js
 const db = require('../models');
+const {Op} = require("sequelize");
 const Cliente = db.Cliente;
 
 exports.create = async (req, res) => {
@@ -32,11 +33,26 @@ exports.findAll = async (req, res) => {
 
     const offsetV = req.body.offset;
     const limitV = req.body.limit;
+    const search = req.body.search;
 
     try {
         const clientes = await Cliente.findAll({
             offset:offsetV,
-            limit:limitV
+            limit:limitV,
+            where:{
+                [Op.or]:[
+                    {
+                        Nombre:{
+                            [Op.substring]:search
+                        }
+                    },
+                    {
+                        Apellido:{
+                            [Op.substring]:search
+                        }
+                    }
+                ]
+            }
         });
         res.send(clientes);
     } catch (err) {
