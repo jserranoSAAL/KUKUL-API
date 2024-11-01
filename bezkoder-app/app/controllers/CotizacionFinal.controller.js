@@ -33,22 +33,23 @@ exports.create = (req, res) => {
 exports.findByPaqueteId = (req, res) => {
     const paquete_id = req.params.paquete_id;
 
-    CotizacionFinal.findOne({ where: { paquete_id: paquete_id } })
+    CotizacionFinal.findAll({ where: { paquete_id: paquete_id } })
         .then(data => {
-            if (data) {
+            if (data.length > 0) {
                 res.send(data);
             } else {
                 res.status(404).send({
-                    message: `No se pudo encontrar la CotizacionFinal con paquete_id=${paquete_id}.`
+                    message: `No se pudieron encontrar CotizacionesFinal con paquete_id=${paquete_id}.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error recuperando la CotizacionFinal con paquete_id=" + paquete_id
+                message: "Error recuperando las CotizacionesFinal con paquete_id=" + paquete_id
             });
         });
 };
+
 
 // Recuperar todas las CotizacionesFinales de la base de datos
 exports.findAll = (req, res) => {
@@ -227,4 +228,3 @@ exports.createQuotation = async (req, res) => {
         });
     }
 };
-s
