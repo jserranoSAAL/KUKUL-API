@@ -186,3 +186,45 @@ exports.upsert = async (req, res) => {
         });
     }
 };
+
+// Crear una CotizacionFinal por code
+exports.createQuotation = async (req, res) => {
+    try {
+        // Validar la solicitud
+        if (!req.body.data || !req.params.code) {
+            return res.status(400).send({
+                message: "El contenido de la solicitud no puede estar vacío y se requiere code."
+            });
+        }
+
+        const code = req.params.code;
+        const cotizacionData = req.body.data;
+        const paquete_id = req.body.paquete_id;
+
+        // Verificar si ya existe una CotizacionFinal con el code dado
+        const existingCotizacion = await CotizacionFinal.findOne({ where: { code: code } });
+
+        if (existingCotizacion) {
+            return res.status(409).send({
+                message: "Ya existe una CotizacionFinal con el code proporcionado."
+            });
+        }
+
+        // Crear una nueva CotizacionFinal
+        const cotizacion = await CotizacionFinal.create({
+            data: cotizacionData,
+            code: code,
+            paquete_id: paquete_id
+        });
+
+        res.status(201).send({
+            message: "CotizacionFinal creada correctamente.",
+            data: cotizacion
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Ocurrió algún error al crear la CotizacionFinal."
+        });
+    }
+};
+s

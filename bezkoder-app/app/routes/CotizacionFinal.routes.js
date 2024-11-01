@@ -22,6 +22,9 @@ module.exports = app => {
     // Upsert una CotizacionFinal por code
     router.post("/upsert/:code", requireAuth, cotizacionController.upsert);
 
+    // Upsert una CotizacionFinal por code
+    router.post("/create/:code", requireAuth, cotizacionController.createQuotation);
+
     // Buscar CotizacionFinal por paquete_id
     router.get("/paquete/:paquete_id", requireAuth, cotizacionController.findByPaqueteId);
 
