@@ -123,16 +123,48 @@ exports.findOne = (req, res) => {
 };
 
 // Actualizar un Grupo por el id en la solicitud
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
     const id = req.params.id;
 
-    Grupo.update(req.body, {
+    // Grupo
+    const grupo = {
+        Fecha: req.body.Fecha,
+        FechaInicio: req.body.FechaInicio,
+        ViajerosConfirmados: req.body.ViajerosConfirmados,
+        Nombre: req.body.Nombre,
+        Estado: req.body.Estado,
+        Agencia: req.body.Agencia,
+        Periodo: req.body.Periodo,
+        Facturado: req.body.Facturado,
+        Real: req.body.Real,
+        PorcentajePlaneado: req.body.PorcentajePlaneado,
+        PorcentajeReal: req.body.PorcentajeReal,
+        ResponsableDelGrupo: req.body.ResponsableDelGrupo
+    };
+
+    Grupo.update(grupo, {
         where: { ID: id }
     })
-        .then(num => {
+        .then(async (num) => {
             if (num == 1) {
+                // Relacionar cliente con el grupo
+                const clientIds = req.body.clientes || [];
+
+                for (let i = 0; i < clientIds.length; i++) {
+                    const cid = clientIds[i];
+                    await Cliente.update(
+                        { IdGrupo: id},
+                        {
+                            where: {
+                                ID: cid,
+                            }
+                        }
+                    );
+                }
                 res.send({
-                    message: "Grupo actualizado correctamente."
+                    message: "Grupo actualizado correctamente.",
+                    grupo: grupo,
+                    clientes: clientIds
                 });
             } else {
                 res.send({
@@ -144,7 +176,8 @@ exports.update = (req, res) => {
             res.status(500).send({
                 message: "Error actualizando el Grupo con id=" + id
             });
-        });
+    });
+    
 };
 
 // Eliminar un Grupo con el id especificado en la solicitud
