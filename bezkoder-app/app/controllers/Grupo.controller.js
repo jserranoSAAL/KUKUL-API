@@ -1,4 +1,5 @@
 const db = require("../models");
+const Cliente = db.Cliente;
 const Grupo = db.Grupo;
 const Logistica = db.Logistica; 
 const { Op } = require("sequelize");
@@ -29,6 +30,7 @@ exports.create = async (req, res) => {
         PorcentajeReal: req.body.PorcentajeReal,
         ResponsableDelGrupo: req.body.ResponsableDelGrupo
     };
+    
 
     try {
         // Guardar Grupo en la base de datos
@@ -54,12 +56,27 @@ exports.create = async (req, res) => {
             Responsable: grupoData.ResponsableDelGrupo || '',
             GrupoID: grupoData.ID // Asociar la Logistica con el Grupo recién creado
         };
-
         // Guardar Logistica en la base de datos
         await Logistica.create(logistica);
 
+        // Relacionar cliente con el grupo
+        const clientIds = req.body.clientes || [];
+
+        for (let i = 0; i < clientIds.length; i++) {
+            const id = clientIds[i];
+            await Cliente.update(
+                { IdGrupo: grupoData.ID},
+                {
+                  where: {
+                    ID: id,
+                  }
+                }
+            );
+        }
+
         // Responder con el Grupo y Logistica creada
         res.send({
+            clientes:clientIds,
             grupo: grupoData,
             logistica: logistica
         });
