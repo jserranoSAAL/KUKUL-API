@@ -62,17 +62,15 @@ exports.create = async (req, res) => {
         // Relacionar cliente con el grupo
         const clientIds = req.body.clientes || [];
 
-        for (let i = 0; i < clientIds.length; i++) {
-            const id = clientIds[i];
-            await Cliente.update(
-                { IdGrupo: grupoData.ID},
-                {
-                  where: {
-                    ID: id,
-                  }
+        await Cliente.update(
+            { IdGrupo: grupoData.ID},
+            {
+                where: {
+                    ID: clientIds,
                 }
-            );
-        }
+            }
+        );
+        
 
         // Responder con el Grupo y Logistica creada
         res.send({
@@ -147,20 +145,28 @@ exports.update = async (req, res) => {
     })
         .then(async (num) => {
             if (num == 1) {
+
+                // Remover clientes del grupo
+                await Cliente.update(
+                    { IdGrupo: null},
+                    {
+                        where: {
+                            IdGrupo: id,
+                        }
+                    }
+                );
                 // Relacionar cliente con el grupo
                 const clientIds = req.body.clientes || [];
-
-                for (let i = 0; i < clientIds.length; i++) {
-                    const cid = clientIds[i];
-                    await Cliente.update(
-                        { IdGrupo: id},
-                        {
-                            where: {
-                                ID: cid,
-                            }
+                
+                await Cliente.update(
+                    { IdGrupo: id},
+                    {
+                        where: {
+                            ID: clientIds,
                         }
-                    );
-                }
+                    }
+                );
+                
                 res.send({
                     message: "Grupo actualizado correctamente.",
                     grupo: grupo,
@@ -168,7 +174,7 @@ exports.update = async (req, res) => {
                 });
             } else {
                 res.send({
-                    message: `No se puede actualizar el Grupo con id=${id}. Quizás el Grupo no fue encontrado o req.body está vacío.`
+                    message: `No se puede actualizar el Grupo con id=${id}. Quizás el Grupo no fue encontrado, la informacion proporcionada es la misma que esta registrada o req.body está vacío.`
                 });
             }
         })
