@@ -104,9 +104,25 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
 
     Grupo.findByPk(id)
-        .then(data => {
+        .then(async (data) => {
             if (data) {
-                res.send(data);
+                
+                let clientsIdsArray = [];
+                const clientIds = await Cliente.findAll({
+                    attributes:['ID'],
+                    where:{
+                        IdGrupo:id
+                    }
+                });
+                for (let i = 0; i < clientIds.length; i++) {
+                    const c = clientIds[i];
+                    clientsIdsArray.push(c.ID);
+                }
+                const response = {
+                    clientes:clientsIdsArray,
+                    grupo:data
+                }
+                res.send(response);
             } else {
                 res.status(404).send({
                     message: `No se pudo encontrar el Grupo con id=${id}.`
