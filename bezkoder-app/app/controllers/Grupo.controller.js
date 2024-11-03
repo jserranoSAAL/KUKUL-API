@@ -118,11 +118,25 @@ exports.findOne = (req, res) => {
                     const c = clientIds[i];
                     clientsIdsArray.push(c.ID);
                 }
-                const response = {
-                    clientes:clientsIdsArray,
-                    grupo:data
-                }
-                res.send(response);
+
+                const grupo = {
+                    ID:data.ID,
+                    Fecha: data.Fecha,
+                    FechaInicio: data.FechaInicio,
+                    ViajerosConfirmados: data.ViajerosConfirmados,
+                    Nombre: data.Nombre,
+                    Estado: data.Estado,
+                    Agencia: data.Agencia,
+                    Periodo: data.Periodo,
+                    Facturado: data.Facturado,
+                    Real: data.Real,
+                    PorcentajePlaneado: data.PorcentajePlaneado,
+                    PorcentajeReal: data.PorcentajeReal,
+                    ResponsableDelGrupo: data.ResponsableDelGrupo,
+                    clientes: clientsIdsArray
+                };
+
+                res.send(grupo);
             } else {
                 res.status(404).send({
                     message: `No se pudo encontrar el Grupo con id=${id}.`
