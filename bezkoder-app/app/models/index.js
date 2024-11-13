@@ -277,6 +277,7 @@ db.AgenciaViajeContacto = require("./agenciaDeViajeContacto.model.js")(sequelize
 db.AgenciaViajeCotizacion = require("./AgenciaDeViajeCotizacion.model.js")(sequelize, Sequelize);
 
 db.ViajeProductoAdicional = require("./ViajeProductoAdicional.model.js")(sequelize, Sequelize);
+db.ClienteViajeProducto = require("./ClienteViajeProducto.model.js")(sequelize, Sequelize);
 
 // Continuar definiendo otras relaciones necesarias entre los modelos
 

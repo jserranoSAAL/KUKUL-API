@@ -5,7 +5,10 @@ const AgenciaDeViaje = db.AgenciasDeViaje;
 const DireccionAgenciaViaje = db.DireccionAgenciaViaje;
 const AgenciaViajeInfo = db.AgenciasDeViajeInformacion;
 const ViajeProductos = db.ViajeProducto;
+const Cliente = db.Cliente;
 const Productos = db.Productos;
+const ProductoCostos = db.ProductoCostos;
+const ProductoTemporadas = db.ProductoTemporadas;
 const Geografia = db.Geografia;
 const DescripcionProducto = db.DescripcionProducto;
 const Paquetes = db.Paquetes;
@@ -170,7 +173,19 @@ exports.generatorQuotation = async (req, res) => {
                                 // Obtener la divisa por defecto
                                 const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
 
+                                //Modificar costo unitario en base a promociones y rango
                                 let costoUnitario = parseFloat(viajeProducto.costo_unitario);
+                                const productoCostoData = await ProductoCostos.find({
+                                    where: { productoId: viajeProducto.productoId}
+                                });
+                                const productoTemporadaData = await ProductoTemporadas.find({
+                                    where: { productoCostoId: productoCostoData.id}
+                                });
+
+                                const typeAge = GetIfChildOrBaby(productoCostoData,)
+
+
+
                                 if (defaultCurrency) {
                                     const exchangeRate = parseFloat(defaultCurrency.customer_exchange_rate);
                                     // Convertir el costo a la divisa por defecto
@@ -224,3 +239,18 @@ exports.generatorQuotation = async (req, res) => {
         res.status(500).send({ message: err.message || "Ocurrió un error al recuperar la agencia de viaje por ID." });
     }
 };
+
+function GetIfChildOrBaby(dataRange,clientAge){
+
+    //Si es bebe
+    if(clientAge >= dataRange.rangoEdadBebesInicio && clientAge <= dataRange.rangoEdadBebesFin){
+        return 1;
+    }
+    //Si es ninio
+    else if(clientAge >= dataRange.rangoEdadNinosInicio && clientAge <= dataRange.rangoEdadNinosFin){
+        return 2;
+    }
+    //Si es adulto
+    return 0;
+    
+}
