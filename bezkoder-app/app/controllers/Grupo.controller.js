@@ -62,17 +62,15 @@ exports.create = async (req, res) => {
         // Relacionar cliente con el grupo
         const clientIds = req.body.clientes || [];
 
-        for (let i = 0; i < clientIds.length; i++) {
-            const id = clientIds[i];
-            await Cliente.update(
-                { IdGrupo: grupoData.ID},
-                {
-                  where: {
-                    ID: id,
-                  }
+        await Cliente.update(
+            { IdGrupo: grupoData.ID},
+            {
+                where: {
+                    ID: clientIds,
                 }
-            );
-        }
+            }
+        );
+        
 
         // Responder con el Grupo y Logistica creada
         res.send({
@@ -106,9 +104,39 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
 
     Grupo.findByPk(id)
-        .then(data => {
+        .then(async (data) => {
             if (data) {
-                res.send(data);
+                
+                let clientsIdsArray = [];
+                const clientIds = await Cliente.findAll({
+                    attributes:['ID'],
+                    where:{
+                        IdGrupo:id
+                    }
+                });
+                for (let i = 0; i < clientIds.length; i++) {
+                    const c = clientIds[i];
+                    clientsIdsArray.push(c.ID);
+                }
+
+                const grupo = {
+                    ID:data.ID,
+                    Fecha: data.Fecha,
+                    FechaInicio: data.FechaInicio,
+                    ViajerosConfirmados: data.ViajerosConfirmados,
+                    Nombre: data.Nombre,
+                    Estado: data.Estado,
+                    Agencia: data.Agencia,
+                    Periodo: data.Periodo,
+                    Facturado: data.Facturado,
+                    Real: data.Real,
+                    PorcentajePlaneado: data.PorcentajePlaneado,
+                    PorcentajeReal: data.PorcentajeReal,
+                    ResponsableDelGrupo: data.ResponsableDelGrupo,
+                    clientes: clientsIdsArray
+                };
+
+                res.send(grupo);
             } else {
                 res.status(404).send({
                     message: `No se pudo encontrar el Grupo con id=${id}.`
@@ -123,20 +151,60 @@ exports.findOne = (req, res) => {
 };
 
 // Actualizar un Grupo por el id en la solicitud
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
     const id = req.params.id;
 
-    Grupo.update(req.body, {
+    // Grupo
+    const grupo = {
+        Fecha: req.body.Fecha,
+        FechaInicio: req.body.FechaInicio,
+        ViajerosConfirmados: req.body.ViajerosConfirmados,
+        Nombre: req.body.Nombre,
+        Estado: req.body.Estado,
+        Agencia: req.body.Agencia,
+        Periodo: req.body.Periodo,
+        Facturado: req.body.Facturado,
+        Real: req.body.Real,
+        PorcentajePlaneado: req.body.PorcentajePlaneado,
+        PorcentajeReal: req.body.PorcentajeReal,
+        ResponsableDelGrupo: req.body.ResponsableDelGrupo
+    };
+
+    Grupo.update(grupo, {
         where: { ID: id }
     })
-        .then(num => {
+        .then(async (num) => {
             if (num == 1) {
+
+                // Remover clientes del grupo
+                await Cliente.update(
+                    { IdGrupo: null},
+                    {
+                        where: {
+                            IdGrupo: id,
+                        }
+                    }
+                );
+                // Relacionar cliente con el grupo
+                const clientIds = req.body.clientes || [];
+                
+                await Cliente.update(
+                    { IdGrupo: id},
+                    {
+                        where: {
+                            ID: clientIds,
+                        }
+                    }
+                );
+                
                 res.send({
-                    message: "Grupo actualizado correctamente."
+                    message: "Grupo actualizado correctamente.",
+                    grupo: grupo,
+                    clientes: clientIds
                 });
             } else {
                 res.send({
-                    message: `No se puede actualizar el Grupo con id=${id}. Quizás el Grupo no fue encontrado o req.body está vacío.`
+                    message: `No se puede actualizar el Grupo con id=${id}. Quizás el Grupo no fue encontrado, la informacion proporcionada es la misma que esta registrada o req.body está vacío.`
                 });
             }
         })
@@ -144,7 +212,8 @@ exports.update = (req, res) => {
             res.status(500).send({
                 message: "Error actualizando el Grupo con id=" + id
             });
-        });
+    });
+    
 };
 
 // Eliminar un Grupo con el id especificado en la solicitud

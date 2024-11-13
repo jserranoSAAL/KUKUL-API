@@ -37,9 +37,7 @@ exports.findAll = async (req, res) => {
 
     try {
         const totalRecords = await Cliente.findAll();
-        const filteredData = await Cliente.findAll({
-            offset:offsetV,
-            limit:limitV,
+        const {count,rows} = await Cliente.findAndCountAll({
             where:{
                 [Op.or]:[
                     {
@@ -53,13 +51,15 @@ exports.findAll = async (req, res) => {
                         }
                     }
                 ]
-            }
+            },
+            offset:offsetV,
+            limit:limitV
         });
         
         const responseObj = {
             totalRecords: totalRecords.length,
-            filterRecords: filteredData.length,
-            data: filteredData
+            filterRecords: count,
+            data: rows
         }
         res.send(responseObj);
     } catch (err) {
