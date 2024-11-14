@@ -8,14 +8,31 @@ module.exports = (sequelize, DataTypes) => {
         },
         IdCliente: {
             type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Clientes',
+                key: 'ID'
+            },
+            onDelete: 'CASCADE'
         },
         IdViajeProducto: {
             type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'ViajeProducto',
+                key: 'id'
+            },
+            onDelete: 'CASCADE'
         }
     }, {
         tableName: 'ClienteViajeProducto',
         timestamps: false
     });
+
+    ClienteViajeProducto.associate = function (models) {
+        ClienteViajeProducto.belongsTo(models.Clientes, { foreignKey: 'IdCliente', onDelete: 'CASCADE' });
+        ClienteViajeProducto.belongsTo(models.ViajeProducto, { foreignKey: 'IdCliente', onDelete: 'CASCADE' });
+    };
 
     return ClienteViajeProducto;
 };

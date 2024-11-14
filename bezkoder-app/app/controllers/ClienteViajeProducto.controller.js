@@ -10,19 +10,19 @@ exports.create = async (req, res) => {
     }
     
     var clients = req.body;
-    var response = [];
+    let response = [];
 
     try {
-        clients.forEach(c => {
-            c.idViajeProductos.forEach(async (vp) => {
+        for (let c of clients) {
+            for (let vp of c.idViajeProductos) {
                 const clienteViajeProductoObj = {
                     IdCliente: c.idCliente,
                     IdViajeProducto: vp.id
                 };
-                const createdObj = await ClienteViajeProducto.create(clienteViajeProductoObj);
+                let createdObj = await ClienteViajeProducto.create(clienteViajeProductoObj);
                 response.push(createdObj);
-            });
-        });
+            };
+        }
         res.send(response);
 
     } catch (err) {
