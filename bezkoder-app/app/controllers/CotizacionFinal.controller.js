@@ -15,7 +15,8 @@ exports.create = (req, res) => {
     const cotizacion = {
         data: req.body.data,
         code: req.params.code,
-        paquete_id: req.body.paquete_id
+        paquete_id: req.body.paquete_id,
+        createdAt: new Date() // Registrar la fecha de creación
     };
 
     // Guardar CotizacionFinal en la base de datos
@@ -90,11 +91,14 @@ exports.findOne = (req, res) => {
 };
 
 
-// Actualizar una CotizacionFinal por el id en la solicitud
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    CotizacionFinal.update(req.body, {
+    // Excluir `createdAt` de los datos actualizables
+    const updatedData = { ...req.body };
+    delete updatedData.createdAt;
+
+    CotizacionFinal.update(updatedData, {
         where: { id: id }
     })
         .then(num => {
@@ -114,6 +118,7 @@ exports.update = (req, res) => {
             });
         });
 };
+
 
 // Eliminar una CotizacionFinal con el id especificado en la solicitud
 exports.delete = (req, res) => {
@@ -141,7 +146,6 @@ exports.delete = (req, res) => {
 };
 
 
-// Upsert una CotizacionFinal por code
 exports.upsert = async (req, res) => {
     try {
         // Validar la solicitud
@@ -173,7 +177,8 @@ exports.upsert = async (req, res) => {
             cotizacion = await CotizacionFinal.create({
                 data: cotizacionData,
                 code: code,
-                paquete_id: paquete_id
+                paquete_id: paquete_id,
+                createdAt: new Date() // Registrar la fecha de creación
             });
 
             res.send({
@@ -188,7 +193,7 @@ exports.upsert = async (req, res) => {
     }
 };
 
-// Crear una CotizacionFinal por code
+
 exports.createQuotation = async (req, res) => {
     try {
         // Validar la solicitud
@@ -215,7 +220,8 @@ exports.createQuotation = async (req, res) => {
         const cotizacion = await CotizacionFinal.create({
             data: cotizacionData,
             code: code,
-            paquete_id: paquete_id
+            paquete_id: paquete_id,
+            createdAt: new Date() // Registrar la fecha de creación
         });
 
         res.status(201).send({
@@ -228,3 +234,32 @@ exports.createQuotation = async (req, res) => {
         });
     }
 };
+
+
+
+
+exports.findAllOrdered = async (req, res) => {
+    try {
+        const { order } = req.params; // Obtener el parámetro 'order' desde req.params
+        const sortOrder = order && order.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+
+        const cotizaciones = await CotizacionFinal.findAll({
+            order: [['createdAt', sortOrder]]
+        });
+
+        if (cotizaciones.length === 0) {
+            return res.status(404).send({
+                message: "No se encontraron cotizaciones."
+            });
+        }
+
+        res.send(cotizaciones);
+    } catch (error) {
+        res.status(500).send({
+            message: "Error al recuperar las cotizaciones ordenadas.",
+            error: error.message
+        });
+    }
+};
+
+

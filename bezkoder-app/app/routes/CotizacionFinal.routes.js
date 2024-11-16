@@ -28,6 +28,9 @@ module.exports = app => {
     // Buscar CotizacionFinal por paquete_id
     router.get("/paquete/:paquete_id", requireAuth, cotizacionController.findByPaqueteId);
 
+    // Recuperar cotizaciones ordenadas por fecha
+    router.get("/ordered/:order", requireAuth, cotizacionController.findAllOrdered);
+
     // Montar el enrutador bajo la ruta /api/cotizaciones
     app.use("/api/cotizacionesFinales", router);
 };
