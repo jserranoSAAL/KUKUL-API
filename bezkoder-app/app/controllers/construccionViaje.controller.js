@@ -6,6 +6,8 @@ const DireccionAgenciaViaje = db.DireccionAgenciaViaje;
 const AgenciaViajeInfo = db.AgenciasDeViajeInformacion;
 const ViajeProductos = db.ViajeProducto;
 const Cliente = db.Cliente;
+const ClienteGrupo = db.ClienteGrupo;
+const ClienteViajeProducto = db.ClienteViajeProducto;
 const Productos = db.Productos;
 const ProductoCostos = db.ProductoCostos;
 const ProductoTemporadas = db.ProductoTemporadas;
@@ -263,8 +265,20 @@ exports.generatorQuotation = async (req, res) => {
                                     viajeProductData.dataValues.producto_info = productoInfo;
                                     totalCosto += costoUnitario * parseInt(viajeProductData.cantidad);                                    
                                 }
+                                //Guardar 
+                                const idGrupo = paqueteEnviado.GrupoId;
+                                const idClienteGrupo = await ClienteGrupo.findOne({where:{ IdCliente:clientData.ID,IdGrupo:idGrupo}}) 
+                                
+                                const clienteViajeProductoObj = {
+                                    IdClienteGrupo: idClienteGrupo.ID,
+                                    IdViajeProducto: viajeProduct.id
+                                };
+                                await ClienteViajeProducto.destroy({where:{IdClienteGrupo: idClienteGrupo.ID,IdViajeProducto: viajeProduct.id}});
+                                let createdObj = await ClienteViajeProducto.create(clienteViajeProductoObj);
                             }
                             totalPersonas++;
+
+                            
                         }
                         agenciaInfo.dataValues.viaje_productos = viajeProductosInfo;
                         agenciaInfo.dataValues.productos_descripcion = productosDescripcion;
@@ -286,6 +300,7 @@ exports.generatorQuotation = async (req, res) => {
                 const tarifaTotal = totalCosto.toFixed(2);
 
                 const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
+
 
                 res.json({
                     paqueteEnviado,
