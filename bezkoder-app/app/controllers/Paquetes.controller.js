@@ -2,6 +2,7 @@ const db = require('../models');
 const Paquete = db.Paquetes;
 const Grupo = db.Grupo; 
 const Cliente = db.Cliente;
+const ClienteGrupo = db.ClienteGrupo;
 
 const { Op } = require('sequelize');
 
@@ -61,12 +62,12 @@ exports.findOne = (req, res) => {
     Paquete.findByPk(id)
         .then(async data => {
             if (data) {
-                const clients = await  Cliente.findAll({where: { IdGrupo:data.GrupoId}});
+                /*const dataClienteGrupo = await  ClienteGrupo.findAll({where: { IdGrupo:data.GrupoId}});
 
-                for(let c in clients){
+                for(let c of dataClienteGrupo){
                     
-                }
-                res.send(clients);
+                }*/
+                res.send(data);
             } else {
                 res.status(404).send({ message: `No se encontró el paquete con ID=${id}.` });
             }
