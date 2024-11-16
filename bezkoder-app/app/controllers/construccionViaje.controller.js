@@ -109,7 +109,9 @@ exports.findByPaqueteId = async (req, res) => {
 // Buscar agencia de viaje por ID desde un cuerpo de JSON en una solicitud POST y guardar la información en una variable
 exports.generatorQuotation = async (req, res) => {
     try {
-        const { paqueteId, idioma, basePersonas } = req.body;
+        var debug = [];
+
+        const { paqueteId, idioma, clientPerProducts } = req.body;
 
         const paqueteEnviado = await Paquetes.findByPk(paqueteId);
 
@@ -138,65 +140,131 @@ exports.generatorQuotation = async (req, res) => {
                 const construccionViajeInfo = await ConstruccionViaje.findOne({ where: { paqueteId: paqueteId } });
                 let resumen = "Résumé de votre voyage\n";
                 let alojamientosAgregados = [];
+                let viajeProductosInfo = [];
                 let totalCosto = 0;
                 let totalPersonas = 0;
                 const productosDescripcion = [];
+
                 if (construccionViajeInfo) {
                     agenciaInfo.dataValues.construccion_viaje = construccionViajeInfo;
                     const viajeId = construccionViajeInfo.id;
 
-                    const viajeProductosInfo = await ViajeProductos.findAll({ where: { viajeId } });
+                    //const viajeProductosInfo = await ViajeProductos.findAll({ where: { viajeId } });
                     const ubicacionesGeograficas = [];
 
-                    if (viajeProductosInfo) {
-                        for (const viajeProducto of viajeProductosInfo) {
-                            const productoInfo = await Productos.findByPk(viajeProducto.productoId);
-                            if (productoInfo) {
-                                const proveedorInfo = await Proveedores.findByPk(productoInfo.ProveedorID);
-                                const currencyProvider = await Currency.findByPk(proveedorInfo.CurrencyID);
+                    if (clientPerProducts) {
+                        for (const cPerProduct of clientPerProducts) {
+                            //Data del cliente
+                            const clientData = await Cliente.findByPk(cPerProduct.idClient);
 
-                                const geografiaInfo = await Geografia.findByPk(productoInfo.GeografiaID);
-                                if (geografiaInfo) {
-                                    productoInfo.dataValues.geografia_info = geografiaInfo;
-                                    ubicacionesGeograficas.push({ fecha: viajeProducto.fecha, geografia: geografiaInfo });
-                                }
+                            for(const viajeProduct of cPerProduct.idViajeProducts){
+                                const viajeProductData = await ViajeProductos.findByPk(viajeProduct.id);
+                                const productoInfo = await Productos.findByPk(viajeProductData.productoId);
 
-                                const descripcionProducto = await DescripcionProducto.findOne({ where: { productoId: productoInfo.ID } });
-                                if (descripcionProducto) {
-                                    productosDescripcion.push(descripcionProducto);
+                                viajeProductosInfo.push(viajeProductData);
 
-                                    if (descripcionProducto.categoria === "Hotel" || descripcionProducto.categoria === "_hot") {
-                                        alojamientosAgregados.push(descripcionProducto);
+                                if (productoInfo) {
+                                    const proveedorInfo = await Proveedores.findByPk(productoInfo.ProveedorID);
+                                    const currencyProvider = await Currency.findByPk(proveedorInfo.CurrencyID);
+
+                                    const geografiaInfo = await Geografia.findByPk(productoInfo.GeografiaID);
+                                    if (geografiaInfo) {
+                                        productoInfo.dataValues.geografia_info = geografiaInfo;
+                                        ubicacionesGeograficas.push({ fecha: viajeProductData.fecha, geografia: geografiaInfo });
                                     }
+
+                                    const descripcionProducto = await DescripcionProducto.findOne({ where: { productoId: productoInfo.ID } });
+                                    if (descripcionProducto) {
+                                        productosDescripcion.push(descripcionProducto);
+
+                                        if (descripcionProducto.categoria === "Hotel" || descripcionProducto.categoria === "_hot") {
+                                            alojamientosAgregados.push(descripcionProducto);
+                                        }
+                                    }
+
+                                    // Obtener la divisa por defecto
+                                    const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
+                                    //Modificar costo unitario en base a promociones y rango
+                                    let costoUnitario = parseFloat(viajeProductData.costo_unitario);
+                                    if (defaultCurrency) {
+                                        const exchangeRate = parseFloat(defaultCurrency.customer_exchange_rate);
+                                        // Convertir el costo a la divisa por defecto
+                                        costoUnitario = costoUnitario * exchangeRate;
+                                    }
+
+                                    const productoCostoData = await ProductoCostos.findOne({
+                                        where: { productoId: viajeProductData.productoId}
+                                    });
+                                    
+                                    const productoTemporadaData = await ProductoTemporadas.findOne({
+                                        where: { productoCostoId: productoCostoData.id}
+                                    });
+                                    
+                                    
+                                    const currentDate = Date.now();
+
+                                    //Revisamos si estamos en el rango de fechas correspondientes
+                                    if(currentDate >= Date.parse(productoTemporadaData.fechaInicio) && currentDate <= Date.parse(productoTemporadaData.fechaFin)){
+                                        const day = new Date().getDay();
+                                        
+                                        var contDiscount = false;
+                                        switch (day) {
+                                            case 0: //Domingo
+                                                contDiscount = productoTemporadaData.domingo == 1;
+                                                break;
+                                            case 1: //Lunes
+                                                contDiscount = productoTemporadaData.lunes == 1;
+                                                break;
+                                            case 2: //Martes
+                                                contDiscount = productoTemporadaData.martes == 1;
+                                                break;
+                                            case 3: //Miercoles
+                                                contDiscount = productoTemporadaData.miercoles == 1;
+                                                break;
+                                            case 4: //Jueves
+                                                contDiscount = productoTemporadaData.jueves == 1;
+                                                break;
+                                            case 5: //Viernes
+                                                contDiscount = productoTemporadaData.viernes == 1;
+                                                break;
+                                            case 6: //Sabado
+                                                contDiscount = productoTemporadaData.sabado == 1;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        //debug.push(cont);
+                                        // Podemos continuar con el descuento ya que esta habilitado para el dia de hoy
+                                        if(contDiscount){
+                                            //Edad
+                                            const typeAge = GetIfChildOrBaby(productoCostoData,clientData.Edad);
+                                            var dis = 0;
+                                            switch (typeAge) {
+                                                case 0: //Bebe
+                                                    dis = (productoTemporadaData.bebe*0.01) * costoUnitario;
+                                                    break;
+                                                case 1: //Ninio
+                                                    dis = (productoTemporadaData.nino*0.01) * costoUnitario;
+                                                    break;
+                                                case 2: //Adulto
+                                                    //No hay descuento
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            //debug.push("discount: "+dis+" costo:"+ costoUnitario);
+                                            costoUnitario = costoUnitario - dis;
+                                        }
+                                        
+                                    }
+                                    
+                                    //debug.push(Date.parse(productoTemporadaData.fechaInicio));
+
+                                    viajeProductData.dataValues.producto_info = productoInfo;
+                                    totalCosto += costoUnitario * parseInt(viajeProductData.cantidad);                                    
                                 }
-
-                                // Obtener la divisa por defecto
-                                const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
-
-                                //Modificar costo unitario en base a promociones y rango
-                                let costoUnitario = parseFloat(viajeProducto.costo_unitario);
-                                
-                                /*const productoCostoData = await ProductoCostos.findOne({
-                                    where: { productoId: viajeProducto.productoId}
-                                });
-                                const productoTemporadaData = await ProductoTemporadas.findOne({
-                                    where: { productoCostoId: productoCostoData.id}
-                                });*/
-
-                                //const typeAge = GetIfChildOrBaby(productoCostoData,)
-
-
-
-                                if (defaultCurrency) {
-                                    const exchangeRate = parseFloat(defaultCurrency.customer_exchange_rate);
-                                    // Convertir el costo a la divisa por defecto
-                                    costoUnitario = costoUnitario * exchangeRate;
-                                }
-
-                                viajeProducto.dataValues.producto_info = productoInfo;
-                                totalCosto += costoUnitario * parseInt(viajeProducto.cantidad);
-                                totalPersonas += parseInt(viajeProducto.cantidad);
                             }
+                            totalPersonas++;
                         }
                         agenciaInfo.dataValues.viaje_productos = viajeProductosInfo;
                         agenciaInfo.dataValues.productos_descripcion = productosDescripcion;
@@ -214,7 +282,7 @@ exports.generatorQuotation = async (req, res) => {
                     }
                 }
 
-                const tarifaPorPersona = (totalCosto / 2).toFixed(2); // Ejemplo para n personas
+                const tarifaPorPersona = (totalCosto / totalPersonas).toFixed(2); // Ejemplo para n personas
                 const tarifaTotal = totalCosto.toFixed(2);
 
                 const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
@@ -226,9 +294,10 @@ exports.generatorQuotation = async (req, res) => {
                     tarifa: {
                         tarifaPorPersona: `${tarifaPorPersona} ${defaultCurrency.abbreviation}`,
                         tarifaTotal: `${tarifaTotal} ${defaultCurrency.abbreviation}`,
-                        basePersonas: basePersonas, // Número de personas base para el cálculo
+                        totalPersonas: totalPersonas, // Número de personas base para el cálculo
                     },
-                    productosDescripcion
+                    productosDescripcion,
+                    debug: debug
                 });
             } else {
                 res.status(404).send({ message: `No se encontró la agencia de viaje con ID=${paqueteEnviado.agenciaDeViajeId}.` });
@@ -245,13 +314,13 @@ function GetIfChildOrBaby(dataRange,clientAge){
 
     //Si es bebe
     if(clientAge >= dataRange.rangoEdadBebesInicio && clientAge <= dataRange.rangoEdadBebesFin){
-        return 1;
+        return 0;
     }
     //Si es ninio
     else if(clientAge >= dataRange.rangoEdadNinosInicio && clientAge <= dataRange.rangoEdadNinosFin){
-        return 2;
+        return 1;
     }
     //Si es adulto
-    return 0;
+    return 2;
     
 }
