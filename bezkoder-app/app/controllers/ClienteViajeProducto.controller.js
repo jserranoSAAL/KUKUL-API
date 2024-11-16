@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
         return;
     }
     
-    var clients = JSON.parse(req.body);
+    var clients = req.body.clientPerProducts;
     let response = [];
 
     try {
