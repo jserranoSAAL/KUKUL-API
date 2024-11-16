@@ -199,18 +199,20 @@ exports.generatorQuotation = async (req, res) => {
                                     const productCurrencyAbbreviation = productoCostoData.divisa;
                                     const productCurrencyData = await Currency.findOne({where: {abbreviation:productCurrencyAbbreviation}});
                                     
-                                    const currencyRateExchangeData = await CurrencyRates.findOne({where:{
-                                            from_currency_id:productCurrencyData.id,
-                                            to_currency_id:defaultCurrency.id
+                                    
+                                    if(productCurrencyData.ID != defaultCurrency.ID){
+                                        const currencyRateExchangeData = await CurrencyRates.findOne({where:{
+                                            from_currency_id:productCurrencyData.ID,
+                                            to_currency_id:defaultCurrency.ID
                                         }
-                                    });
-
-                                    if (currencyRateExchangeData) {
-                                        const exchangeRate = parseFloat(currencyRateExchangeData.exchange_rate);
-                                        // Convertir el costo a la divisa por defecto
-                                        costoUnitario = costoUnitario * exchangeRate;
+                                        });
+                                        if (currencyRateExchangeData != null) {
+                                            const exchangeRate = parseFloat(currencyRateExchangeData.exchange_rate);
+                                            // Convertir el costo a la divisa por defecto
+                                            costoUnitario = costoUnitario * exchangeRate;
+                                        }
                                     }
-
+                                    
                                     const productoTemporadaData = await ProductoTemporadas.findOne({
                                         where: { productoCostoId: productoCostoData.id}
                                     });
@@ -266,8 +268,9 @@ exports.generatorQuotation = async (req, res) => {
                                                 default:
                                                     break;
                                             }
-                                            //debug.push("discount: "+dis+" costo:"+ costoUnitario);
+                                            
                                             costoUnitario = costoUnitario - dis;
+                                            debug.push("costo:"+ costoUnitario);
                                         }
                                         
                                     }
