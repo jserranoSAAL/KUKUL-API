@@ -13,10 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         NivelProducto: {
             type: DataTypes.STRING
-        },
-        Lugar: {
-            type: DataTypes.STRING
-        },
+        },        
         Region: {
             type: DataTypes.STRING
         },        
