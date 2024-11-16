@@ -45,3 +45,42 @@ exports.findAllRates = async (req, res) => {
     });
   }
 };
+
+
+// Obtener la equivalencia entre dos monedas por sus IDs (sin include)
+exports.getEquivalence = async (req, res) => {
+  try {
+    const { from_currency_id, to_currency_id } = req.params;
+
+    // Validar que se proporcionen los IDs
+    if (!from_currency_id || !to_currency_id) {
+      return res.status(400).send({
+        message: "Los parámetros from_currency_id y to_currency_id son obligatorios.",
+      });
+    }
+
+    // Buscar la tasa de cambio directamente
+    const rate = await CurrencyRates.findOne({
+      where: { from_currency_id, to_currency_id },
+      attributes: ['exchange_rate', 'last_update'], // Seleccionar solo los campos necesarios
+    });
+
+    if (!rate) {
+      return res.status(404).send({
+        message: `No se encontró una equivalencia entre las monedas con IDs ${from_currency_id} y ${to_currency_id}.`,
+      });
+    }
+
+    res.status(200).send({
+      from_currency_id,
+      to_currency_id,
+      exchange_rate: rate.exchange_rate,
+      last_update: rate.last_update,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Error al recuperar la equivalencia entre las monedas.",
+      error: error.message,
+    });
+  }
+};
