@@ -53,15 +53,7 @@ module.exports = (sequelize, DataTypes) => {
         costo: {  // Nuevo campo agregado
             type: DataTypes.DECIMAL(10, 2),  // Ajusta el tipo según tus necesidades
             allowNull: true  // Permite valores nulos si es necesario
-        },
-        rangoEdadAdultosInicio: {
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
-        rangoEdadAdultosFin: {
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
+        },        
         rangoEdadNinosInicio: {
             type: DataTypes.INTEGER,
             allowNull: true
