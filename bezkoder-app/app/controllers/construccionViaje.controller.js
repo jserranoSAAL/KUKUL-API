@@ -16,6 +16,7 @@ const DescripcionProducto = db.DescripcionProducto;
 const Paquetes = db.Paquetes;
 const Proveedores = db.Proveedores;
 const Currency = db.Currency;
+const CurrencyRates = db.CurrencyRates;
 
 
 // Crear una nueva construcción de viaje
@@ -184,24 +185,35 @@ exports.generatorQuotation = async (req, res) => {
                                         }
                                     }
 
-                                    // Obtener la divisa por defecto
-                                    const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
+                                    
                                     //Modificar costo unitario en base a promociones y rango
                                     let costoUnitario = parseFloat(viajeProductData.costo_unitario);
-                                    if (defaultCurrency) {
-                                        const exchangeRate = parseFloat(defaultCurrency.customer_exchange_rate);
+                                    
+                                    const productoCostoData = await ProductoCostos.findOne({
+                                        where: { productoId: viajeProductData.productoId}
+                                    });
+
+                                    // Obtener la divisa por defecto
+                                    const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
+
+                                    const productCurrencyAbbreviation = productoCostoData.divisa;
+                                    const productCurrencyData = await Currency.findOne({where: {abbreviation:productCurrencyAbbreviation}});
+                                    
+                                    const currencyRateExchangeData = await CurrencyRates.findOne({where:{
+                                            from_currency_id:productCurrencyData.id,
+                                            to_currency_id:defaultCurrency.id
+                                        }
+                                    });
+
+                                    if (currencyRateExchangeData) {
+                                        const exchangeRate = parseFloat(currencyRateExchangeData.exchange_rate);
                                         // Convertir el costo a la divisa por defecto
                                         costoUnitario = costoUnitario * exchangeRate;
                                     }
 
-                                    const productoCostoData = await ProductoCostos.findOne({
-                                        where: { productoId: viajeProductData.productoId}
-                                    });
-                                    
                                     const productoTemporadaData = await ProductoTemporadas.findOne({
                                         where: { productoCostoId: productoCostoData.id}
                                     });
-                                    
                                     
                                     const currentDate = Date.now();
 
@@ -265,7 +277,7 @@ exports.generatorQuotation = async (req, res) => {
                                     viajeProductData.dataValues.producto_info = productoInfo;
                                     totalCosto += costoUnitario * parseInt(viajeProductData.cantidad);                                    
                                 }
-                                //Guardar 
+                                //Guardar relacion cliente producto
                                 const idGrupo = paqueteEnviado.GrupoId;
                                 const idClienteGrupo = await ClienteGrupo.findOne({where:{ IdCliente:clientData.ID,IdGrupo:idGrupo}}) 
                                 
