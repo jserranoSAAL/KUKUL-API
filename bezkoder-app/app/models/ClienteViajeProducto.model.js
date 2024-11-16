@@ -6,12 +6,12 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        IdCliente: {
+        IdClienteGrupo: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'Clientes',
-                key: 'ID'
+                model: 'ClienteGrupo',
+                key: 'Id'
             },
             onDelete: 'CASCADE'
         },
@@ -30,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     ClienteViajeProducto.associate = function (models) {
-        ClienteViajeProducto.belongsTo(models.Clientes, { foreignKey: 'IdCliente', onDelete: 'CASCADE' });
-        ClienteViajeProducto.belongsTo(models.ViajeProducto, { foreignKey: 'IdCliente', onDelete: 'CASCADE' });
+        ClienteViajeProducto.belongsTo(models.ClienteGrupo, { foreignKey: 'IdClienteGrupo', onDelete: 'CASCADE' });
+        ClienteViajeProducto.belongsTo(models.ViajeProducto, { foreignKey: 'IdViajeProducto', onDelete: 'CASCADE' });
     };
 
     return ClienteViajeProducto;

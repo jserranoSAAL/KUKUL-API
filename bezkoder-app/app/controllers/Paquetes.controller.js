@@ -3,6 +3,9 @@ const Paquete = db.Paquetes;
 const Grupo = db.Grupo; 
 const Cliente = db.Cliente;
 const ClienteGrupo = db.ClienteGrupo;
+const ClienteViajeProducto = db.ClienteViajeProducto;
+const ViajeProducto = db.ViajeProducto;
+const Productos = db.Productos;
 
 const { Op } = require('sequelize');
 
@@ -62,19 +65,58 @@ exports.findOne = (req, res) => {
     Paquete.findByPk(id)
         .then(async data => {
             if (data) {
-                /*const dataClienteGrupo = await  ClienteGrupo.findAll({where: { IdGrupo:data.GrupoId}});
+                const dataClienteGrupo = await  ClienteGrupo.findAll({where: { IdGrupo:data.GrupoId}});
 
-                for(let c of dataClienteGrupo){
-                    
-                }*/
-                res.send(data);
+                var clientPerProductsData = [];
+                for(let cGrupo of dataClienteGrupo){
+                    const idClienteGrupo = cGrupo.ID;
+                    const clienteViajeProductoData = await ClienteViajeProducto.findAll({where:{IdClienteGrupo:idClienteGrupo}});
+
+                    var clientPerProduct = {
+                        idClient: cGrupo.IdCliente,
+                        idViajeProducts: []
+                    }
+
+                    for(let cViajeProducto of clienteViajeProductoData){
+
+                        const viajeProductoData = await ViajeProducto.findByPk(cViajeProducto.IdViajeProducto);
+                        const productoData = await Productos.findByPk(viajeProductoData.productoId);
+
+                        var viajeProduct = {
+                            id:viajeProductoData.id,
+                            name:productoData.Nombre
+                        }
+                        clientPerProduct.idViajeProducts.push(viajeProduct);
+                    }
+                    clientPerProductsData.push(clientPerProduct);
+                }
+
+                var response = {
+                    Etiquetas: data.Etiquetas,
+                    Imagenes: data.Imagenes,
+                    id: data.id,
+                    Nombre: data.Nombre,
+                    Categoria: data.Categoria,
+                    Estado: data.Estado,
+                    Codigo: data.Codigo,
+                    Inicio: data.Inicio,
+                    Fin: data.Fin,
+                    Creador: data.Creador,
+                    TipoDeViaje: data.TipoDeViaje,
+                    Nivel: data.Nivel,
+                    Traducciones: data.Traducciones,
+                    NotasInternas: data.NotasInternas,
+                    GrupoId: data.GrupoId,
+                    clientPerProducts:clientPerProductsData
+                }
+                res.send(response);
             } else {
                 res.status(404).send({ message: `No se encontró el paquete con ID=${id}.` });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error recuperando el paquete con ID=" + id
+                message: err.message
             });
         });
 };

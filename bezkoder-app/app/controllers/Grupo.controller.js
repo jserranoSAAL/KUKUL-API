@@ -2,6 +2,7 @@ const db = require("../models");
 const Cliente = db.Cliente;
 const Grupo = db.Grupo;
 const ClienteGrupo = db.ClienteGrupo;
+const ClienteViajeProducto = db.ClienteViajeProducto;
 const Logistica = db.Logistica; 
 const { Op } = require("sequelize");
 
@@ -174,13 +175,13 @@ exports.update = async (req, res) => {
             if (num == 1) {
 
                 // Remover clientes del grupo
-                await ClienteGrupo.destroy(
-                    {
-                        where: {
-                            IdGrupo: id,
-                        }
-                    }
-                );
+                const clienteGrupoData = await ClienteGrupo.findAll({where:{IdGrupo:id}});
+
+                for (const cGrupo of clienteGrupoData) {
+                    await ClienteViajeProducto.destroy({ where:{IdClienteGrupo:cGrupo.ID} });
+                }
+                await ClienteGrupo.destroy({ where: { IdGrupo: id,}});
+                
                 // Relacionar cliente con el grupo
                 const clientIds = req.body.clientes || [];
                 var clientObjs = [];
