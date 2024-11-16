@@ -1,6 +1,6 @@
 // models/viajeProducto.model.js
 module.exports = (sequelize, DataTypes) => {
-    const ViajeProducto = sequelize.define('ViajeProducto', {
+    const ViajeProducto = sequelize.define('ViajeProductos', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
