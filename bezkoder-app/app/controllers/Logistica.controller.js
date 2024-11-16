@@ -16,6 +16,8 @@ exports.create = (req, res) => {
         Fecha: req.body.Fecha,
         Inicio: req.body.Inicio,
         Fin: req.body.Fin,
+        EstadoActividad: req.body.EstadoActividad || 'Pendiente',  // Define estado inicial
+        Progreso: req.body.Progreso || 0,  // Define progreso inicial
         Subgrupo: req.body.Subgrupo,
         Actividad: req.body.Actividad,
         PersonasConfirmadas: req.body.PersonasConfirmadas,
@@ -28,7 +30,9 @@ exports.create = (req, res) => {
         Duracion: req.body.Duracion,
         Cantidad: req.body.Cantidad,
         Categoria: req.body.Categoria,
-        Responsable: req.body.Responsable
+        Responsable: req.body.Responsable,
+        Notas: req.body.Notas || '',
+        GrupoID: req.body.GrupoID 
     };
 
     // Guardar Logística en la base de datos
@@ -125,4 +129,36 @@ exports.delete = (req, res) => {
                 message: "No se pudo eliminar el registro de Logística con id=" + id
             });
         });
+};
+
+
+// Obtener todas las logísticas relacionadas a un grupo
+exports.findByGroup = async (req, res) => {
+    try {
+        const grupoID = req.params.grupoID;
+
+        // Validar si se pasó un GrupoID
+        if (!grupoID) {
+            return res.status(400).send({
+                message: "El GrupoID es obligatorio."
+            });
+        }
+
+        // Buscar logísticas asociadas al grupo
+        const logisticas = await Logistica.findAll({ where: { GrupoID: grupoID } });
+
+        // Validar si se encontraron logísticas
+        if (logisticas.length === 0) {
+            return res.status(404).send({
+                message: `No se encontraron logísticas asociadas al grupo con GrupoID=${grupoID}.`
+            });
+        }
+
+        res.send(logisticas);
+    } catch (error) {
+        res.status(500).send({
+            message: "Ocurrió un error al recuperar las logísticas relacionadas al grupo.",
+            error: error.message
+        });
+    }
 };
