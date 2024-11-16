@@ -20,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
         code: {
             type: DataTypes.STRING,
             allowNull: false
-        }            
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            allowNull: false
+        }       
     }, {
         tableName: 'CotizacionFinal',
         timestamps: false
