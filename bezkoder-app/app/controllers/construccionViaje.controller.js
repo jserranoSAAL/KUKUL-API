@@ -174,13 +174,13 @@ exports.generatorQuotation = async (req, res) => {
                                 const defaultCurrency = await Currency.findOne({ where: { is_default: true } });
 
                                 //Modificar costo unitario en base a promociones y rango
-                                let costoUnitario = parseFloat(viajeProducto.costo_unitario);
+                                /*let costoUnitario = parseFloat(viajeProducto.costo_unitario);
                                 const productoCostoData = await ProductoCostos.findOne({
                                     where: { productoId: viajeProducto.productoId}
                                 });
                                 const productoTemporadaData = await ProductoTemporadas.findOne({
                                     where: { productoCostoId: productoCostoData.id}
-                                });
+                                });*/
 
                                 //const typeAge = GetIfChildOrBaby(productoCostoData,)
 
