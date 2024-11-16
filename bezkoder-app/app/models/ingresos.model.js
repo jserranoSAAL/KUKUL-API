@@ -12,11 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         Nombre: {
             type: DataTypes.STRING,
             allowNull: false // Asegura que el campo Nombre no sea nulo
-        },
-        Categoria: {
-            type: DataTypes.STRING,
-            allowNull: false // Asegura que el campo Categoria no sea nulo
-        },
+        },        
         Grupo: {
             type: DataTypes.STRING,
             allowNull: false // Asegura que el campo Grupo no sea nulo. Considera cambiar a INTEGER si se refiere a un ID de otro modelo
@@ -36,11 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         PagoSinIVA: {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false // Asegura que el campo Pago sin IVA no sea nulo
-        },
-        Impuesto: {
-            type: DataTypes.DECIMAL(10, 2),
-            allowNull: false // Asegura que el campo Impuesto no sea nulo
-        },
+        },        
         Moneda: {
             type: DataTypes.STRING,
             allowNull: false // Asegura que el campo Moneda no sea nulo
@@ -48,19 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         CentroFinanciero: {
             type: DataTypes.STRING,
             allowNull: false // Asegura que el campo Centro Financiero no sea nulo
-        },
-        TC: {
-            type: DataTypes.DECIMAL(10, 4),
-            allowNull: true // Este campo puede ser nulo dependiendo de tus necesidades
-        },
-        USD: {
-            type: DataTypes.DECIMAL(10, 2),
-            allowNull: true // Este campo puede ser nulo dependiendo de tus necesidades
-        },
-        FechaDePago: {
-            type: DataTypes.DATEONLY,
-            allowNull: false // Asegura que el campo Fecha de Pago no sea nulo
-        },
+        },                
         Notas: {
             type: DataTypes.TEXT,
             allowNull: true // Este campo puede ser nulo dependiendo de tus necesidades
@@ -88,10 +68,27 @@ module.exports = (sequelize, DataTypes) => {
         Responsable: {
             type: DataTypes.STRING,
             allowNull: false // Asegura que el campo Responsable no sea nulo
+        },
+        LogisticaID: { // Relación con logística
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Logistica',
+                key: 'ID'
+            },
+            allowNull: false
         }
     }, {
         tableName: 'Ingresos',
         timestamps: false // Si no deseas que Sequelize maneje automáticamente los campos createdAt y updatedAt
     });
+
+    // Relación: Un ingreso pertenece a una logística
+    Ingreso.associate = models => {
+        Ingreso.belongsTo(models.Logistica, {
+            foreignKey: 'LogisticaID',
+            as: 'logistica'
+        });
+    };
+
     return Ingreso;
 };

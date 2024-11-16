@@ -17,6 +17,16 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        EstadoActividad: {  // Nuevo campo para el estado de la actividad
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: 'Pendiente'
+        },
+        Progreso: {  // Nuevo campo para el porcentaje de progreso
+            type: DataTypes.FLOAT,
+            allowNull: true,
+            defaultValue: 0
+        },
         Subgrupo: {
             type: DataTypes.STRING,
             allowNull: true
@@ -68,6 +78,10 @@ module.exports = (sequelize, DataTypes) => {
         Responsable: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        Notas: {  // Campo de notas internas o comentarios
+            type: DataTypes.TEXT,
+            allowNull: true
         },
         GrupoID: {
             type: DataTypes.INTEGER,

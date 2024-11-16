@@ -234,6 +234,9 @@ module.exports = app => {
     // Ruta para eliminar un registro de Logística con id
     logisticaRouter.delete("/:id", requireAuth, logisticaController.delete);
 
+    // Obtener logísticas relacionadas a un grupo
+    logisticaRouter.get("/grupo/:grupoID", requireAuth, logisticaController.findByGroup);
+
     // Montar el enrutador bajo la ruta /api/logistica
     app.use("/api/logistica", logisticaRouter);
 };
