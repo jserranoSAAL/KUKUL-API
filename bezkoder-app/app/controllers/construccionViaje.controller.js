@@ -280,15 +280,23 @@ exports.generatorQuotation = async (req, res) => {
                                     viajeProductData.dataValues.producto_info = productoInfo;
                                     totalCosto += costoUnitario * parseInt(viajeProductData.cantidad);                                    
                                 }
-                                //Guardar relacion cliente producto
+                                //Eliminar actuales productos
                                 const idGrupo = paqueteEnviado.GrupoId;
+                                const idsClienteGruposToDelete = await ClienteGrupo.findAll({where:{ IdGrupo:idGrupo}})
+
+                                if(idsClienteGruposToDelete){
+                                    for (const idcgtd of idsClienteGruposToDelete) {
+                                        await ClienteViajeProducto.destroy({where:{IdClienteGrupo: idcgtd.ID}});
+                                    }
+                                    
+                                }
                                 const idClienteGrupo = await ClienteGrupo.findOne({where:{ IdCliente:clientData.ID,IdGrupo:idGrupo}}) 
                                 
                                 const clienteViajeProductoObj = {
                                     IdClienteGrupo: idClienteGrupo.ID,
                                     IdViajeProducto: viajeProduct.id
                                 };
-                                await ClienteViajeProducto.destroy({where:{IdClienteGrupo: idClienteGrupo.ID,IdViajeProducto: viajeProduct.id}});
+                                //await ClienteViajeProducto.destroy({where:{IdClienteGrupo: idClienteGrupo.ID,IdViajeProducto: viajeProduct.id}});
                                 let createdObj = await ClienteViajeProducto.create(clienteViajeProductoObj);
                             }
                             totalPersonas++;
