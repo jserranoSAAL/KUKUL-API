@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
         for (let c of clients) {
             for (let vp of c.idViajeProducts) {
                 const clienteViajeProductoObj = {
-                    IdCliente: c.idCliente,
+                    IdCliente: c.idClient,
                     IdViajeProducto: vp.id
                 };
                 let createdObj = await ClienteViajeProducto.create(clienteViajeProductoObj);
