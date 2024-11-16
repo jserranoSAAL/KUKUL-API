@@ -2,17 +2,17 @@ const dbConfig = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  port: dbConfig.port,
-  operatorsAliases: false,
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+    port: dbConfig.port,
+    operatorsAliases: false,
 
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle
-  }
+    pool: {
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        acquire: dbConfig.pool.acquire,
+        idle: dbConfig.pool.idle
+    }
 });
 
 const db = {};
@@ -82,7 +82,7 @@ db.PoliticaDeCancelacion = require("./PoliticaDeCancelacion.model.js")(sequelize
 db.MetodoDePago = require("./MetodoDePago.model.js")(sequelize, Sequelize);
 
 // Definir asociaciones
-db.AgenciasDeViaje.associate = function(models) {
+db.AgenciasDeViaje.associate = function (models) {
     db.AgenciasDeViaje.hasOne(models.AgenciasDeViajeInformacion, { foreignKey: 'AgenciasDeViajeID', as: 'informacion' });
     db.AgenciasDeViaje.hasMany(models.Contactos, { foreignKey: 'AgenciasDeViajeID', as: 'contactos' });
     db.AgenciasDeViaje.hasOne(models.Direcciones, { foreignKey: 'AgenciasDeViajeID', as: 'direccion' });
@@ -93,57 +93,57 @@ db.AgenciasDeViaje.associate = function(models) {
     db.AgenciasDeViaje.hasMany(models.PoliticaDeCancelacion, { foreignKey: 'AgenciasDeViajeID', as: 'politicasDeCancelacion' });
 };
 
-db.AgenciasDeViajeInformacion.associate = function(models) {
+db.AgenciasDeViajeInformacion.associate = function (models) {
     db.AgenciasDeViajeInformacion.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
 };
 
-db.Contactos.associate = function(models) {
+db.Contactos.associate = function (models) {
     db.Contactos.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
 };
 
-db.Direcciones.associate = function(models) {
+db.Direcciones.associate = function (models) {
     db.Direcciones.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
 };
 
-db.ExtranetClient.associate = function(models) {
+db.ExtranetClient.associate = function (models) {
     db.ExtranetClient.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
 };
 
-db.ParametrosCotizacion.associate = function(models) {
+db.ParametrosCotizacion.associate = function (models) {
     db.ParametrosCotizacion.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
 };
 
-db.ParametrosDocumentos.associate = function(models) {
+db.ParametrosDocumentos.associate = function (models) {
     db.ParametrosDocumentos.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
 };
 
-db.ParametrosEmails.associate = function(models) {
+db.ParametrosEmails.associate = function (models) {
     db.ParametrosEmails.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
 };
 
-db.Finanzas.associate = function(models) {
+db.Finanzas.associate = function (models) {
     db.Finanzas.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
     db.Finanzas.hasMany(models.CreditosDeudasDetalle, { foreignKey: 'FinanzasID', as: 'creditosDeudasDetalle' });
     db.Finanzas.hasMany(models.CuentasBancarias, { foreignKey: 'FinanzasID', as: 'cuentasBancarias' });
     db.Finanzas.hasMany(models.ParametrosFinanzas, { foreignKey: 'FinanzasID', as: 'parametrosFinanzas' });
 };
 
-db.ParametrosFinanzas.associate = function(models) {
+db.ParametrosFinanzas.associate = function (models) {
     db.ParametrosFinanzas.belongsTo(models.AgenciasDeViaje, { foreignKey: 'AgenciasDeViajeID', as: 'agencia' });
     db.ParametrosFinanzas.hasMany(models.PoliticaDeCancelacion, { foreignKey: 'ParametrosFinanzasID', as: 'politicasDeCancelacion' });
     db.ParametrosFinanzas.hasMany(models.TipoDeTasa, { foreignKey: 'ParametrosFinanzasID', as: 'tiposDeTasa' });
     db.ParametrosFinanzas.hasMany(models.MetodoDePago, { foreignKey: 'ParametrosFinanzasID', as: 'metodosDePago' });
 };
 
-db.PoliticaDeCancelacion.associate = function(models) {
+db.PoliticaDeCancelacion.associate = function (models) {
     db.PoliticaDeCancelacion.belongsTo(models.ParametrosFinanzas, { foreignKey: 'ParametrosFinanzasID', as: 'parametrosFinanzas' });
 };
 
-db.TipoDeTasa.associate = function(models) {
+db.TipoDeTasa.associate = function (models) {
     db.TipoDeTasa.belongsTo(models.ParametrosFinanzas, { foreignKey: 'ParametrosFinanzasID', as: 'parametrosFinanzas' });
 };
 
-db.MetodoDePago.associate = function(models) {
+db.MetodoDePago.associate = function (models) {
     db.MetodoDePago.belongsTo(models.ParametrosFinanzas, { foreignKey: 'ParametrosFinanzasID', as: 'parametrosFinanzas' });
 };
 
@@ -213,7 +213,7 @@ db.ParametrosCotizacionTarifario = require("./ParametrosCotizacionTarifario.mode
 db.PreciosCalculadosTarifario = require("./PreciosCalculadosTarifario.model")(sequelize, Sequelize);
 
 // Agregar relaciones
-db.ConstruccionViaje.associate = function(models) {
+db.ConstruccionViaje.associate = function (models) {
     ConstruccionViaje.hasMany(models.ViajeProducto, { foreignKey: 'viajeId', onDelete: 'CASCADE' });
     ConstruccionViaje.belongsTo(models.AgenciasDeViaje, { foreignKey: 'agenciaDeViajeId', onDelete: 'CASCADE' });
     ConstruccionViaje.belongsTo(models.Paquetes, { foreignKey: 'paqueteId', onDelete: 'CASCADE' });
@@ -247,18 +247,18 @@ db.DescripcionProducto.belongsTo(db.Productos, {
 });
 
 // Definir las asociaciones de Paquete y Grupo
-db.Paquetes.associate = function(models) {
+db.Paquetes.associate = function (models) {
     db.Paquetes.belongsTo(models.Grupo, { foreignKey: 'GrupoId', as: 'grupos' });
 };
 
-db.Grupo.associate = function(models) {
+db.Grupo.associate = function (models) {
     db.Grupo.hasMany(models.Paquetes, { foreignKey: 'GrupoId', as: 'paquete' });
 };
 
 db.CotizacionFinal = require("./CotizacionFinal.model.js")(sequelize, Sequelize);
 
 // Asociaciones de CotizacionFinal
-db.CotizacionFinal.associate = function(models) {
+db.CotizacionFinal.associate = function (models) {
     db.CotizacionFinal.belongsTo(models.Paquetes, { foreignKey: 'paquete_id', as: 'paquete' });
 };
 
@@ -280,6 +280,19 @@ db.ViajeProductoAdicional = require("./ViajeProductoAdicional.model.js")(sequeli
 db.ClienteViajeProducto = require("./ClienteViajeProducto.model.js")(sequelize, Sequelize);
 
 db.ClienteGrupo = require("./ClienteGrupo.model.js")(sequelize, Sequelize);
+db.CurrencyRates = require("./CurrencyRates.model.js")(sequelize, Sequelize);
+
+// Asociaciones de CurrencyRates
+db.CurrencyRates.associate = (models) => {
+    db.CurrencyRates.belongsTo(models.Currency, { as: 'fromCurrency', foreignKey: 'from_currency_id' });
+    db.CurrencyRates.belongsTo(models.Currency, { as: 'toCurrency', foreignKey: 'to_currency_id' });
+};
+
+// Asociaciones de Currency
+db.Currency.associate = (models) => {
+    db.Currency.hasMany(models.CurrencyRates, { as: 'fromRates', foreignKey: 'from_currency_id' });
+    db.Currency.hasMany(models.CurrencyRates, { as: 'toRates', foreignKey: 'to_currency_id' });
+};
 
 // Continuar definiendo otras relaciones necesarias entre los modelos
 

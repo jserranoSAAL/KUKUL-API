@@ -171,6 +171,7 @@ require("./app/routes/AgenciaDeViajeCotizacion.routes.js")(app);
 require("./app/routes/ViajeProductoAdicional.routes.js")(app);
 
 require("./app/routes/ClienteViajeProducto.routes.js")(app);
+require("./app/routes/CurrencyRates.routes.js")(app);
 
 
 

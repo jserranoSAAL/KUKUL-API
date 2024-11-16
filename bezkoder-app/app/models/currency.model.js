@@ -19,14 +19,6 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
           defaultValue: false
       },
-      customer_exchange_rate: {
-          type: DataTypes.DECIMAL(10, 6),
-          allowNull: false
-      },
-      supplier_exchange_rate: {
-          type: DataTypes.DECIMAL(10, 6),
-          allowNull: false
-      },
       last_update: {
           type: DataTypes.DATE,
           allowNull: false

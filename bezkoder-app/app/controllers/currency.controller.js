@@ -16,9 +16,7 @@ exports.create = async (req, res) => {
   const currency = {
     currency_name: req.body.currency_name,
     abbreviation: req.body.abbreviation,
-    is_default: req.body.is_default,
-    customer_exchange_rate: req.body.customer_exchange_rate,
-    supplier_exchange_rate: req.body.supplier_exchange_rate,
+    is_default: req.body.is_default,    
     last_update: req.body.last_update || new Date()
   };
 
