@@ -1,6 +1,7 @@
 const db = require("../models");
 const Cliente = db.Cliente;
 const Grupo = db.Grupo;
+const ClienteGrupo = db.ClienteGrupo;
 const Logistica = db.Logistica; 
 const { Op } = require("sequelize");
 
@@ -61,17 +62,13 @@ exports.create = async (req, res) => {
 
         // Relacionar cliente con el grupo
         const clientIds = req.body.clientes || [];
+        var clientObjs = [];
 
-        await Cliente.update(
-            { IdGrupo: grupoData.ID},
-            {
-                where: {
-                    ID: clientIds,
-                }
-            }
-        );
+        for(let cId of clientIds){
+            clientObjs.push({IdCliente:cId,IdGrupo:grupoData.ID});
+        }
+        await ClienteGrupo.bulkCreate(clientObjs);
         
-
         // Responder con el Grupo y Logistica creada
         res.send({
             clientes:clientIds,
@@ -81,7 +78,7 @@ exports.create = async (req, res) => {
 
     } catch (err) {
         res.status(500).send({
-            message: err.message || "Ocurrió algún error al crear el Grupo y Logistica."
+            message: console.log(err) || "Ocurrió algún error al crear el Grupo y Logistica."
         });
     }
 };
@@ -108,15 +105,15 @@ exports.findOne = (req, res) => {
             if (data) {
                 
                 let clientsIdsArray = [];
-                const clientIds = await Cliente.findAll({
-                    attributes:['ID'],
+                const clientIds = await ClienteGrupo.findAll({
+                    attributes:['IdCliente'],
                     where:{
                         IdGrupo:id
                     }
                 });
                 for (let i = 0; i < clientIds.length; i++) {
                     const c = clientIds[i];
-                    clientsIdsArray.push(c.ID);
+                    clientsIdsArray.push(c.IdCliente);
                 }
 
                 const grupo = {
@@ -145,7 +142,7 @@ exports.findOne = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error recuperando el Grupo con id=" + id
+                message: err.message
             });
         });
 };
@@ -177,8 +174,7 @@ exports.update = async (req, res) => {
             if (num == 1) {
 
                 // Remover clientes del grupo
-                await Cliente.update(
-                    { IdGrupo: null},
+                await ClienteGrupo.destroy(
                     {
                         where: {
                             IdGrupo: id,
@@ -187,15 +183,12 @@ exports.update = async (req, res) => {
                 );
                 // Relacionar cliente con el grupo
                 const clientIds = req.body.clientes || [];
-                
-                await Cliente.update(
-                    { IdGrupo: id},
-                    {
-                        where: {
-                            ID: clientIds,
-                        }
-                    }
-                );
+                var clientObjs = [];
+
+                for(let cId of clientIds){
+                    clientObjs.push({IdCliente:cId,IdGrupo:id});
+                }
+                await ClienteGrupo.bulkCreate(clientObjs);
                 
                 res.send({
                     message: "Grupo actualizado correctamente.",
@@ -204,13 +197,13 @@ exports.update = async (req, res) => {
                 });
             } else {
                 res.send({
-                    message: `No se puede actualizar el Grupo con id=${id}. Quizás el Grupo no fue encontrado, la informacion proporcionada es la misma que esta registrada o req.body está vacío.`
+                    message: `No se puede actualizar el Grupo con id=${id}. Quizás el Grupo no fue encontrado, la informacion proporcionada es la misma que esta registr ada o req.body está vacío.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error actualizando el Grupo con id=" + id
+                message: err.message
             });
     });
     

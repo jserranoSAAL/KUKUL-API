@@ -6,9 +6,6 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        IdGrupo: {
-            type: DataTypes.INTEGER,
-        },
         Nombre: {
             type: DataTypes.STRING,
             allowNull: false
