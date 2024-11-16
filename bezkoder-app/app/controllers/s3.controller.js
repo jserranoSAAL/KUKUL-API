@@ -94,7 +94,7 @@ exports.uploadCoverPage = (req, res) => {
       return res.status(500).json({ error: 'Error al cargar la portada en DigitalOcean Spaces ' + JSON.stringify(err) });
     }
 
-    const imageUrl = `${process.env.DO_SPACE_ENDPOINT}/${key}`;
+    const imageUrl = `https://${process.env.DO_SPACE_NAME}.${process.env.DO_SPACE_ENDPOINT}/${key}`;
 
     const coverage = {
       key: key,
