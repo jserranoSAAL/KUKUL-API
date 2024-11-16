@@ -175,14 +175,14 @@ exports.generatorQuotation = async (req, res) => {
 
                                 //Modificar costo unitario en base a promociones y rango
                                 let costoUnitario = parseFloat(viajeProducto.costo_unitario);
-                                const productoCostoData = await ProductoCostos.find({
+                                const productoCostoData = await ProductoCostos.findOne({
                                     where: { productoId: viajeProducto.productoId}
                                 });
-                                const productoTemporadaData = await ProductoTemporadas.find({
+                                const productoTemporadaData = await ProductoTemporadas.findOne({
                                     where: { productoCostoId: productoCostoData.id}
                                 });
 
-                                const typeAge = GetIfChildOrBaby(productoCostoData,)
+                                //const typeAge = GetIfChildOrBaby(productoCostoData,)
 
 
 
