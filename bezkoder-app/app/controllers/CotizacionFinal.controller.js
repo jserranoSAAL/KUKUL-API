@@ -263,3 +263,24 @@ exports.findAllOrdered = async (req, res) => {
 };
 
 
+// Encontrar una única CotizacionFinal con un id
+exports.findById = (req, res) => {
+    const id = req.params.id;
+
+    CotizacionFinal.findByPk(id)
+        .then(data => {
+            if (data) {
+                res.send(data);
+            } else {
+                res.status(404).send({
+                    message: `No se pudo encontrar la CotizacionFinal con id=${id}.`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error recuperando la CotizacionFinal con id=" + id,
+                error: err.message
+            });
+        });
+};
